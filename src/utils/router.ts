@@ -9,6 +9,7 @@ export function onUrlPage(e: any) {
   if (!url) return;
   const urlType = getUrlType(url);
   const { name, path, query } = parseUrl(url);
+  // console.log({ urlType, name, path, query });
   if (urlType === 'topic') {
     // 专题页
     forward('topic', Object.assign({ url: path }, query));
@@ -23,6 +24,7 @@ export function onUrlPage(e: any) {
     }
   } else if (urlType === 'other' && pagesMap.find((i) => i.name === name)) {
     // 原生页
+    console.log(name, query);
     forward(name, query);
   } else {
     // 不跳转
@@ -30,7 +32,9 @@ export function onUrlPage(e: any) {
 }
 
 export function forward(name: string, query: Types.Query = {}): any {
-  if (needAuthPath.includes(name)) return forward('login');
+  if (needAuthPath.includes(name)) {
+    return forward('login');
+  }
   const targetPage = pagesMap.find((i) => i.name === name);
   if (!targetPage) return;
   const isReplace = query.replace;
@@ -38,8 +42,13 @@ export function forward(name: string, query: Types.Query = {}): any {
   const { type, path } = targetPage;
   const url = restoreUrl(path, query);
   const params = { url };
-  if (type === 'tabBarPage') return uni.switchTab(params);
-  if (!isReplace) return uni.navigateTo(params);
+  console.log(type,params);
+  if (type === 'tabBarPage') {
+    return uni.switchTab(params);
+  }
+  if (!isReplace) {
+    return uni.navigateTo(params);
+  }
   uni.redirectTo(params);
 }
 

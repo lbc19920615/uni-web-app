@@ -11,4 +11,20 @@ onHide(() => {
 });
 </script>
 
-<style></style>
+<style lang="scss">
+//@debug $uni-bg-color;
+
+uni-page-wrapper {
+  view-transition-name: wrapper;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: .1s;
+}
+
+::view-transition-old(wrapper),
+::view-transition-new(wrapper) {
+  animation-duration: 1s;
+}
+</style>

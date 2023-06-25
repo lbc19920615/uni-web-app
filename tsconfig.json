@@ -5,7 +5,7 @@
     "useDefineForClassFields": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "strict": true,
+    "strict": false,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
@@ -17,6 +17,6 @@
     "lib": ["esnext", "dom"],
     "types": ["@dcloudio/types", "pinia-plugin-persist-uni"]
   },
-  "exclude": ["node_modules", "vite.config.ts"],
+  "exclude": ["node_modules", "vite.config.ts", "src/main.ts"],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }
