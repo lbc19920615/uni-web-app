@@ -4,6 +4,7 @@
     "GetTest": true,
     "PostTest": true,
     "Types": true,
+    "Class": true,
     "User": true
   }
 }

@@ -53,25 +53,27 @@ function onScrollToLower() {
 </script>
 
 <template>
-  <div class="h-screen">
-    <pullList :on-scroll-to-lower="onScrollToLower">
-      <template #list>
-        <view>name:{{ name }}</view>
-        <view>fullName:{{ fullName }}</view>
-        <view @click="updateName('newName')">updateName</view>
-        <view>title:{{ title }}</view>
-        <view @click="changeTitle">changeTitle</view>
-        <view @click="getTest">getTest</view>
-        <view @click="postTest">postTest</view>
-        <view @click="getCommonParam">getCommonParams</view>
-        <view @click="setCommonParam">setCommonParams</view>
-        <view @click="uniAsyncTest">uniAsyncTest</view>
-        <view data-url="index?a=1" @click="onUrlPage">onUrlPage</view>
-        <view class="p-10">unocss-test</view>
-        <view v-for="i in 30" :key="i" class="p10">scroll Test</view>
-      </template>
-    </pullList>
-  </div>
+  <page-wrapper>
+    <view class="h-screen">
+      <pullList :on-scroll-to-lower="onScrollToLower">
+        <template #list>
+          <view>name:{{ name }}</view>
+          <view>fullName:{{ fullName }}</view>
+          <view @click="updateName('newName')">updateName</view>
+          <view>title:{{ title }}</view>
+          <view @click="changeTitle">changeTitle</view>
+          <view @click="getTest">getTest</view>
+          <view @click="postTest">postTest</view>
+          <view @click="getCommonParam">getCommonParams</view>
+          <view @click="setCommonParam">setCommonParams</view>
+          <view @click="uniAsyncTest">uniAsyncTest</view>
+          <view data-url="index?a=1" @click="onUrlPage">onUrlPage</view>
+          <view class="p-10">unocss-test</view>
+          <view v-for="i in 30" :key="i" class="p10">scroll Test</view>
+        </template>
+      </pullList>
+    </view>
+  </page-wrapper>
 </template>
 
 <style lang="scss" scoped></style>

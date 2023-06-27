@@ -9,8 +9,11 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    LinkScrollCom: typeof import('./components/linkScrollCom.vue')['default']
+    PageWrapper: typeof import('./components/pageWrapper.vue')['default']
     PullList: typeof import('./components/pullList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Tabbar: typeof import('./components/tabbar.vue')['default']
   }
 }

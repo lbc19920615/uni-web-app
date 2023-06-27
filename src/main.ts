@@ -1,8 +1,12 @@
 import 'uno.css';
 // @ts-ignore
 import { createSSRApp } from 'vue';
+import zx from "@/uni_modules/zx";
 import App from './App.vue';
 import store from '@/store';
+// main.js
+// import uvUI from '@/uni_modules/uv-ui-tools'
+
 
 // 路由格式化
 import { spaNavigate } from '@/utils/navigate';
@@ -36,6 +40,8 @@ uni.switchTab = function (args, ...rest) {
 
 export function createApp() {
   const app = createSSRApp(App).use(store);
+  app.use(zx)
+  // app.use(uvUI);
   return {
     app
   };

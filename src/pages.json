@@ -25,19 +25,28 @@
           "style": {
             "navigationBarTitleText": "测试"
           }
+        },
+        {
+          "name": "linkScroll",
+          "path": "linkScroll",
+          "style": {
+            "navigationBarTitleText": "联动"
+          }
         }
       ]
     }
   ],
   "globalStyle": {
-    "navigationBarTextStyle": "black",
+    "navigationBarTextStyle": "@navTxtStyle",
     "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#1AA86C",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarBackgroundColor": "@navBgColor",
+    "backgroundColor": "@bgColor"
   },
   "tabBar": {
-    "color": "#1AA86C",
-    "selectedColor": "#1AA86C",
+    "custom": true,
+    "fontSize": "24rpx",
+    "color": "#333",
+    "selectedColor": "#409EFF",
     "borderStyle": "white",
     "backgroundColor": "#ffffff",
     "list": [
