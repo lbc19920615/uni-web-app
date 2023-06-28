@@ -21,12 +21,12 @@ const subPagesMap = pagesJson.subPackages.flatMap((i) => {
 });
 
 // h5页面
-export const h5HsqMap = ['member-center'];
+export const h5HsqMap = [];
 
 export const pagesMap = [...tabBarPagesMap, ...subPagesMap];
 
 // 需要登录权限的页面
-export const needAuthPath = ['member-center', 'service'];
+export const needAuthPath = [];
 
 const types = {
   h5Hsq: /(m(\.dev|\.beta)?\.haoshiqi\.net\/v2)/i,

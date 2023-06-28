@@ -33,40 +33,6 @@ import { useModal } from '@/uni_modules/zx'
 let store = $getStore("Home")
 let refs = storeToRefs(store);
 
-function field(option: Record<any, any>) {
-
-  return ''
-}
-
-function first() {
-  console.log("first(): factory evaluated");
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    console.log("first(): called");
-  };
-}
-
-function second() {
-  console.log("second(): factory evaluated");
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    console.log("second(): called");
-  };
-}
-
-function entry() {
-  return function() {
-    console.log('entry');
-  }
-}
-
-class A {
-  static {
-    console.log('ss', this);
-  }
-  @first()
-  @second()
-  name = 1
-}
-
 
 
 function goTest() {
