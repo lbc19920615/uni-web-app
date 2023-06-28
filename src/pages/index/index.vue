@@ -13,7 +13,7 @@
       <view>{{refs.a}} {{refs.b}} {{refs.c}}</view>
       <button @click="store.action1">action1</button>
 
-      <view class="grid grid-cols-3 w-3/4 mt-60">
+      <view class="grid grid-cols-3 mt-60">
         <view  v-for="(item,index) in store.arr">
           <!--      {{item}} {{index}}-->
           <view class="text-center h-60 lh-60" @click="goPage(item)">{{ item[0] }}</view>
