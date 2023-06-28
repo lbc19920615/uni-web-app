@@ -12,6 +12,9 @@ import replace from './plugin/vite-plugin-filter-replace';
 
 import env from './src/config/env';
 
+// const b = 'last 2 versions, > 0.3%, Firefox ESR';
+const b = 'ios 9';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   base: './',
@@ -41,11 +44,6 @@ export default defineConfig({
     Components({
       extensions: ['vue'],
       dts: 'src/components.d.ts'
-    }),
-    babel({
-      extensions: ['.vue'],
-      include: ['src'],
-      plugins: [['@babel/plugin-proposal-decorators', { version: '2023-05' }]]
     }),
     /**
      * 支持自动添加变量
@@ -84,7 +82,34 @@ export default defineConfig({
         }
       }
     ]),
-    uni(),
+    uni({
+      viteLegacyOptions: {
+        // targets: 'last 2 versions, > 0.3%, Firefox ESR'
+        targets: b
+      }
+    }),
+    babel({
+      extensions: ['.js'],
+      // include: ['src/*'],
+      exclude: [/node_modules/, /uni_modules/],
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            targets: {
+              chrome: '58',
+              ie: '11'
+            },
+            useBuiltIns: 'entry',
+            corejs: '3.31.0'
+          }
+        ]
+      ],
+      plugins: [
+        ['@babel/plugin-transform-arrow-functions', { spec: true }],
+        // ['@babel/plugin-proposal-decorators', { version: '2023-05' }]
+      ]
+    }),
     Unocss()
   ],
   server: {

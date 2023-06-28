@@ -4,7 +4,8 @@ import { defineConfig, presetAttributify, presetUno } from 'unocss';
 import presetRemToRpx from './preset-rem-to-rpx';
 
 const sizeMapping: Record<string, string> = {
-  fs: 'font-size'
+  fs: 'font-size',
+  height: 'height'
 };
 
 function getSizeRules(Mapping: Record<string, string>): Rule<{}>[] {

@@ -11,7 +11,7 @@ export default defineStore({
       }
     ]
   },
-  state: () => {
+  state: function(){
     return {
       name: '张三',
       token: 'token...'

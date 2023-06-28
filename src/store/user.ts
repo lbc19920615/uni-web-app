@@ -1,6 +1,6 @@
 export default defineStore({
   id: 'user',
-  state: () => {
+  state:function() {
     return {
       userInfo: {
         token: 'token',

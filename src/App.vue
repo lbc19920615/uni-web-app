@@ -36,6 +36,9 @@ export default {
 
 
 html, page {
+  --navigation-bar-height: 80upx;
+  --navigation-bar-bg-color: var(--primary-color);
+  --navigation-bar-text: #fff;
   --tabbar-height: 100upx;
   --primary-color: #{$uni-color-primary};
   --color-primary: #{$uni-color-primary};
@@ -54,6 +57,10 @@ html, page {
     &:after {
       border: none;
     }
+  }
+
+  button[type=primary] {
+    background-color: var(--primary-color);
   }
 }
 
@@ -100,6 +107,11 @@ button:after {
   border: none;
 }
 <!-- #endif -->
+
+
+@import "@/uni_modules/zx/index.scss";
+
+
 </style>
 
 

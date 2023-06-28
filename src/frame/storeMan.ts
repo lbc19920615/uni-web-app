@@ -59,7 +59,7 @@ export function injectStore(name) {
   return function(target) {
     target.__IS_STORE__ = true
     storeMap.set(name, createStore(target))
-    console.log(target, storeMap);
+    // console.log(target, storeMap);
   }
   // target.annotated = true;
 }
@@ -70,3 +70,7 @@ export function getStore(key) {
     return ins.useStore()
   }
 }
+
+
+
+

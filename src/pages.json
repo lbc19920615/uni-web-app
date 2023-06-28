@@ -4,14 +4,16 @@
       "name": "index",
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "首页"
+        "navigationBarTitleText": "首页",
+        "navigationStyle":"custom"
       }
     },
     {
       "name": "profile",
       "path": "pages/profile/profile",
       "style": {
-        "navigationBarTitleText": "个人"
+        "navigationBarTitleText": "个人",
+        "navigationStyle":"custom"
       }
     }
   ],
@@ -23,14 +25,24 @@
           "name": "test",
           "path": "test",
           "style": {
-            "navigationBarTitleText": "测试"
+            "navigationBarTitleText": "测试",
+            "navigationStyle":"custom"
           }
         },
         {
           "name": "linkScroll",
           "path": "linkScroll",
           "style": {
-            "navigationBarTitleText": "联动"
+            "navigationBarTitleText": "联动",
+            "navigationStyle":"custom"
+          }
+        },
+        {
+          "name": "form",
+          "path": "form",
+          "style": {
+            "navigationBarTitleText": "表单",
+            "navigationStyle":"custom"
           }
         }
       ]

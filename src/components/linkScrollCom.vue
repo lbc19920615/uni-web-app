@@ -45,7 +45,7 @@ function onScroll(e) {
     // var process = detail.scrollLeft / 1080
    // scrollLeft.value = (detail.dx) + (curIndex * 360);
     goodLeft.value = (detail.dx) + (oldIndex * winWidth);
-    console.log('scroll', goodLeft.value);
+    // console.log('scroll', goodLeft.value);
   // }
 }
 

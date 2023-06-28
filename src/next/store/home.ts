@@ -6,7 +6,8 @@ export default class {
   b = 2
 
   arr = Object.entries({
-    'linkScroll': {}
+    'linkScroll': {},
+    'form': {}
   })
   get c() { return this.a + this.b }
   action1() {

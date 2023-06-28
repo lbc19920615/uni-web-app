@@ -1,10 +1,6 @@
 <script lang="ts" setup>
 import pageWrapper from "@/components/pageWrapper.vue"
 
-
-onLoad(() => {
-
-});
 </script>
 
 <template>

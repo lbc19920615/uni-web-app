@@ -11,13 +11,11 @@ export function spaNavigate(updateTheDOMSomehow: Function) {
   }
 
   // With a transition:
-  const transition = document.startViewTransition(async () => {
-    await updateTheDOMSomehow();
+  const transition = document.startViewTransition(async function() {
+    updateTheDOMSomehow();
   });
 
-  transition.finished.finally(() => {
-
-  })
+  transition.finished.finally(function() {})
   //#endif
 
   //#ifdef MP-WEIXIN

@@ -13,7 +13,7 @@ import linkScrollCom from "@/components/linkScrollCom.vue"
 
 let goodLeft = ref(0)
 function onMyevent(e) {
-  console.log('onMyevent', e);
+  // console.log('onMyevent', e);
   goodLeft = e.left
 }
 </script>

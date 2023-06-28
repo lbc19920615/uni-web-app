@@ -1,4 +1,4 @@
-import { parseUrl } from '@/utils/shared';
+import { getPageInfo } from "@/utils/pageInfo";
 
 export function useInit() {
   onShow(() => {
@@ -7,19 +7,5 @@ export function useInit() {
   onHide(() => {
     console.log('Page Hide');
   });
-  const pages = getCurrentPages();
-  const page = pages[pages.length - 1];
-  // @ts-expect-error
-  const { fullPath } = page.$page;
-  const {
-    name: pageName,
-    path: pagePath,
-    query: pageQuery
-  } = parseUrl(fullPath);
-
-  return {
-    pageName,
-    pagePath,
-    pageQuery
-  };
+  return getPageInfo()
 }

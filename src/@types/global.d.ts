@@ -1,6 +1,4 @@
 
-
-
 declare namespace Types {
   type Query = {
     replace?: boolean

@@ -6,7 +6,7 @@ import { useTitle } from '@/hooks/useTitle';
 import { onUrlPage } from '@/utils/router';
 import uniAsync from '@/utils/uniAsync';
 
-onLoad(() => {
+onLoad(function () {
   const { pageName, pagePath, pageQuery } = useInit();
   console.log(pageName, pagePath, pageQuery, 'pageName,pagePath, pageQuery');
 });

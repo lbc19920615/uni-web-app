@@ -1,6 +1,6 @@
 export default defineStore(
   'setup',
-  () => {
+  function(){
     const name = ref<string>('allen');
     const token = ref<string>('token...');
 

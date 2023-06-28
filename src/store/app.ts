@@ -1,6 +1,6 @@
 export default defineStore({
   id: 'app',
-  state: () => {
+  state: function(){
     return {
       systemInfo: {}
     } as {
@@ -9,7 +9,9 @@ export default defineStore({
   },
   actions: {
     getSystemInfo(): UniApp.GetSystemInfoResult {
-      if (Object.keys(this.systemInfo).length) return this.systemInfo;
+      if (Object.keys(this.systemInfo).length > 0) {
+        return this.systemInfo;
+      }
       const systemInfo = uni.getSystemInfoSync();
       Object.assign(this.systemInfo, systemInfo);
       return systemInfo;
