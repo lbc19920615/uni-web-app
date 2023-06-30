@@ -62,13 +62,15 @@ let isTabBar = ref(true)
 let pageLen = ref(0)
 
 onShow(() => {
-  const systemInfo = uni.getSystemInfoSync();
-  let pages = getCurrentPages();
-  pageLen = pages.length
-  // console.log(systemInfo);
-  let {navigationBarTitleText, meta} = getPageInfo()
-  // console.log('onShow', navigationBarTitleText, __wxConfig?.tabBar?.list, meta.isTabBar);
-  titleText.value = navigationBarTitleText
-  isTabBar.value = meta.isTabBar
+  // const systemInfo = uni.getSystemInfoSync();
+  setTimeout(() => {
+    let pages = getCurrentPages();
+    pageLen = pages.length
+    // console.log(systemInfo);
+    let {navigationBarTitleText, meta} = getPageInfo()
+    // console.log('onShow', navigationBarTitleText, __wxConfig?.tabBar?.list, meta.isTabBar);
+    titleText.value = navigationBarTitleText
+    isTabBar.value = meta.isTabBar
+  }, 30)
 })
 </script>

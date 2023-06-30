@@ -11,6 +11,7 @@ interface Config {
  */
 export function initFrame(config: Config) {
   import.meta.glob('../next/store/*.ts', { eager: true });
+  import.meta.glob('../next/form/*.ts', { eager: true });
 
   let frame = {
     getStore

@@ -22,6 +22,11 @@ export function getPageInfo() {
   meta = {
     navigationBar: {}
   }
+  let __wxConfig = globalThis.__wxConfig
+
+  if (__wxConfig) {
+
+  }
   meta.window = __wxConfig?.page[key]?.window
   meta.tabBar = __wxConfig?.tabBar
   meta.isTabBar = false

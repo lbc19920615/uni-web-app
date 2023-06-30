@@ -68,6 +68,7 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 
 import { field, required, defineSimpleForm, useSimpleForm, isArray, format, validateFunction } from "@/frame/formMan";
+import { deepClone } from "@/utils/clone";
 
 function validateEmail(rule,value,data,callback){
   if (typeof value === 'string') {
@@ -80,18 +81,25 @@ function validateEmail(rule,value,data,callback){
 
 class A {
   static {
-    // console.log('ss', this);
-    defineSimpleForm('A', this);
+    defineSimpleForm('A', this, {
+      mixins: [
+        ['UserDef', {
+          transform(base) {
+            // console.log('base', base);
+            base.birthDay = deepClone(base.birthDayTpl);
+            Reflect.deleteProperty(base, 'birthDayTpl')
+            return base
+          }
+        }]
+      ]
+    });
   }
+
   @required()
   @field('姓名')
   get name() {
     return ''
   }
-
-  // @required()
-  // @field('密码')
-  // password
 
   @format('number')
   @required()
@@ -116,6 +124,8 @@ class A {
 }
 
 let def = useSimpleForm('A');
+
+console.log(def.rules);
 
 let funDeleteProperty = function(obj, id) {
   Reflect.deleteProperty(obj, id)

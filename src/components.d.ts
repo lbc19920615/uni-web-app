@@ -10,6 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     LinkScrollCom: typeof import('./components/linkScrollCom.vue')['default']
+    ListPage: typeof import('./components/listPage.vue')['default']
     Navigatorbar: typeof import('./components/navigatorbar.vue')['default']
     PageWrapper: typeof import('./components/pageWrapper.vue')['default']
     PullList: typeof import('./components/pullList.vue')['default']

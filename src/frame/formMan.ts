@@ -1,7 +1,10 @@
 import { deepClone } from "@/utils/clone";
+import { UnwrapNestedRefs } from "@vue/reactivity";
 
 let currentDef = {}
 let cacheDefs = {}
+
+// console.log(cacheDefs);
 
 function commonFormat(formatType, value: any) {
   if (formatType === 'number') {
@@ -74,11 +77,90 @@ export function required() {
   };
 }
 
-export function defineSimpleForm(name, context: Class) {
+type MixinConfig = String | [String, any]
+
+/**
+ *
+ * class VeryBase {
+ *   static {
+ *     defineSimpleForm('VeryBase', this);
+ *     // console.log('sdsdsd', this.FORM_NAME);
+ *   }
+ *   @required()
+ *   @field('sssss')
+ *   get name1() {
+ *     return ''
+ *   }
+ * }
+ *
+ * class VeryBase2 {
+ *   static {
+ *     defineSimpleForm('VeryBase2', this);
+ *     // console.log('sdsdsd', this.FORM_NAME);
+ *   }
+ *   @required()
+ *   @field('sssss')
+ *   get name2() {
+ *     return ''
+ *   }
+ * }
+ *
+ * export class UserDef {
+ *   static {
+ *     defineSimpleForm('UserDef', this, {
+ *       mixins: [
+ *         'VeryBase',
+ *         'VeryBase2'
+ *       ]
+ *     });
+ *   }
+ *   @required()
+ *   @field('密码')
+ *   get password() {
+ *     return ''
+ *   }
+ * }
+ *
+ * @param name 暂存key
+ * @param target 目标类
+ * @param mixins 混合使用
+ */
+export function defineSimpleForm(name, target: any, { mixins= [] } = {}) {
   // console.log('entry', name, context);
-  cacheDefs[name] = {
+  if (cacheDefs[name]) {
+    return
   }
+  cacheDefs[name] = {}
+  let proto: any = Reflect.getPrototypeOf(target)
+  if (proto.__formName__) {
+    let base = deepClone(cacheDefs[proto.__formName__])
+    // console.log(base);
+    cacheDefs[name] = {...base, ...cacheDefs[name]}
+  }
+
+  if (Array.isArray(mixins)) {
+    mixins.forEach((mixinConfig: any) => {
+        if (typeof mixinConfig === 'string') {
+          if (cacheDefs[mixinConfig]) {
+            let base = deepClone(cacheDefs[mixinConfig])
+            // console.log(base);
+            cacheDefs[name] = {...base, ...cacheDefs[name]}
+          }
+        }
+        if (Array.isArray(mixinConfig)) {
+          let base = deepClone(cacheDefs[mixinConfig[0]])
+          if (mixinConfig[1] && mixinConfig[1].transform) {
+            base = mixinConfig[1].transform(base)
+          }
+          cacheDefs[name] = {...base, ...cacheDefs[name]}
+        }
+    })
+  }
+
   currentDef = cacheDefs[name]
+
+  // target.FORM_NAME = name
+  target.__formName__ = name
   return currentDef
 }
 
@@ -90,6 +172,9 @@ interface RuleOption {
 }
 
 interface SimpleFormInf extends Record<any, any>{
+  rules: Record<any, any>
+  formData: UnwrapNestedRefs<Object>
+  vmMap: Record<any, any>
   getFormData(): Record<any, any>
   reset(): Void<any>
   setFormData(data:Record<any, any>)
@@ -101,7 +186,11 @@ export function useSimpleForm(name) {
   let obj: SimpleFormInf = {
     rules: {},
     formData: reactive(record),
-    vmMap: {}
+    vmMap: {},
+    // @ts-ignore
+    getFormData(){},
+    reset(){},
+    setFormData(){}
   }
 
   let defs = deepClone(cacheDefs[name])
@@ -165,7 +254,7 @@ export function useSimpleForm(name) {
   obj.setFormData = function(data) {
     Object.entries(data).forEach(([key, item]: [string, any]) => {
       let formatType = defs[key].formatType
-      console.log(obj.formData);
+      // console.log(obj.formData);
       obj.formData[key] = commonFormat(formatType, data[key])
     })
   }

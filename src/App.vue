@@ -18,7 +18,7 @@ import { tabbarList } from "@/config/app";
 
 export default {
   onLaunch() {
-    console.log("Launch");
+    // console.log("Launch");
     initFrame({
       context: this
     })

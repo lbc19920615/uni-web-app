@@ -30,6 +30,14 @@
           }
         },
         {
+          "name": "list",
+          "path": "list",
+          "style": {
+            "navigationBarTitleText": "列表",
+            "navigationStyle":"custom"
+          }
+        },
+        {
           "name": "linkScroll",
           "path": "linkScroll",
           "style": {

@@ -57,15 +57,18 @@ export default defineConfig({
         filter: /\.vue$/,
         replace(source, path) {
           new RegExp('pages\\/.*\\/.*\\.vue');
-          const imagesAlt = globSync('src/pages/*/*.vue').map((item) => {
-            return item.replaceAll('\\', '/');
-          });
+          const imagesAlt = globSync(['src/pages/*/*.vue', 'src/components/*.vue']).map(
+            (item) => {
+              return item.replaceAll('\\', '/');
+            }
+          );
+          console.log(imagesAlt);
           const isMatch = imagesAlt.some((v) => {
             return path.endsWith(v);
           });
           // console.log(imagesAlt, path);
           if (isMatch) {
-            // console.log(source, path);
+            console.log(source, path);
             source = source.replace(
               `<script setup lang="ts" auto>`,
               `
@@ -106,7 +109,7 @@ export default defineConfig({
         ]
       ],
       plugins: [
-        ['@babel/plugin-transform-arrow-functions', { spec: true }],
+        ['@babel/plugin-transform-arrow-functions', { spec: true }]
         // ['@babel/plugin-proposal-decorators', { version: '2023-05' }]
       ]
     }),

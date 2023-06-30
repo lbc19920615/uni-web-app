@@ -39,6 +39,15 @@ uni.switchTab = function (args, ...rest) {
 export function createApp() {
   const app = createSSRApp(App).use(store);
   app.use(zx)
+
+  // #ifdef H5
+  document.addEventListener("login-success", function(e: CustomEvent) {
+    let arg = e.detail?.arg ?? '{}'
+    let obj = JSON.parse(arg);
+    console.log(obj);
+  })
+  // #endif
+
   // app.use(uvUI);
   return {
     app

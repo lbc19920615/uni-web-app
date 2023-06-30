@@ -24,6 +24,8 @@ let styleObj = reactive({
   '--safe-area-inset-top': safeAreaInsets.top + 'px'
 })
 
+console.log(safeAreaInsets.top);
+
 defineProps({
   showTabbar: {
     type: Boolean,
