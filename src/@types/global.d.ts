@@ -10,4 +10,8 @@ declare type Class = { new(...args: any[]): any; };
 
 type ExtStore  = import("pinia").StoreGeneric
 
-declare function $getStore(key: String): ExtStore | undefined;
+declare function $getStore(key: String): {
+  STORE_NAME: String,
+  ins: ExtStore,
+  refs: Record<any, any>
+} | undefined;

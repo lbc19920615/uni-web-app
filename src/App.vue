@@ -14,7 +14,8 @@ onHide(() => {
 
 <script lang="ts">
 import { initFrame } from "@/frame/app";
-import { tabbarList } from "@/config/app";
+// import { tabbarList } from "@/config/app";
+import pageJson from "./pages.json"
 
 export default {
   onLaunch() {
@@ -25,9 +26,7 @@ export default {
   },
   globalData: {
     version: '1.0.1',
-    tabbar: {
-      list: tabbarList
-    }
+    tabbar: pageJson.tabBar
   }
 }
 </script>
@@ -49,11 +48,14 @@ html, page {
   --text-secondary: #{$uni-text-secondary}; // 辅助文字，次要信息等
   --text-thirdly: #{$uni-text-thirdly};
   --text-fourth: #{$uni-text-fourth};
+  --def-padding: 20upx;
 }
 
 .page-wrapper {
+  --font-def-size: 28upx;
+  font-size: var(--font-def-size);
   button {
-    font-size: 28upx;
+    font-size: var(--font-def-size);
     &:after {
       border: none;
     }
@@ -110,6 +112,39 @@ button:after {
 
 
 @import "@/uni_modules/zx/index.scss";
+
+
+.text-thirdly {
+  color: var(--text-thirdly)
+}
+
+.text-fourth {
+  color: var(--text-fourth)
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 1px 1px 0;
+  display: inline-block;
+  padding: 2px;
+  position: relative;
+  top: -3rpx;
+  &-right {
+    transform: rotate(-45deg);
+  }
+
+  &-left {
+    transform: rotate(135deg);
+  }
+
+  &-up {
+    transform: rotate(-135deg);
+  }
+
+  &-down {
+    transform: rotate(45deg);
+  }
+}
 
 
 </style>

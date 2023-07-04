@@ -62,13 +62,13 @@ export default defineConfig({
               return item.replaceAll('\\', '/');
             }
           );
-          console.log(imagesAlt);
+          // console.log(imagesAlt);
           const isMatch = imagesAlt.some((v) => {
             return path.endsWith(v);
           });
           // console.log(imagesAlt, path);
           if (isMatch) {
-            console.log(source, path);
+            // console.log(source, path);
             source = source.replace(
               `<script setup lang="ts" auto>`,
               `

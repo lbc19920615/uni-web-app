@@ -51,6 +51,13 @@
     "h5": {
     	"darkmode" : true,
     	"themeLocation" : "theme.json" // 如果 theme.json 在根目录可省略
+      "sdkConfigs" : {
+        "maps" : {
+          "qqmap" : {
+            "key" : "KE3BZ-M2JAI-DZAGZ-UJ4B5-TVRXH-QEBBO"
+          }
+        }
+      }
     },
     /* 小程序特有相关 */
     "mp-weixin" : {

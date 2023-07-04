@@ -14,6 +14,7 @@
 <script setup>
 import tabbar from "@/components/tabbar.vue";
 import navigatorbar from "@/components/navigatorbar.vue"
+import { onHide } from "@dcloudio/uni-app";
 
 let systemInfo = uni.getSystemInfoSync();
 // console.log(systemInfo);
@@ -24,7 +25,23 @@ let styleObj = reactive({
   '--safe-area-inset-top': safeAreaInsets.top + 'px'
 })
 
-console.log(safeAreaInsets.top);
+// console.log(safeAreaInsets.top);
+
+function onChange(type) {
+  let pages = getCurrentPages();
+  if (Array.isArray(pages)) {
+    let page = pages[pages.length - 1]
+    console.log(`Cur Page ${type}`, page, pages);
+  }
+}
+
+onShow(() => {
+  onChange("show")
+})
+
+onHide(() => {
+  onChange("hide")
+})
 
 defineProps({
   showTabbar: {

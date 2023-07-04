@@ -15,6 +15,24 @@
         "navigationBarTitleText": "个人",
         "navigationStyle":"custom"
       }
+    },
+    {
+      "name": "shop",
+      "path": "pages/shop/shop",
+      "style": {
+        "navigationBarTitleText": "商铺",
+        "navigationStyle":"custom",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "name": "list",
+      "path": "pages/list/list",
+      "style": {
+        "navigationBarTitleText": "订单",
+        "navigationStyle":"custom",
+        "enablePullDownRefresh": true
+      }
     }
   ],
   "subPackages": [
@@ -26,14 +44,6 @@
           "path": "test",
           "style": {
             "navigationBarTitleText": "测试",
-            "navigationStyle":"custom"
-          }
-        },
-        {
-          "name": "list",
-          "path": "list",
-          "style": {
-            "navigationBarTitleText": "列表",
             "navigationStyle":"custom"
           }
         },
@@ -72,11 +82,23 @@
     "list": [
       {
         "pagePath": "pages/index/index",
+        "iconPath": "home",
         "text": "首页"
       },
       {
+        "pagePath": "pages/shop/shop",
+        "iconPath": "shop",
+        "text": "商铺"
+      },
+      {
+        "pagePath": "pages/list/list",
+        "iconPath": "list",
+        "text": "订单"
+      },
+      {
         "pagePath": "pages/profile/profile",
-        "text": "个人"
+        "iconPath": "person",
+        "text": "我的"
       }
     ]
   }

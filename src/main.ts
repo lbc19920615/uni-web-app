@@ -1,4 +1,5 @@
 import 'uno.css';
+import './extend.js'
 // @ts-ignore
 import { createSSRApp } from 'vue';
 import zx from "@/uni_modules/zx";
@@ -46,7 +47,21 @@ export function createApp() {
     let obj = JSON.parse(arg);
     console.log(obj);
   })
+
+  function callBack() {
+    // console.log("geo-fail")
+    uni.showToast({
+      title: '请打开定位开关',
+      duration: 2000
+    });
+  }
+  document.addEventListener("geo-fail", callBack)
+
+  globalThis.Lib = {
+
+  }
   // #endif
+
 
   // app.use(uvUI);
   return {

@@ -22,3 +22,14 @@ export function spaNavigate(updateTheDOMSomehow: Function) {
   return updateTheDOMSomehow();
   //#endif
 }
+
+
+export let openWebview = function (url = "") {
+  if (typeof Zx !== "undefined") {
+    Zx.run(JSON.stringify({sign: "open_out", "url": url}));
+  } else {
+    if (typeof window !== "undefined") {
+      window.open(url)
+    }
+  }
+}

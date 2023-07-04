@@ -35,6 +35,8 @@
   > view{
     flex: 1;
   }
+
+  font-size: 32upx;
 }
 .navigation-bar__title {
   text-align: center;
