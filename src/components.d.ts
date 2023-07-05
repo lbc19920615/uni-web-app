@@ -9,15 +9,19 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    CusTabbar: typeof import('./components/cusTabbar.vue')['default']
+    IconMask: typeof import('./components/iconMask.vue')['default']
     LinkScrollCom: typeof import('./components/linkScrollCom.vue')['default']
-    ListPage: typeof import('./components/listPage.vue')['default']
+    ListChat: typeof import('./components/listChat.vue')['default']
     Navigatorbar: typeof import('./components/navigatorbar.vue')['default']
     OrderSku: typeof import('./components/OrderSku.vue')['default']
+    PageLoading: typeof import('./components/pageLoading.vue')['default']
     PageWrapper: typeof import('./components/pageWrapper.vue')['default']
     PullList: typeof import('./components/pullList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShopCard: typeof import('./components/ShopCard.vue')['default']
-    Tabbar: typeof import('./components/tabbar.vue')['default']
+    SkuCart: typeof import('./components/SkuCart.vue')['default']
+    SkuPage: typeof import('./components/SkuPage.vue')['default']
   }
 }

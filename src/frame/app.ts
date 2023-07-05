@@ -21,3 +21,5 @@ export function initFrame(config: Config) {
   }
   config.context.globalData.frame =  frame
 }
+
+export let $getStore = getStore

@@ -1,10 +1,10 @@
 <template>
-  <view class="tabbar"
+  <view class="cus-tabbar"
         :style="{'--tabbar-selected-color': tabbar.selectedColor, '--tabbar-fz': tabbar.fontSize}">
     <view v-for="(tabbar, index) in tabbarList"
           :class="tabbarItemCls(index)"
-          class="tabbar__item" @click="selectItem(index)">
-      <uni-icons color="var(--tabbar-item-color)" :type="tabbar.iconPath" size="30"></uni-icons>
+          class="cus-tabbar__item" @click="selectItem(index)">
+      <uni-icons color="var(--tabbar-item-color)" :type="tabbar.icon" size="30"></uni-icons>
       <view>{{tabbar.text}}</view>
     </view>
   </view>
@@ -13,12 +13,16 @@
 </template>
 
 <style lang="scss">
-.tabbar {
+.cus-tabbar {
   display: flex;
   align-items: center;
   height: var(--tabbar-height);
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  background: #ffff;
 }
-.tabbar__item {
+.cus-tabbar__item {
   flex: 1;
   display: flex;
   flex-flow: column;
@@ -27,7 +31,7 @@
   height: 100%;
   font-size:  var(--tabbar-fz);
 }
-.tabbar-selected {
+.cus-tabbar-selected {
   color: var(--tabbar-selected-color);
   --tabbar-item-color:  var(--tabbar-selected-color)
 }
@@ -59,12 +63,12 @@ export default {
   },
   mounted() {
     const { pageName, pagePath, pageQuery } = useInit();
-    console.log(pageName, pagePath, pageQuery, 'pageName,pagePath, pageQuery');
+    // console.log(pageName, pagePath, pageQuery, 'pageName,pagePath, pageQuery');
     this.isSelected = tabbarList.findIndex(v => pagePath.startsWith( '/' +  v.pagePath))
   },
   methods: {
     tabbarItemCls(index) {
-      return this.isSelected === index ? 'tabbar-selected' : ''
+      return this.isSelected === index ? 'cus-tabbar-selected' : ''
     },
     onTabItemTap(e) {
       console.log("onTabItemTap", e);

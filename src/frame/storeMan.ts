@@ -53,18 +53,33 @@ type RetObjType = {
 
 declare type PartialDef = string | { cachedKeys: [string], handleKey: () => string  }
 
-function scanCls(ret: RetObjType, cls: Class, cache = {}, {handleKey = null, needCacheKeys = []} ={}) {
+function scanCls(ret: RetObjType, cls: Class, cache = {}, {handleKey = null, needCacheKeys = [], isMainCls = false} ={}) {
   let obj = new cls()
   let keys = Reflect.ownKeys(obj)
+  let parentKeys = []
+
+  // if (Reflect.getPrototypeOf(cls)) {
+  //   parentKeys = Reflect.ownKeys(Reflect.getPrototypeOf(cls))
+  // }
+
+  // if (isMainCls) {
+  //   parentKeys = Object.keys(ret.state)
+  // }
+
+  // console.log('parentKeys', parentKeys);
+
+
   if (!handleKey) {
     handleKey = function(key) { return key }
   }
-  // console.log('sssssssssssss', needCacheKeys);
+  // console.log('sssssssssssss', parentKeys);
   keys.forEach(key => {
-    let parsedKey = handleKey(key)
-    ret.state[parsedKey] = obj[key]
-    if (needCacheKeys.includes(parsedKey) && typeof cache[parsedKey] !== 'undefined') {
-      ret.state[parsedKey] = cache[parsedKey]
+    if (!parentKeys.includes(key)) {
+      let parsedKey = handleKey(key)
+      ret.state[parsedKey] = obj[key]
+      if (needCacheKeys.includes(parsedKey) && typeof cache[parsedKey] !== 'undefined') {
+        ret.state[parsedKey] = cache[parsedKey]
+      }
     }
   })
 
@@ -84,6 +99,10 @@ function scanCls(ret: RetObjType, cls: Class, cache = {}, {handleKey = null, nee
       }
     }
   })
+
+  // if (cls.name === 'cart_default') {
+  //   console.dir(obj);
+  // }
 }
 
 export function createStore(cls: Class, name = '', currentNeedCacheKeys = [], {partials = []} = {}) {
@@ -120,7 +139,7 @@ export function createStore(cls: Class, name = '', currentNeedCacheKeys = [], {p
   }
 
   // console.log(currentNeedCacheKeys);
-  scanCls(ret, cls, cache, {needCacheKeys: currentNeedCacheKeys})
+  scanCls(ret, cls, cache, {needCacheKeys: currentNeedCacheKeys, isMainCls: true})
 
 
   let res: any = buildStore(cls.name, ret)

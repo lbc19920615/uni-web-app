@@ -7,14 +7,14 @@
     <view class="page-wrapper__content">
       <slot></slot>
     </view>
-    <tabbar v-if="showTabbar" class="page-wrapper__tabbar"></tabbar>
+    <cus-tabbar v-if="showTabbar" class="page-wrapper__tabbar"></cus-tabbar>
   </view>
 </template>
 
 <script setup>
-import tabbar from "@/components/tabbar.vue";
 import navigatorbar from "@/components/navigatorbar.vue"
 import { onHide } from "@dcloudio/uni-app";
+import CusTabbar from "@/components/cusTabbar.vue";
 
 let systemInfo = uni.getSystemInfoSync();
 // console.log(systemInfo);
@@ -66,8 +66,14 @@ defineProps({
   }
 }
 
-.page-wrapper__tabbar {
-  //height: var(--tabbar-height);
-  //background: var(--primary-color);
-}
+//.page-wrapper__tabbar {
+//  position: fixed;
+//  left: 0;
+//  bottom: 0;
+//  width: 100%;
+//  z-index: 100000;
+//  background-color: var(--def-bgc-color);
+//  //height: var(--tabbar-height);
+//  //background: var(--primary-color);
+//}
 </style>

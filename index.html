@@ -23,6 +23,22 @@
     <!--app-context-->
   </head>
   <body>
+  <script>
+    ;(function() {
+      // VConsole will be exported to `window.VConsole` by default.
+      if (typeof Zx !== 'undefined') {
+        document.body.classList.add("in-zx-webview")
+      }
+      let ele = document.createElement("div")
+      ele.style.fontSize = '1px'
+      let style = window.getComputedStyle(ele)
+      document.body.appendChild(ele)
+      // console.log(style.fontSize);
+      if (style.fontSize !== '12px') {
+        document.body.classList.add("fz-less-webview")
+      }
+    })();
+  </script>
     <div id="app">
       <style>
         .loading-wrap {

@@ -1,8 +1,18 @@
-<script setup lang="ts">
+<script setup lang="ts" auto>
 import { onHide, onLaunch, onShow } from '@dcloudio/uni-app';
 import Button from "@/uni_modules/uv-ui-tools/libs/mixin/button";
-onLaunch(() => {
+import { $getStore } from "@/frame/app";
+import { sleep } from "@/utils/time";
+onLaunch(async () => {
   console.log('App Launch');
+
+  let { ins: storeList } = $getStore("List")
+
+  // console.log(storeList);
+
+  await sleep(1000)
+
+  storeList.setItems();
 });
 onShow(() => {
   console.log('App Show');
@@ -49,6 +59,7 @@ html, page {
   --text-thirdly: #{$uni-text-thirdly};
   --text-fourth: #{$uni-text-fourth};
   --def-padding: 20upx;
+  --def-bgc-color: #fff;
 }
 
 .page-wrapper {
@@ -77,7 +88,7 @@ uni-page-body {
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 1s;
+  animation-duration: .5s;
 }
 
 ::view-transition-old(head),

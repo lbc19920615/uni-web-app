@@ -4,13 +4,19 @@
   <pageWrapper :show-tabbar="true">
     <view>
       <!-- 头像显示圆点 -->
-      <uni-list-chat title="用户名" class=" mb-20"
-                     avatar="https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png"
-                     note="" time="" badge-positon="left"></uni-list-chat>
+      <view class="mb-50" style="height: 400rpx; background-color: var(--primary-color)">
+        <list-chat
+          class="my-live-chart mb-20"
+          style="position: relative; background-color: transparent; top: 220rpx;"
+          title="用户名" :avatarCircle="true"
+                       avatar="https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png"
+                       note="" time="" badge-positon="left"></list-chat>
+      </view>
 
+      <view class="mb-30 fs-28 pl-30 pr-30 font-bold">会员服务</view>
       <uni-grid :square="false" :show-border="false" :column="4" :highlight="true" @change="onChange">
         <uni-grid-item v-for="(item, index) in 8" :index="index" :key="index">
-          <view class="flex flex-col justify-center mb-20" >
+          <view class="flex flex-col items-center mb-30" >
             <uni-icons type="image" :size="30" color="#777" />
             <text class="text text-center fs-24">功能{{index}}</text>
           </view>
@@ -35,4 +41,10 @@ function onChange(e) {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.my-live-chart {
+  .uni-list-chat__content-title {
+    font-size: 24rpx;
+  }
+}
+</style>
