@@ -16,8 +16,9 @@ apiTest.getShopSkus = async function() {
       "id": 1,
       "sku_id": "p000001",
       "sku_name": "产品1",
-      "sku_num": 10,
-      "sku_price": 10,
+      "sku_num": 30,
+      "sku_price": 1000,
+      sku_price_display: "10",
       "shop_id": "shop000001",
       "create_time": "2023-06-30 16:36:47",
       "update_time": "2023-06-30 16:52:40"
@@ -26,7 +27,8 @@ apiTest.getShopSkus = async function() {
       "sku_id": "p000002",
       "sku_name": "产品2",
       "sku_num": 10,
-      "sku_price": 10,
+      "sku_price": 1000,
+      sku_price_display: "10",
       "shop_id": "shop000001",
       "create_time": "2023-06-30 16:37:21",
       "update_time": "2023-06-30 16:52:40"
@@ -35,7 +37,8 @@ apiTest.getShopSkus = async function() {
       "sku_id": "p000003",
       "sku_name": "产品3",
       "sku_num": 10,
-      "sku_price": 10,
+      "sku_price": 1000,
+      sku_price_display: "10",
       "shop_id": "shop000001",
       "create_time": "2023-06-30 16:37:21",
       "update_time": "2023-06-30 16:52:40"

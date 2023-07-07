@@ -19,7 +19,8 @@ export function mockListData(total = 100, handle = simpleFolder) {
       sku_id: "p-" + id,
       category_id: "folder-" + folderIndex,
       needShowCategory: false,
-      "sku_price": 10
+      "sku_price": 1000,
+      "sku_price_display": "10.02"
     };
     handle(obj, i);
     arr.push(obj);

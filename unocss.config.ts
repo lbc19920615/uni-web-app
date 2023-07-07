@@ -5,7 +5,8 @@ import presetRemToRpx from './preset-rem-to-rpx';
 
 const sizeMapping: Record<string, string> = {
   fs: 'font-size',
-  height: 'height'
+  height: 'height',
+  gap: 'gap'
 };
 
 function getSizeRules(Mapping: Record<string, string>): Rule<{}>[] {

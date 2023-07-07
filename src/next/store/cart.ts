@@ -1,6 +1,8 @@
 import { injectStore, partialStore, useCache } from "@/frame/storeMan";
 import { deepClone } from "@/utils/clone";
 import { getObj } from "@/utils/collection";
+import { transform } from "@/utils/price";
+import appConfig from "../../config.json"
 
 @partialStore("BaseCart")
 class BaseCart {
@@ -31,7 +33,7 @@ class BaseCart {
       this.items.push([skuId, { num:num, checked, extra }])
     } else {
       this.items[index][1].num =  this.items[index][1].num + 1
-      console.log('pushItem', this.items);
+      // console.log('pushItem', this.items);
     }
   }
 
@@ -56,6 +58,23 @@ class BaseCart {
       return v[1].checked
     })
   }
+
+  getSelectedCount() {
+    let items = this.getSelectedItems()
+    if (!items) {
+      return 0;
+    }
+    let count = 0;
+    items.forEach(item => {
+      count = item[1].num + count
+    })
+    return count
+  }
+
+  get curMaxNum() {
+    // console.log('curMaxNum', this.getSelectedCount());
+    return appConfig.shopConfig.maxSkuBuyTotalNum - this.getSelectedCount()
+  }
 }
 
 @injectStore('Cart', {
@@ -70,15 +89,17 @@ export default class extends BaseCart {
     let res = deepClone(items)
     let num = 0;
     let price = 0;
+    let price_display = 0;
     res.forEach(item => {
       let curNum = item[1].num;
       let curPerPrice  =getObj(item[1]?.extra ?? {},  priceKey, 0)
       item[1].curTotal = curPerPrice * curNum
       num = num + parseFloat(curNum);
       price = price +  item[1].curTotal;
+      price_display = transform(price)
       // console.log(item[1]);
     })
     // console.log('getSelectedItems', items, res);
-    return {num, price, items: res}
+    return {num, price, price_display, items: res}
   }
 }

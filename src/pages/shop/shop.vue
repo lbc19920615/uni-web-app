@@ -58,7 +58,7 @@
         </view>
         <view class="flex-1">&nbsp;</view>
         <view class="pr-20">
-          <button @click="sendRequest">去结算</button>
+          <LockButton @submit="sendRequest">去结算</LockButton>
         </view>
       </view>
       <uni-popup ref="popup" type="bottom" @change="onPopUpChange">
@@ -70,7 +70,7 @@
             <template v-slot:desc="scope">
               <view class="fs-32 mb-20">{{scope.extra.sku_id}}</view>
               <view  class="fs-32 mb-30">{{scope.extra.sku_tags ? scope.extra.sku_tags.join(',') : ''}}</view>
-              <view>{{scope.extra.sku_price}}</view>
+              <view>{{scope.extra.sku_price_display}}</view>
             </template>
           </sku-cart>
         </view>
@@ -90,6 +90,7 @@ import IconMask from "@/components/iconMask.vue";
 import PageLoading from "@/components/pageLoading.vue";
 
 import {createBaseListItemConfig} from "@/next/store/baseList";
+import LockButton from "@/components/LockButton.vue";
 
 const {proxy} = getCurrentInstance()
 
@@ -134,18 +135,20 @@ function onChangeSku(item: any) {
 }
 
 // 结算
-function sendRequest() {
-  console.log('sendRequest', storeCart.getCollect());
+async function sendRequest(e) {
+  console.log('sendRequest', storeCart.getCollect(), e);
+  await sleep(3000);
+  e.unLock()
 }
 
 let totalPrice = ref(0);
 let totalCount = ref(0);
 
 function onCartChange() {
-  let {num, price} = storeCart.getCollect()
-  console.log('sssssssssssssssssss', num);
+  let {num, price_display} = storeCart.getCollect()
+  // console.log('sssssssssssssssssss', num);
   totalCount.value = num
-  totalPrice.value = price
+  totalPrice.value = price_display
 }
 
 

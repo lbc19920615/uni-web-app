@@ -1,5 +1,5 @@
 <template>
-  <view class="list-page h-full">
+  <view class="list-page h-full p-20">
     <!--    {{ triggered }}-->
     <view class="flex h-full">
       <view class="list-page__categorys">
@@ -25,14 +25,14 @@
         @refresherabort="obj.onAbort">
         <view style="height: var(--list-con-height)"
               v-if="items.length < 1">empty</view>
-        <view class="list-card-item"
+        <view class="list-card-item pb-30"
               :id="'item-' + index"
               :class="{['item-' + index]: true}"
               v-for="(item, index) in items">
-          <view class="pb-10" v-if="item.needShowCategory">
+          <view class="pb-20" v-if="item.needShowCategory">
             标题栏 {{item.category_id}}
           </view>
-          <view class="flex" style="gap: 20px">
+          <view class="flex gap-20">
             <view class="flex-1">
               <view>{{ item.sku_id }}</view>
               <view>{{index + 1}} </view>
@@ -124,6 +124,13 @@ function transformSeverData(obj = {}) {
     if (key == 'category_skus') {
       return value.split(',')
     }
+    if (key.startsWith("sku_price")) {
+      // console.log('sssssssssssssssssssss', value);
+      if (!value || value === 'null') {
+        return 0
+      }
+      return parseFloat(value)
+    }
     return value
   })
 }
@@ -148,7 +155,7 @@ async function fetchItems(): Promise<any> {
     })
   })
 
-  items = items.concat(mockListData())
+  // items = items.concat(mockListData())
 
   return {items, newData}
 }
@@ -207,7 +214,7 @@ setTimeout(() => {
 
 
   &-card-item {
-    min-height: var(--list-item-height);
+    //min-height: var(--list-item-height);
     //contain-intrinsic-size: auto var(--list-item-height);
     //content-visibility: auto
   }

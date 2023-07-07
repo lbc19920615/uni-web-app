@@ -15,3 +15,5 @@ declare function $getStore(key: String): {
   ins: ExtStore,
   refs: Record<any, any>
 } | undefined;
+
+declare let $app: {globalData: AnyObject} & Record<any, any>;

@@ -26,6 +26,7 @@ onHide(() => {
 import { initFrame } from "@/frame/app";
 // import { tabbarList } from "@/config/app";
 import pageJson from "./pages.json"
+import appConfig from "./config.json"
 
 export default {
   onLaunch() {
@@ -38,7 +39,8 @@ export default {
     version: '1.0.1',
     infoSync: uni.getSystemInfoSync(),
     cacheSync: false,
-    tabbar: pageJson.tabBar
+    tabbar: pageJson.tabBar,
+    ...appConfig
   }
 }
 </script>

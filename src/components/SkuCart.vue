@@ -1,5 +1,5 @@
 <template>
-  <view       class="p-20">
+  <view class="p-20" :class="{'sku-cart--empty': store.items.length < 1}">
     <view  v-if="store.items && store.items.length > 0">
       <view class="flex items-center pb-20" >
         <radio @click="onChangeCheckAll" :checked="store.checkedLen > 0" />
@@ -7,6 +7,7 @@
       </view>
     </view>
     <scroll-view style="max-height: 560rpx" scroll-y>
+      <view v-if=" store.items.length > 0" class="pb-20">剩余能买{{refs.curMaxNum}}  最多一次购买{{maxSkuBuyTotalNum}}件</view>
       <view class="flex items-end mb-20" v-for="(item, index) in store.items" :key="item[0]">
         <view class="flex items-center">
           <view>
@@ -18,23 +19,38 @@
           </view>
         </view>
         <view class="flex-1">&nbsp;</view>
-        <uni-number-box
+        <NumberBox
           @change="onChangeBox(item, index)"
           :min="0"
-          v-model="item[1].num"></uni-number-box>
+          :disabledMax="store.curMaxNum < 1"
+          v-model="item[1].num"
+        ></NumberBox>
       </view>
     </scroll-view>
   </view>
 </template>
 
+<style>
+.sku-cart--empty {
+  padding: 0 !important;
+}
+</style>
+
 <script setup lang="ts" auto>
 import UniNumberBox from "@/uni_modules/uni-number-box/components/uni-number-box/uni-number-box.vue";
+import NumberBox from "@/components/NumberBox.vue";
 
 let {proxy} = getCurrentInstance()
+let maxSkuBuyTotalNum = $app.globalData.shopConfig.maxSkuBuyTotalNum;
+
 
 defineEmits(['item_change'])
 
 let {ins: store, refs} = $getStore("Cart");
+
+function onInputBox(e) {
+  console.log('onInputBox',e);
+}
 
 function onChangeCheckAll() {
   store.toggleCheckAll()
@@ -50,64 +66,7 @@ function onChangeBox(item, index) {
   if (item[1].num < 1) {
     store.delItem(index)
   }
+  console.log('curMaxNum', store.curMaxNum);
   proxy.$emit("item_change", store.getSelectedItems())
 }
-
-// export default {
-//   components: { UniNumberBox },
-//   emits: ['item_change'],
-//   data() {
-//     return {
-//       items: []
-//     }
-//   },
-//   computed: {
-//     isAllCheck() {
-//       if(!this.items || this.items.length <1){
-//         return false;
-//       }
-//       return this.items.every(item => {
-//         return item[1].checked
-//       })
-//     },
-//     checkedLen() {
-//       let count = 0;
-//       if(!this.items || this.items.length <1){
-//         return 0;
-//       }
-//        this.items.forEach(item => {
-//          if (item[1].checked) {
-//            count = item[1].num + count
-//          }
-//       })
-//       return count
-//     }
-//   },
-//   methods: {
-//     pushItem(skuId, {num = 1, checked = true, extra = {}} = {}) {
-//       this.items.push([skuId, { num:num, checked, extra }])
-//       this.$nextTick(() => {
-//         this.$emit("item_change", deepClone(this.items))
-//       })
-//     },
-//     onChangeBox(item, index) {
-//       if (item[1].num < 1) {
-//         // console.log('sssssssssssssssssssss');
-//         this.items.splice(index,1)
-//       }
-//       console.log(this.items);
-//       this.$emit("item_change", deepClone(this.items))
-//     },
-//     onChangeCheck(item) {
-//       // console.log('onChangeCheck', e);
-//       item[1].checked = !item[1].checked
-//     },
-//     onChangeCheckAll() {
-//       let checked =  this.checkedLen > 0 ? false : true
-//       this.items.forEach(item => {
-//         item[1].checked =checked
-//       })
-//     }
-//   }
-// }
 </script>
