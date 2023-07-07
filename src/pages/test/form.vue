@@ -1,5 +1,5 @@
 <template>
-  <page-wrapper>
+  <page-wrapper-detail>
     <view>
       {{def.formData}}
       <uni-forms ref="dynamicForm2" :rules="def.rules" :modelValue="def.formData">
@@ -59,7 +59,7 @@
         <button type="primary"  @click="submitForm('dynamicForm')">提交</button>
       </view>
     </view>
-  </page-wrapper>
+  </page-wrapper-detail>
 </template>
 
 <script setup lang="ts">
@@ -69,6 +69,7 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 import { field, required, defineSimpleForm, useSimpleForm, isArray, format, validateFunction } from "@/frame/formMan";
 import { deepClone } from "@/utils/clone";
+import PageWrapperDetail from "@/components/pageWrapperDetail.vue";
 
 function validateEmail(rule,value,data,callback){
   if (typeof value === 'string') {

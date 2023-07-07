@@ -15,6 +15,7 @@ class Current {
     this.current = index
   }
 }
+
 @injectStore('List', {
   partials: [
     [ 'Current',

@@ -53,7 +53,7 @@ function onScrollToLower() {
 </script>
 
 <template>
-  <page-wrapper>
+  <page-wrapper-detail>
     <view class="h-screen">
       <pullList :on-scroll-to-lower="onScrollToLower">
         <template #list>
@@ -73,7 +73,7 @@ function onScrollToLower() {
         </template>
       </pullList>
     </view>
-  </page-wrapper>
+  </page-wrapper-detail>
 </template>
 
 <style lang="scss" scoped></style>

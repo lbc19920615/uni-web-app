@@ -1,7 +1,7 @@
 <template>
   <view       class="p-20">
     <view  v-if="store.items && store.items.length > 0">
-      <view class="flex items-center">
+      <view class="flex items-center pb-20" >
         <radio @click="onChangeCheckAll" :checked="store.checkedLen > 0" />
         <view>共{{refs.checkedLen}}件</view>
       </view>

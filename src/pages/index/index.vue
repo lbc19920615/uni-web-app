@@ -22,7 +22,7 @@
 
       <view class="fs-32 text-left">DEMOS</view>
       <view class="grid grid-cols-3">
-        <view  v-for="(item,index) in store.arr">
+        <view  v-for="(item,index) in store.arr" :key="index">
           <view class="text-center h-60 lh-60" @click="goPage(item)">{{ item.name }}</view>
         </view>
       </view>
@@ -63,12 +63,6 @@ function open() {
     content:'哈喽啊，树先生'
   })
 }
-
-onHide(() => {
-// console.log(store);
-cacheStore(store)
-})
-
 </script>
 
 <style lang="scss">

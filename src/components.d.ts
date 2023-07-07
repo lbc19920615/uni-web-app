@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     OrderSku: typeof import('./components/OrderSku.vue')['default']
     PageLoading: typeof import('./components/pageLoading.vue')['default']
     PageWrapper: typeof import('./components/pageWrapper.vue')['default']
+    PageWrapperDetail: typeof import('./components/pageWrapperDetail.vue')['default']
     PullList: typeof import('./components/pullList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

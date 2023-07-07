@@ -18,7 +18,8 @@ export function mockListData(total = 100, handle = simpleFolder) {
       id,
       sku_id: "p-" + id,
       category_id: "folder-" + folderIndex,
-      needShowCategory: false
+      needShowCategory: false,
+      "sku_price": 10
     };
     handle(obj, i);
     arr.push(obj);
@@ -34,7 +35,7 @@ export function mockShops(total = 100) {
     "create_time": "2023-06-30",
     "udpate_time": null,
     "shop_state": "online",
-    "shop_name": "店铺1"
+    "shop_name": "店铺1",
   };
 
   let arr = []

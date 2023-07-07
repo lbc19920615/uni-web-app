@@ -24,8 +24,8 @@
 <style lang="scss">
 .navigation-bar {
   height: calc(var(--navigation-bar-height));
-  padding-top: constant(safe-area-inset-top); /* 兼容 iOS < 11.2 */
-  padding-top: env(safe-area-inset-top);
+  //padding-top: constant(safe-area-inset-top); /* 兼容 iOS < 11.2 */
+  //padding-top: env(safe-area-inset-top);
   padding-top: var(--safe-area-inset-top);
   background-color: var(--navigation-bar-bg-color);
   color: var(--navigation-bar-text);

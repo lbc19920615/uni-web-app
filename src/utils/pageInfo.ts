@@ -27,7 +27,8 @@ export function getPageInfo() {
   if (__wxConfig) {
 
   }
-  meta.window = __wxConfig?.page[key]?.window
+  let _pageObj = __wxConfig?.page ?? {}
+  meta.window = _pageObj[key]?.window
   meta.tabBar = __wxConfig?.tabBar
   meta.isTabBar = false
   if (__wxConfig?.tabBar?.list) {

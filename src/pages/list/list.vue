@@ -5,12 +5,10 @@
       <view style="height: fit-content; background-color: #fff">
         <view class="flex items-center">
           <view class="flex-1 text-center p-30 list__item"
-
                 :class="{'is-current': store.current === 0}"
                 @click="store.setCurrent(0)"
           >茶饮订单</view>
           <view class="flex-1 text-center p-30 list__item"
-
                 :class="{'is-current': store.current === 1}"
                 @click="store.setCurrent(1)"
           >卡券订单</view>
@@ -53,10 +51,11 @@ onPullDownRefresh(async () => {
   store.setItems()
 })
 
-onShow(() => {
+onShow(async () => {
+  await store.setItems();
   setTimeout(() => {
     isShow.value = true
-  }, 30)
+  }, 50)
 })
 </script>
 

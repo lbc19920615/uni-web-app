@@ -10,13 +10,27 @@
       class="flex flex-col w-full h-full"
       v-else-if="shopStep === 'needSelect'">
       <!--        {{longitude}} {{latitude}} {{needGetLocation}}-->
-      <map
-        style="width: 100%; height: 300px;"
-        :latitude="latitude"
-        :longitude="longitude" >
-      </map>
+      <view class="position-relative w-full" style="height: fit-content">
+        <map
+          ref="map"
+          style="width: 100%; height: 300px;"
+          :latitude="latitude"
+          :longitude="longitude"
+          @regionchange="onRegionchange"
+        >
+        </map>
+        <view class="position-absolute w-full h-full flex items-center justify-center" style="left: 0; top: 0; pointer-events: none">
+<!--          <view style="width: 10rpx; height: 10rpx; background-color: var(&#45;&#45;color-error); border-radius: 1000px;">&nbsp;</view>-->
+          <uni-icons type="map-pin-ellipse" color="var(--color-error)" size="30"></uni-icons>
+        </view>
+      </view>
+<!--      <view>{{refs.centerLocation}}</view>-->
       <view
-        @click="store.shopStep = 'selected'">商店1</view>
+        class="p-20"
+        v-for="(shop, index) in store.items"
+        @click="store.shopStep = 'selected'">
+        <view class="bgc-background fs-30 p-20 rounded-3xl">{{shop[1].extra.shop_name}}</view>
+      </view>
     </view>
 
     <view
@@ -27,7 +41,7 @@
         <view class="text-thirdly">商铺1</view>
       </view>
 
-      <button @click="onAdd">onAdd</button>
+<!--      <button @click="onAdd">onAdd</button>-->
 
       <view class="flex items-center w-full pb-20 pt-20"
             style="position: absolute; bottom: 0; left: 0; z-index: 11111; background-color: #fff; height: var(--sku-cart-action-h); border-top: 1px solid #eee"
@@ -44,25 +58,27 @@
         </view>
         <view class="flex-1">&nbsp;</view>
         <view class="pr-20">
-          <button>去结算</button>
+          <button @click="sendRequest">去结算</button>
         </view>
       </view>
       <uni-popup ref="popup" type="bottom" @change="onPopUpChange">
-        <view class="w-full"
-              style="background-color: #fff; position: absolute; bottom: var(--sku-cart-popup-b);">
+        <view class="w-full bgc-white position-absolute"
+              style="bottom: var(--sku-cart-popup-b);">
           <sku-cart
             @item_change="onCartChange"
           >
             <template v-slot:desc="scope">
               <view class="fs-32 mb-20">{{scope.extra.sku_id}}</view>
               <view  class="fs-32 mb-30">{{scope.extra.sku_tags ? scope.extra.sku_tags.join(',') : ''}}</view>
-              <view>{{scope.extra.price}}</view>
+              <view>{{scope.extra.sku_price}}</view>
             </template>
           </sku-cart>
         </view>
       </uni-popup>
 
-<!--      <sku-page class="overflow-hidden" id="page1"></sku-page>-->
+      <sku-page class="overflow-hidden" id="page1"
+      @buy-sku="onChangeSku"
+      ></sku-page>
     </view>
   </page-wrapper>
 </template>
@@ -73,6 +89,7 @@ import { sleep } from "@/utils/time";
 import IconMask from "@/components/iconMask.vue";
 import PageLoading from "@/components/pageLoading.vue";
 
+import {createBaseListItemConfig} from "@/next/store/baseList";
 
 const {proxy} = getCurrentInstance()
 
@@ -97,7 +114,7 @@ function onAdd() {
     num: 1,
     extra: {
       sku_id: skuId,
-      price:10,
+      sku_price:10,
       sku_name: 'sku1',
       sku_tags: ['大杯','5分糖','正常冰']
     }
@@ -107,15 +124,37 @@ function onAdd() {
   })
 }
 
+function onChangeSku(item: any) {
+  // console.log(item);
+  // onAdd()
+  storeCart.pushItem(item.sku_id, createBaseListItemConfig(item))
+  proxy.$nextTick(() => {
+    onCartChange()
+  })
+}
+
+// 结算
+function sendRequest() {
+  console.log('sendRequest', storeCart.getCollect());
+}
+
 let totalPrice = ref(0);
 let totalCount = ref(0);
 
 function onCartChange() {
   let {num, price} = storeCart.getCollect()
+  console.log('sssssssssssssssssss', num);
   totalCount.value = num
   totalPrice.value = price
 }
 
+
+function onRegionchange(e) {
+  // console.log('onRegionchange', e);
+  if (e.type === 'end') {
+    store.centerLocation = e.detail.centerLocation
+  }
+}
 
 onShow(async () => {
   await sleep(1000)
@@ -162,3 +201,4 @@ onShow(async () => {
   line-height: 20rpx;
 }
 </style>
+

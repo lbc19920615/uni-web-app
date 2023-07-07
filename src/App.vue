@@ -6,13 +6,13 @@ import { sleep } from "@/utils/time";
 onLaunch(async () => {
   console.log('App Launch');
 
-  let { ins: storeList } = $getStore("List")
+  // let { ins: storeList } = $getStore("List")
 
   // console.log(storeList);
 
-  await sleep(1000)
-
-  storeList.setItems();
+  // await sleep(1000)
+  //
+  // storeList.setItems();
 });
 onShow(() => {
   console.log('App Show');
@@ -36,6 +36,8 @@ export default {
   },
   globalData: {
     version: '1.0.1',
+    infoSync: uni.getSystemInfoSync(),
+    cacheSync: false,
     tabbar: pageJson.tabBar
   }
 }
@@ -54,6 +56,12 @@ html, page {
   --color-success: #{$uni-color-success};
   --color-warning: #{$uni-color-warning};
   --color-error: #{$uni-color-error};
+  --color-text-primary: #{$uni-text-primary}; // 一级信息，标题，主内容文字等
+  --color-text-secondary: #{$uni-text-secondary}; // 辅助文字，次要信息等
+  --color-text-thirdly: #{$uni-text-thirdly};
+  --color-text-fourth: #{$uni-text-fourth};
+  --color-background: #{$uni-bg-color-grey};
+  --color-white: #fff;
   --text-primary: #{$uni-text-primary}; // 一级信息，标题，主内容文字等
   --text-secondary: #{$uni-text-secondary}; // 辅助文字，次要信息等
   --text-thirdly: #{$uni-text-thirdly};

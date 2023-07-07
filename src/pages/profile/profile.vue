@@ -14,14 +14,22 @@
       </view>
 
       <view class="mb-30 fs-28 pl-30 pr-30 font-bold">会员服务</view>
-      <uni-grid :square="false" :show-border="false" :column="4" :highlight="true" @change="onChange">
-        <uni-grid-item v-for="(item, index) in 8" :index="index" :key="index">
+<!--      <uni-grid :square="false" :show-border="false" :column="4" :highlight="true" @change="onChange">-->
+<!--        <uni-grid-item v-for="(item, index) in 8" :index="index" :key="index">-->
+<!--          <view class="flex flex-col items-center mb-30" >-->
+<!--            <uni-icons type="image" :size="30" color="#777" />-->
+<!--            <text class="text text-center fs-24">功能{{index}}</text>-->
+<!--          </view>-->
+<!--        </uni-grid-item>-->
+<!--      </uni-grid>-->
+      <view class="grid grid-cols-4">
+        <view v-for="(item, index) in 8" :index="index" :key="index">
           <view class="flex flex-col items-center mb-30" >
             <uni-icons type="image" :size="30" color="#777" />
             <text class="text text-center fs-24">功能{{index}}</text>
           </view>
-        </uni-grid-item>
-      </uni-grid>
+        </view>
+      </view>
     </view>
   </pageWrapper>
 </template>

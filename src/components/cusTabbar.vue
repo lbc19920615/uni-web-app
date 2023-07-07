@@ -1,15 +1,14 @@
 <template>
   <view class="cus-tabbar"
-        :style="{'--tabbar-selected-color': tabbar.selectedColor, '--tabbar-fz': tabbar.fontSize}">
-    <view v-for="(tabbar, index) in tabbarList"
+  :style="{'--tabbar-selected-color': tabbar.selectedColor, '--tabbar-fz': tabbar.fontSize}"
+  >
+    <view v-for="(tabbar, index) in tabbarList" :key="index"
           :class="tabbarItemCls(index)"
           class="cus-tabbar__item" @click="selectItem(index)">
       <uni-icons color="var(--tabbar-item-color)" :type="tabbar.icon" size="30"></uni-icons>
       <view>{{tabbar.text}}</view>
     </view>
   </view>
-
-<!--  <custom-tab-bar :show-icon="false" :selected="selected" @onTabItemTap="onTabItemTap" />-->
 </template>
 
 <style lang="scss">
@@ -18,6 +17,8 @@
   align-items: center;
   height: var(--tabbar-height);
   position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
   z-index: 1000;
   background: #ffff;
@@ -38,33 +39,33 @@
 </style>
 
 <script  lang="ts">
-
-import { useInit } from "@/hooks/useInit";
 import pageJson from "../pages.json"
 import UniIcons from "@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
+// import { parseUrl } from "@/utils/shared";
 
 // console.log(pageJson);
 
 let tabbarList = pageJson.tabBar.list
+// console.log(tabbarList);
 
 export default {
   components: { UniIcons },
   data() {
-    // let pages = getCurrentPages()
-    // let page = pages[0]
-    // console.log(pages);
-    // let curPath = '/' + page.route
-    // console.log(curPath);
+    const pages = getCurrentPages();
+    const page = pages[pages.length - 1];
+    let pagePath = page.route;
+    // if (page.$page) {
+    //   let { fullPath } = page.$page;
+    //   pagePath = parseUrl(fullPath).pagePath;
+    // }
+    // console.log('tabbar onShow', page.$page);
+    let isSelected = tabbarList.findIndex(v => pagePath.startsWith(v.pagePath))
+    // console.log(pagePath, 'pagePath');
     return {
       tabbar: pageJson.tabBar,
-      isSelected: 0,
+      isSelected,
       tabbarList
     }
-  },
-  mounted() {
-    const { pageName, pagePath, pageQuery } = useInit();
-    // console.log(pageName, pagePath, pageQuery, 'pageName,pagePath, pageQuery');
-    this.isSelected = tabbarList.findIndex(v => pagePath.startsWith( '/' +  v.pagePath))
   },
   methods: {
     tabbarItemCls(index) {

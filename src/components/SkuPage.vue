@@ -32,8 +32,15 @@
           <view class="pb-10" v-if="item.needShowCategory">
             标题栏 {{item.category_id}}
           </view>
-          <view>{{ item.sku_id }}</view>
-          <view>{{index + 1}} </view>
+          <view class="flex" style="gap: 20px">
+            <view class="flex-1">
+              <view>{{ item.sku_id }}</view>
+              <view>{{index + 1}} </view>
+            </view>
+            <view>
+              <button @click="onClickSku(item)">购买</button>
+            </view>
+          </view>
         </view>
       </scroll-view>
     </view>
@@ -45,6 +52,9 @@ import { sleep } from "@/utils/time";
 import { useRefresh } from "@/hooks/useRefresh";
 import { mockListData } from "@/frame/mock";
 import apiTest from "@/api/apiTest";
+import { deepClone } from "@/utils/clone";
+
+defineEmits(['buy-sku'])
 
 let items = reactive([]);
 let categories = reactive([]);
@@ -83,14 +93,10 @@ function reset(newItems = []) {
   }, 300);
 }
 
-// let getQueryRect = async function(sel) {
-//   return new Promise<Object>(resolve => {
-//     const query = uni.createSelectorQuery().in(proxy);
-//     query.select(sel).boundingClientRect(data => {
-//       resolve(data)
-//     }).exec();
-//   })
-// }
+function onClickSku(item: any) {
+  // console.log('onClickSku', item);
+  proxy.$emit('buy-sku', deepClone(unref(item)))
+}
 
 // list 跳转
 let scrollTop = ref('')
@@ -102,7 +108,6 @@ async function goToIndex(index) {
   scrollTop.value = ''
   enableAnimation.value = false
 }
-
 
 
 function transformSeverData(obj = {}) {
@@ -145,8 +150,6 @@ async function fetchItems(): Promise<any> {
 
   items = items.concat(mockListData())
 
-  // console.log(items);
-
   return {items, newData}
 }
 
@@ -161,9 +164,7 @@ async function getData() {
   reset(items);
 
   await sleep(300)
-  // console.log('refresh');
   uni.stopPullDownRefresh();
-
 }
 
 onPullDownRefresh(() => {

@@ -1,13 +1,12 @@
 <template>
   <view class="page-wrapper"
-        :class="{'page-wrapper--noTabbar': !showTabbar }"
       :style="styleObj"
   >
     <navigatorbar></navigatorbar>
+    <cus-tabbar class="page-wrapper__tabbar"></cus-tabbar>
     <view class="page-wrapper__content">
       <slot></slot>
     </view>
-    <cus-tabbar v-if="showTabbar" class="page-wrapper__tabbar"></cus-tabbar>
   </view>
 </template>
 
@@ -16,7 +15,12 @@ import navigatorbar from "@/components/navigatorbar.vue"
 import { onHide } from "@dcloudio/uni-app";
 import CusTabbar from "@/components/cusTabbar.vue";
 
-let systemInfo = uni.getSystemInfoSync();
+let app  =  getApp();
+let systemInfo = app.globalData.infoSync ?? uni.getSystemInfoSync();
+if (!app.globalData.cacheSync) {
+  systemInfo = uni.getSystemInfoSync()
+  app.globalData.cacheSync = true
+}
 // console.log(systemInfo);
 
 let safeAreaInsets = systemInfo.safeAreaInsets
@@ -31,17 +35,17 @@ function onChange(type) {
   let pages = getCurrentPages();
   if (Array.isArray(pages)) {
     let page = pages[pages.length - 1]
-    console.log(`Cur Page ${type}`, page, pages);
+    // console.log(`Cur Page ${type}`, page, pages);
   }
 }
 
-onShow(() => {
-  onChange("show")
-})
-
-onHide(() => {
-  onChange("hide")
-})
+// onShow(() => {
+//   onChange("show")
+// })
+//
+// onHide(() => {
+//   onChange("hide")
+// })
 
 defineProps({
   showTabbar: {
@@ -52,7 +56,6 @@ defineProps({
 </script>
 
 <style lang="scss">
-
 .page-wrapper {
   height: 100%;
   &__content {
@@ -65,15 +68,4 @@ defineProps({
     //height: calc(100% - var(--navigation-bar-height) - var(--safe-area-inset-top));
   }
 }
-
-//.page-wrapper__tabbar {
-//  position: fixed;
-//  left: 0;
-//  bottom: 0;
-//  width: 100%;
-//  z-index: 100000;
-//  background-color: var(--def-bgc-color);
-//  //height: var(--tabbar-height);
-//  //background: var(--primary-color);
-//}
 </style>
