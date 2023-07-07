@@ -1,15 +1,16 @@
 
 <template>
-  <pageWrapper :show-nav="false">
+  <pageWrapper :show-nav="false" >
     <view class="h-full overflow-hidden">
       <scroll-view class="h-full" scroll-y>
-      <view class="bgc-black  height-750">
+       <view class="bgc-black  height-750">
         <video id="myVideo"
                ref="myVideo"
                style="width: 100%"
                src="https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/2minute-demo.mp4"
                :muted="true"
                :controls="false"
+               class="mt-30"
                @loadedmetadata="onWaiting"
                @ended="onEnd"
         ></video>
@@ -39,11 +40,11 @@
             </view>
 
             <view class="shop-act-section bgc-background height-240 mb-20" style="border-radius: 30rpx;">
-              活动专区1
+              <view class="p-20">活动专区1</view>
             </view>
 
             <view class="shop-act-section bgc-background height-240 mb-20" style="border-radius: 30rpx;">
-              活动专区2
+              <view class="p-20">活动专区1</view>
             </view>
 
             <!--  #ifdef H5    -->
