@@ -1,8 +1,8 @@
 <template>
   <view class="flex">
-    <view class="flex items-center" style="gap: 20rpx;">
-      <image style="width: 60rpx; height: 60rpx; background-color: #eeeeee;"></image>
-      <image style="width: 60rpx; height: 60rpx; background-color: #eeeeee;"></image>
+    <view class="flex items-center gap-20">
+      <image class="bgc-defimage" style="width: 60rpx; height: 60rpx;"></image>
+      <image class="bgc-defimage" style="width: 60rpx; height: 60rpx; "></image>
     </view>
     <view class="flex-1">&nbsp;</view>
     <view>

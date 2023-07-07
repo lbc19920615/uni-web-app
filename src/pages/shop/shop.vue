@@ -147,6 +147,9 @@ let totalCount = ref(0);
 function onCartChange() {
   let {num, price_display} = storeCart.getCollect()
   // console.log('sssssssssssssssssss', num);
+  if (num < 1) {
+    proxy.$refs?.popup.close();
+  }
   totalCount.value = num
   totalPrice.value = price_display
 }
@@ -160,7 +163,7 @@ function onRegionchange(e) {
 }
 
 onShow(async () => {
-  await sleep(1000)
+  await sleep(300)
   store.shopStep = 'selected'
   // console.log(refs.needGetLocation, needGetLocation.value);
   // if (refs.needGetLocation.value) {

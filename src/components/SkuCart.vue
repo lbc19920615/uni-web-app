@@ -54,12 +54,12 @@ function onInputBox(e) {
 
 function onChangeCheckAll() {
   store.toggleCheckAll()
-  proxy.$emit("item_change", store.getSelectedItems())
+  proxy.$emit("item_change")
 }
 
 function onChangeCheck(item) {
   store.toggleItemChecked(item)
-  proxy.$emit("item_change", store.getSelectedItems())
+  proxy.$emit("item_change")
 }
 
 function onChangeBox(item, index) {
@@ -67,6 +67,6 @@ function onChangeBox(item, index) {
     store.delItem(index)
   }
   console.log('curMaxNum', store.curMaxNum);
-  proxy.$emit("item_change", store.getSelectedItems())
+  proxy.$emit("item_change")
 }
 </script>

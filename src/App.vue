@@ -63,6 +63,7 @@ html, page {
   --color-text-thirdly: #{$uni-text-thirdly};
   --color-text-fourth: #{$uni-text-fourth};
   --color-background: #{$uni-bg-color-grey};
+  --color-defimage: #{$uni-text-color-defimage};
   --color-white: #fff;
   --text-primary: #{$uni-text-primary}; // 一级信息，标题，主内容文字等
   --text-secondary: #{$uni-text-secondary}; // 辅助文字，次要信息等
@@ -128,6 +129,18 @@ page-wrapper {
 
 button:after {
   border: none;
+}
+
+radio .wx-radio-input {
+  border-color: var(--color-primary);
+}
+radio .wx-radio-input.wx-radio-input-checked {
+  border-color: var(--color-primary) !important;
+}
+radio  .wx-radio-input.wx-radio-input-checked {
+  border-radius: 50%;
+  content: "";
+  background-color: var(--color-primary);
 }
 <!-- #endif -->
 
