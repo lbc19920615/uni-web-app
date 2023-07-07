@@ -12,7 +12,7 @@
       "name": "profile",
       "path": "pages/profile/profile",
       "style": {
-        "navigationBarTitleText": "个人",
+        "navigationBarTitleText": "",
         "navigationStyle":"custom"
       }
     },
@@ -20,7 +20,7 @@
       "name": "shop",
       "path": "pages/shop/shop",
       "style": {
-        "navigationBarTitleText": "商铺",
+        "navigationBarTitleText": "",
         "navigationStyle":"custom",
         "enablePullDownRefresh": true
       }

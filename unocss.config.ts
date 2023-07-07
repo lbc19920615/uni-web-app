@@ -26,7 +26,7 @@ function getColorRules(Mapping: Record<string, string>): Rule<{}>[] {
   return Object.keys(Mapping).map((key) => {
     const value = Mapping[key];
     return [
-      new RegExp(`^bgc-(\\w+)$`),
+      new RegExp(`^bgc-([\\w-]+)$`),
       ([, d]) => ({ 'background-color': `var(--color-${d})` })
     ];
   });

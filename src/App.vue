@@ -49,9 +49,9 @@ export default {
 
 
 html, page {
-  --navigation-bar-height: 80upx;
-  --navigation-bar-bg-color: var(--primary-color);
-  --navigation-bar-text: #fff;
+  --navigation-bar-height: 80rpx;
+  --navigation-bar-bg-color: #fff;
+  --navigation-bar-text: var(--color-text-primary);
   --tabbar-height: 100upx;
   --primary-color: #{$uni-color-primary};
   --color-primary: #{$uni-color-primary};
@@ -65,6 +65,7 @@ html, page {
   --color-background: #{$uni-bg-color-grey};
   --color-defimage: #{$uni-text-color-defimage};
   --color-white: #fff;
+  --color-black: #000;
   --text-primary: #{$uni-text-primary}; // 一级信息，标题，主内容文字等
   --text-secondary: #{$uni-text-secondary}; // 辅助文字，次要信息等
   --text-thirdly: #{$uni-text-thirdly};

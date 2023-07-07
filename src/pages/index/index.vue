@@ -1,39 +1,59 @@
 
 <template>
-  <pageWrapper :show-tabbar="true">
-    <view class="flex flex-col"
-          >
-      <video id="myVideo"
-             style="width: 100%"
-             src="https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/2minute-demo.mp4"
-             controls></video>
-
-
-      <view class="fs-32 text-left">基本</view>
-      <view class="text-center">{{refs.a}} + {{refs.b}} = {{refs.c}}</view>
-      <button class="mb-20" @click="store.action1">第一个加1</button>
-
-      <view class="mb-20">
-        <zx-modal id="modal1">
-          <view>1111</view>
-        </zx-modal>
-      </view>
-      <button @click="open">打开modal</button>
-
-      <view class="fs-32 text-left">DEMOS</view>
-      <view class="grid grid-cols-3">
-        <view  v-for="(item,index) in store.arr" :key="index">
-          <view class="text-center h-60 lh-60" @click="goPage(item)">{{ item.name }}</view>
-        </view>
+  <pageWrapper :show-nav="false">
+    <view class="h-full overflow-hidden">
+      <scroll-view class="h-full" scroll-y>
+      <view class="bgc-black  height-750">
+        <video id="myVideo"
+               ref="myVideo"
+               style="width: 100%"
+               src="https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/2minute-demo.mp4"
+               :muted="true"
+               :controls="false"
+               @loadedmetadata="onWaiting"
+               @ended="onEnd"
+        ></video>
       </view>
 
+      <view class="position-absolute w-full p-40 pt-0"
+            style="left: 0; top:650rpx; box-sizing: border-box; z-index: 100">
+
+<!--            <view style="height: 650rpx; pointer-events: none">&nbsp;</view>-->
+            <view class="bgc-background rounded-3xl pb-30 mb-20">
+              <view class="flex items-center justify-between w-full p-20" style=" box-sizing: border-box;">
+                <view>微信用户</view>
+                <view>优惠券&nbsp;10张</view>
+                <view>1111</view>
+              </view>
+              <view class="flex items-center  height-120">
+                <view class="flex-1 text-center">门店自取</view>
+                <view>|</view>
+                <view class="flex-1 text-center">外卖点单</view>
+              </view>
+              <view class="flex items-center">
+                <view class="flex-1 text-center">活动1</view>
+                <view class="flex-1 text-center">活动2</view>
+                <view class="flex-1 text-center">活动3</view>
+                <view class="flex-1 text-center">活动4</view>
+              </view>
+            </view>
+
+            <view class="shop-act-section bgc-background height-240 mb-20" style="border-radius: 30rpx;">
+              活动专区1
+            </view>
+
+            <view class="shop-act-section bgc-background height-240 mb-20" style="border-radius: 30rpx;">
+              活动专区2
+            </view>
+
+            <!--  #ifdef H5    -->
+            <view class="fs-32 text-left">APP能力</view>
+            <button @click="openTest">打开webview</button>
+            <!--  #endif    -->
+      </view>
 
 
-<!--  #ifdef H5    -->
-      <view class="fs-32 text-left">APP能力</view>
-      <button @click="openTest">打开webview</button>
-<!--  #endif    -->
-
+      </scroll-view>
     </view>
   </pageWrapper>
 </template>
@@ -45,24 +65,25 @@ import { useModal } from '@/uni_modules/zx'
 import { cacheStore } from "@/frame/storeMan";
 import { openWebview } from "@/utils/navigate";
 
-// console.log(Object.getOwnPropertyDescriptors(store).a.value.constructor.name);
 let {ins: store, refs} = $getStore("Home")
+const {proxy} = getCurrentInstance()
+
+
+let videoContext = uni.createVideoContext('myVideo')
 
 function openTest() {
   openWebview("http://192.168.2.64:3100/#/folder")
 }
 
-function goPage(item) {
-  forward(item.path, {})
+function onWaiting(e) {
+  videoContext.play()
 }
 
-const modal = useModal("modal1")
-function open() {
-  modal.showModal({
-    title: '提示',
-    content:'哈喽啊，树先生'
-  })
+function onEnd(e) {
+  // console.log('e',   proxy.$refs.myVideo);
+  videoContext.play()
 }
+
 </script>
 
 <style lang="scss">

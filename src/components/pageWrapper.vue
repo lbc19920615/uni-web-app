@@ -1,8 +1,9 @@
 <template>
   <view class="page-wrapper"
+        :class="{  'page-wrapper--no-nav': !proxy.$props.showNav, [cusCls]: true}"
       :style="styleObj"
   >
-    <navigatorbar></navigatorbar>
+    <navigatorbar v-if="showNav"></navigatorbar>
     <cus-tabbar class="page-wrapper__tabbar"></cus-tabbar>
     <view class="page-wrapper__content">
       <slot></slot>
@@ -23,8 +24,22 @@ if (!app.globalData.cacheSync) {
 
 let safeAreaInsets = systemInfo.safeAreaInsets
 
+let {proxy} = getCurrentInstance();
+
+// console.log(proxy);
+
 let styleObj = reactive({
-  '--safe-area-inset-top': safeAreaInsets.top + 'px'
+  '--safe-area-inset-top': safeAreaInsets.top + 'px',
+})
+
+defineProps({
+  showNav: {
+    type: Boolean,
+    default: true
+  },
+  cusCls: {
+    type: String
+  }
 })
 </script>
 

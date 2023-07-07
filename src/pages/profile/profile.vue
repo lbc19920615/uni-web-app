@@ -1,7 +1,7 @@
 
 
 <template>
-  <pageWrapper :show-tabbar="true">
+  <pageWrapper :show-tabbar="true" cus-cls="profile-page">
     <view>
       <!-- 头像显示圆点 -->
       <view class="mb-50" style="height: 400rpx; background-color: var(--primary-color)">
@@ -54,5 +54,10 @@ function onChange(e) {
   .uni-list-chat__content-title {
     font-size: 24rpx;
   }
+}
+
+.profile-page {
+  --navigation-bar-bg-color: var(--color-primary);
+  --navigation-border-color: var(--color-primary);
 }
 </style>
