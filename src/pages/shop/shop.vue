@@ -38,7 +38,7 @@
       v-else>
       <view class="mb-30 p-20">
         <view class="fs-38 mb-10">商铺信息 <view class="arrow arrow-right"></view></view>
-        <view class="text-thirdly">商铺1</view>
+        <view class="text-thirdly">{{ partStore.name }}</view>
       </view>
 
 <!--      <button @click="onAdd">onAdd</button>-->
@@ -94,7 +94,11 @@ import LockButton from "@/components/LockButton.vue";
 
 const {proxy} = getCurrentInstance()
 
-let {ins: store, refs} = $getStore("Shop");
+let {ins: store, refs, getSubStore} = $getStore("Shop");
+let {ins: partStore} = getSubStore('part')
+console.log(partStore);
+
+
 let { longitude, latitude, showMap, shopStep,needGetLocation } = refs
 
 let {ins: storeCart} = $getStore("Cart");

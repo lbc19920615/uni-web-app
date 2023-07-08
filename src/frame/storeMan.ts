@@ -45,6 +45,18 @@ export function useCache({} ={}) {
   }
 }
 
+let currentSubStoreKeys = []
+let currentSubStoreMap = {
+}
+export function SubStore(baseCls = "", defVal, {} = {}) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    // console.log(target, propertyKey, descriptor);
+
+    currentSubStoreKeys.push(propertyKey)
+    currentSubStoreMap[propertyKey] = {baseCls, defVal}
+  }
+}
+
 type RetObjType = {
   getters: {},
   actions: {},
@@ -53,7 +65,7 @@ type RetObjType = {
 
 declare type PartialDef = string | { cachedKeys: [string], handleKey: () => string  }
 
-function scanCls(ret: RetObjType, cls: Class, cache = {}, {handleKey = null, needCacheKeys = [], isMainCls = false} ={}) {
+function scanCls(ret: RetObjType, cls: Class, cache = {}, {handleKey = null, needCacheKeys = [], subStoreKeys = [], isMainCls = false} ={}) {
   let obj = new cls()
   let keys = Reflect.ownKeys(obj)
   let parentKeys = []
@@ -66,7 +78,14 @@ function scanCls(ret: RetObjType, cls: Class, cache = {}, {handleKey = null, nee
   //   parentKeys = Object.keys(ret.state)
   // }
 
-  // console.log('parentKeys', parentKeys);
+  keys = keys.filter(key => {
+    if (subStoreKeys.includes(key)) {
+      return false
+    }
+    return true
+  })
+
+  // console.log('keys', keys);
 
 
   if (!handleKey) {
@@ -133,19 +152,20 @@ export function createStore(cls: Class, name = '', currentNeedCacheKeys = [], {p
       }
 
       if (cachedCls) {
-        scanCls(ret, cachedCls, cache, {handleKey: handleKey, needCacheKeys: currentNeedCacheKeys})
+        scanCls(ret, cachedCls, cache, {handleKey: handleKey, needCacheKeys: currentNeedCacheKeys, subStoreKeys: currentSubStoreKeys})
       }
     })
   }
 
   // console.log(currentNeedCacheKeys);
-  scanCls(ret, cls, cache, {needCacheKeys: currentNeedCacheKeys, isMainCls: true})
+  scanCls(ret, cls, cache, {needCacheKeys: currentNeedCacheKeys, subStoreKeys: currentSubStoreKeys, isMainCls: true})
 
 
-  let res: any = buildStore(cls.name, ret)
+  let res: any = buildStore(name, ret)
   // @ts-ignore
   res.__STORE_NAME__ = name
   res.__NeedCacheKeys__= currentNeedCacheKeys
+  res.currentSubStoreKeys = currentSubStoreKeys
   return res;
 }
 
@@ -155,9 +175,29 @@ export function injectStore(name, {partials = []} = {}) {
     target.__IS_STORE__ = true
     target.__STORE_NAME__ = name
     target.__NeedCacheKeys__= currentNeedCacheKeys
-    storeMap.set(name, createStore(target,  name, currentNeedCacheKeys,{partials}))
+
+
+    let storeCache = createStore(target,  name, currentNeedCacheKeys,{partials})
+    storeCache.SUB_STORE = {}
+
+    currentSubStoreKeys.forEach(key => {
+      let def = currentSubStoreMap[key];
+
+      let __STORE_NAME__ = `${name}_${key}`
+      let target = def.defVal ?? class extends partialMap.get(def.baseCls) {};
+      target.__STORE_NAME__ = __STORE_NAME__
+      // console.log(__STORE_NAME__);
+      storeMap.set(__STORE_NAME__, createStore(target, __STORE_NAME__, def?.needCacheKeys ?? [],{
+
+      }))
+
+      storeCache.SUB_STORE[__STORE_NAME__] = def
+    })
+
+    storeMap.set(name, storeCache)
 
     currentNeedCacheKeys = []
+    currentSubStoreKeys = []
     // console.log(target, storeMap);
   }
   // target.annotated = true;
@@ -165,12 +205,31 @@ export function injectStore(name, {partials = []} = {}) {
 
 export function getStore(key) {
   let ins =  storeMap.get(key);
+  // console.log(ins);
   if (ins) {
     let ret = ins.useStore()
     ret.__STORE_NAME__ = ins.__STORE_NAME__
+
+    let subStoreMap = {}
+    if (ins.SUB_STORE) {
+      Object.keys(ins.SUB_STORE).forEach(subStoreKey => {
+        subStoreMap[subStoreKey] = storeMap.get(subStoreKey)
+      })
+    }
+
+    // console.log(subStoreMap);
+
     return {
       STORE_NAME: ins.__STORE_NAME__,
       ins: ret,
+      getSubStore(subKey) {
+        let def = subStoreMap[key + '_' + subKey];
+        let subIns = def?.useStore()
+        return {
+          ins: subIns,
+          refs: storeToRefs(subIns)
+        }
+      },
       refs: storeToRefs(ret)
     };
   }

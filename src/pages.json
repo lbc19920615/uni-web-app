@@ -70,6 +70,14 @@
             "navigationBarTitleText": "toml",
             "navigationStyle":"custom"
           }
+        },
+        {
+          "name": "gen",
+          "path": "gen",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle":"custom"
+          }
         }
       ]
     }

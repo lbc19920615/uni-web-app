@@ -1,5 +1,5 @@
 <template>
-  <page-wrapper>
+  <page-wrapper-detail>
     <view class="flex gap-20 p-20">
       <view class="flex-1">
         <textarea
@@ -16,7 +16,7 @@
     <view class="flex p-20">
       <view v-html="errStr"></view>
     </view>
-  </page-wrapper>
+  </page-wrapper-detail>
 </template>
 
 <script setup lang="ts">

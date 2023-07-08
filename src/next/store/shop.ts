@@ -1,5 +1,10 @@
-import { injectStore, useCache } from "@/frame/storeMan";
+import { injectStore, partialStore, SubStore, useCache } from "@/frame/storeMan";
 import { createBaseListItemConfig } from "@/next/store/baseList";
+
+@partialStore("BasePart")
+class BasePart {
+  name = ""
+}
 
 @injectStore('Shop', {
   partials: [
@@ -7,6 +12,12 @@ import { createBaseListItemConfig } from "@/next/store/baseList";
   ]
 })
 export default class {
+
+  // @ts-ignore
+  @SubStore("BasePart", class extends BasePart {
+    name = "商铺1"
+  })
+  part
 
   // @ts-ignore
   @useCache()
