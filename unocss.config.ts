@@ -19,15 +19,16 @@ function getSizeRules(Mapping: Record<string, string>): Rule<{}>[] {
 let rules = getSizeRules(sizeMapping);
 
 const colorMapping: Record<string, string> = {
-  bgc: 'background-color'
+  bgc: 'background-color',
+  bdc: 'border-color'
 };
 
 function getColorRules(Mapping: Record<string, string>): Rule<{}>[] {
   return Object.keys(Mapping).map((key) => {
     const value = Mapping[key];
     return [
-      new RegExp(`^bgc-([\\w-]+)$`),
-      ([, d]) => ({ 'background-color': `var(--color-${d})` })
+      new RegExp(`^${key}-([\\w-]+)$`),
+      ([, d]) => ({ [value]: `var(--color-${d})` })
     ];
   });
 }

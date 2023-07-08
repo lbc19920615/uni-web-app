@@ -1,16 +1,17 @@
 
 <template>
+
+
   <pageWrapper :show-nav="false" >
     <view class="h-full overflow-hidden">
       <scroll-view class="h-full" scroll-y>
        <view class="bgc-black  height-750">
         <video id="myVideo"
                ref="myVideo"
-               style="width: 100%"
                src="https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/2minute-demo.mp4"
                :muted="true"
                :controls="false"
-               class="mt-30"
+               class="w-full mt-30"
                @loadedmetadata="onWaiting"
                @ended="onEnd"
         ></video>
@@ -50,6 +51,12 @@
             <!--  #ifdef H5    -->
             <view class="fs-32 text-left">APP能力</view>
             <button @click="openTest">打开webview</button>
+
+            <view class="grid grid-cols-3">
+              <view  v-for="(item,index) in store.arr" :key="index">
+                <view class="text-center h-60 lh-60" @click="goPage(item)">{{ item.name }}</view>
+              </view>
+            </view>
             <!--  #endif    -->
       </view>
 
@@ -72,10 +79,6 @@ const {proxy} = getCurrentInstance()
 
 let videoContext = uni.createVideoContext('myVideo')
 
-function openTest() {
-  openWebview("http://192.168.2.64:3100/#/folder")
-}
-
 function onWaiting(e) {
   videoContext.play()
 }
@@ -83,6 +86,14 @@ function onWaiting(e) {
 function onEnd(e) {
   // console.log('e',   proxy.$refs.myVideo);
   videoContext.play()
+}
+
+function openTest() {
+  openWebview("http://192.168.2.64:3100/#/folder")
+}
+
+function goPage(item) {
+  forward(item.path, {})
 }
 
 </script>

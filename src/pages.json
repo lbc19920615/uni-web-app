@@ -62,6 +62,14 @@
             "navigationBarTitleText": "表单",
             "navigationStyle":"custom"
           }
+        },
+        {
+          "name": "toml",
+          "path": "toml",
+          "style": {
+            "navigationBarTitleText": "toml",
+            "navigationStyle":"custom"
+          }
         }
       ]
     }
