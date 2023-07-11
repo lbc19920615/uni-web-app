@@ -5,7 +5,7 @@
       "path": "pages/index/index",
       "style": {
         "navigationBarTitleText": "",
-        "navigationStyle":"custom"
+        "navigationStyle": "custom"
       }
     },
     {
@@ -13,7 +13,7 @@
       "path": "pages/profile/profile",
       "style": {
         "navigationBarTitleText": "",
-        "navigationStyle":"custom"
+        "navigationStyle": "custom"
       }
     },
     {
@@ -21,7 +21,7 @@
       "path": "pages/shop/shop",
       "style": {
         "navigationBarTitleText": "",
-        "navigationStyle":"custom",
+        "navigationStyle": "custom",
         "enablePullDownRefresh": true
       }
     },
@@ -30,7 +30,7 @@
       "path": "pages/list/list",
       "style": {
         "navigationBarTitleText": "订单",
-        "navigationStyle":"custom",
+        "navigationStyle": "custom",
         "enablePullDownRefresh": true
       }
     }
@@ -40,43 +40,27 @@
       "root": "pages/test",
       "pages": [
         {
-          "name": "test",
-          "path": "test",
+          "name": "gen",
+          "path": "gen",
           "style": {
-            "navigationBarTitleText": "测试",
-            "navigationStyle":"custom"
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom"
           }
         },
         {
-          "name": "linkScroll",
-          "path": "linkScroll",
+          "name": "gen2",
+          "path": "gen2",
           "style": {
-            "navigationBarTitleText": "联动",
-            "navigationStyle":"custom"
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom"
           }
         },
         {
           "name": "form",
           "path": "form",
           "style": {
-            "navigationBarTitleText": "表单",
-            "navigationStyle":"custom"
-          }
-        },
-        {
-          "name": "toml",
-          "path": "toml",
-          "style": {
-            "navigationBarTitleText": "toml",
-            "navigationStyle":"custom"
-          }
-        },
-        {
-          "name": "gen",
-          "path": "gen",
-          "style": {
             "navigationBarTitleText": "",
-            "navigationStyle":"custom"
+            "navigationStyle": "custom"
           }
         }
       ]

@@ -1,6 +1,6 @@
 <template>
   <page-wrapper-detail>
-    <view>
+    <view class="p-20">
       {{def.formData}}
       <uni-forms ref="dynamicForm2" :rules="def.rules" :modelValue="def.formData">
         <uni-forms-item label="姓名" name="name">
@@ -16,48 +16,20 @@
                         :key="item.id" :label="item.label+' '+item.id"
                         required :rules="item.rules" :name="'domains[' + item.id + ']'">
           <view class="form-item">
-            <uni-easyinput v-model="def.formData.domains[item.id]" placeholder="请输入域名" />
-            <button class="button" @click="def.vmMap.domains.funDel(item.id, () => { funDeleteProperty(def.formData.domains, item.id) })">删除</button>
+            <uni-easyinput
+              class="mb-10"
+              v-model="def.formData.domains[item.id]" placeholder="请输入域名" />
+            <button
+                    @click="def.vmMap.domains.funDel(item.id, () => { funDeleteProperty(def.formData.domains, item.id) })">删除</button>
           </view>
         </uni-forms-item>
       </uni-forms>
 
-      <view class="button-group">
-        <button type="primary"  @click="def.vmMap.domains.funAdd">新增域名</button>
-        <button type="primary"  @click="submitForm('dynamicForm2')">提交</button>
+      <view>
+        <button type="primary" class="mb-20"  @click="def.vmMap.domains.funAdd">新增域名</button>
+        <button type="primary" class="mb-20"  @click="submitForm('dynamicForm2')">提交</button>
       </view>
 
-
-      <view>基础form</view>
-      <view>{{formData}}</view>
-      <uni-forms ref="dynamicForm" :rules="dynamicRules" :modelValue="formData">
-        <uni-forms-item label="姓名" name="name">
-          <uni-easyinput type="text" v-model="formData.name" placeholder="请输入姓名" />
-        </uni-forms-item>
-        <uni-forms-item label="年龄" name="age">
-          <uni-easyinput type="number" v-model="formData.age" placeholder="请输入年龄" />
-        </uni-forms-item>
-        <uni-forms-item  name="hobby" label="兴趣爱好">
-          <uni-data-checkbox multiple v-model="formData.hobby" :localdata="hobby"/>
-        </uni-forms-item>
-        <uni-forms-item  name="birthDay" label="生日">
-          <uni-datetime-picker
-            type="date"
-            v-model="formData.birthDay"
-          />
-        </uni-forms-item>
-        <uni-forms-item v-for="(item,index) in dynamicLists" :key="item.id" :label="item.label+' '+item.id"
-                        required :rules="item.rules" :name="'domains[' + item.id + ']'">
-          <view class="form-item">
-            <uni-easyinput v-model="formData.domains[item.id]" placeholder="请输入域名" />
-            <button class="button" @click="del(item.id, formData.domains, item.id)">删除</button>
-          </view>
-        </uni-forms-item>
-      </uni-forms>
-      <view class="button-group">
-        <button type="primary"  @click="add">新增域名</button>
-        <button type="primary"  @click="submitForm('dynamicForm')">提交</button>
-      </view>
     </view>
   </page-wrapper-detail>
 </template>
@@ -135,13 +107,7 @@ let funDeleteProperty = function(obj, id) {
 
 
 
-let formData = reactive({
-  name: '',
-  age: 0,
-  birthDay: '',
-  hobby: [],
-  domains: {}
-})
+
 
 let hobby = [
   {
@@ -154,54 +120,9 @@ let hobby = [
   }
 ]
 
-let dynamicLists = reactive([])
-let dynamicRules = {
-  hobby: {
-    rules: [
-      {required: true, errorMessage: '爱好项必填'},
-      {
-        validateFunction:function(rule,value,data,callback){
-          if (value.length < 2) {
-            callback(`格式不对`)
-          }
-          return true
-        }
-      }
-    ]
-  }
-}
-function add() {
-  let obj: Record<any, any> = {
-    label: '域名',
-    rules: [
-      {
-        'required': true,
-         errorMessage: '域名项必填'
-      },
-      {
-        validateFunction: function(rule, value, data, callback) {
-          if (typeof value === 'string') {
-            if (!value.match(/\w+[^\s]+(\.[^\s]+){1,}/)) {
-              callback('域名格式不对')
-            }
-          }
-          return true
-        }
-      }
-    ],
-  }
-  obj.id = Date.now()
-  dynamicLists.push(obj)
-}
-function del(id, obj, key) {
-  let index = dynamicLists.findIndex(v => v.id === id)
-  dynamicLists.splice(index, 1);
-  Reflect.deleteProperty(obj, key);
-}
 
 
 function submitForm(ref) {
-  console.log('submitForm', ref);
   proxy.$refs[ref].validate().then(res => {
     uni.showToast({
       title: `校验通过`
