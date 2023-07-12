@@ -98,14 +98,11 @@ class A {
 
 let def = useSimpleForm('A');
 
-console.log(def.rules);
+console.log(def.formData);
 
 let funDeleteProperty = function(obj, id) {
   Reflect.deleteProperty(obj, id)
 }
-
-
-
 
 
 

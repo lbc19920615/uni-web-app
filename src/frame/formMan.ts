@@ -127,11 +127,17 @@ type MixinConfig = String | [String, any]
  */
 export function defineSimpleForm(name, target: any, { mixins= [] } = {}) {
   // console.log('entry', name, context);
-  if (cacheDefs[name]) {
-    return
+  // if (cacheDefs[name]) {
+  //   return
+  // }
+  // cacheDefs[name] = {}
+
+  if (!cacheDefs[name]) {
+    cacheDefs[name] = {}
   }
-  cacheDefs[name] = {}
+
   let proto: any = Reflect.getPrototypeOf(target)
+
   if (proto.__formName__) {
     let base = deepClone(cacheDefs[proto.__formName__])
     // console.log(base);
@@ -161,6 +167,42 @@ export function defineSimpleForm(name, target: any, { mixins= [] } = {}) {
 
   // target.FORM_NAME = name
   target.__formName__ = name
+  return currentDef
+}
+
+
+export function initSimpleForm(name, { mixins= [] } = {}) {
+  // console.log('entry', name, context);
+  // if (cacheDefs[name]) {
+  //   return
+  // }
+  // cacheDefs[name] = {}
+
+  if (!cacheDefs[name]) {
+    cacheDefs[name] = {}
+  }
+
+  if (Array.isArray(mixins)) {
+    mixins.forEach((mixinConfig: any) => {
+        if (typeof mixinConfig === 'string') {
+          if (cacheDefs[mixinConfig]) {
+            let base = deepClone(cacheDefs[mixinConfig])
+            // console.log(base);
+            cacheDefs[name] = {...base, ...cacheDefs[name]}
+          }
+        }
+        if (Array.isArray(mixinConfig)) {
+          let base = deepClone(cacheDefs[mixinConfig[0]])
+          if (mixinConfig[1] && mixinConfig[1].transform) {
+            base = mixinConfig[1].transform(base)
+          }
+          cacheDefs[name] = {...base, ...cacheDefs[name]}
+        }
+    })
+  }
+
+  currentDef = cacheDefs[name]
+
   return currentDef
 }
 
@@ -261,4 +303,26 @@ export function useSimpleForm(name) {
 
   obj.reset()
   return obj
+}
+
+
+export function createFormContext(formName = '', cb: Function) {
+  let context = {
+    cls: null,
+    init(mixins) {
+      initSimpleForm(formName, mixins)
+    },
+    start(target) {
+      target.__formName__ = formName
+    }
+  }
+
+
+ let cls = cb({ field, required, defineSimpleForm, useSimpleForm, isArray, format, validateFunction, context })
+
+// console.log(context.cls);
+  context.start(cls)
+
+
+ return useSimpleForm(formName);
 }
