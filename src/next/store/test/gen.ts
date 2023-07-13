@@ -2,8 +2,8 @@
     import { injectStore } from "@/frame/storeMan";
 
     
-@injectStore('state')
-class def{
+  @injectStore('state')
+  class state {
  a = 1;
  b = 2;
 get c() {
@@ -14,5 +14,4 @@ s() {
 }
 
 }
-
-        
+  

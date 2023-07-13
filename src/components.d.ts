@@ -10,6 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     CusTabbar: typeof import('./components/cusTabbar.vue')['default']
+    DaTree: typeof import('./components/da-tree/index.vue')['default']
     IconMask: typeof import('./components/iconMask.vue')['default']
     LinkScrollCom: typeof import('./components/linkScrollCom.vue')['default']
     ListChat: typeof import('./components/listChat.vue')['default']

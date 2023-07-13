@@ -47,12 +47,8 @@ let submitForm  = function(ref) {
 
 
 
-      let {ins: state, refs} = $getStore('state');
-console.log(state);
-      
-
         ;
-  let def = $frame.f.createFormContext('A', function({ context, field, required, isArray, format, validateFunction }) {
+  let def = $frame.f.createFormContext('def', function({ context, field, required, isArray, format, validateFunction }) {
     context.init([
     ])
     
@@ -81,6 +77,8 @@ console.log(state);
   
     return InnerCls
   })
+  
+  let {ins: state} = $getStore('state');
   
         ;console.log($frame)
         

@@ -56,8 +56,21 @@
           }
         },
         {
-          "name": "form",
-          "path": "form",
+          "name": "some",
+          "path": "some",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/com",
+      "pages": [
+        {
+          "name": "gen",
+          "path": "gen",
           "style": {
             "navigationBarTitleText": "",
             "navigationStyle": "custom"
