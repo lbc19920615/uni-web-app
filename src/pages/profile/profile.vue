@@ -34,7 +34,8 @@
   </pageWrapper>
 </template>
 
-<script lang="ts" setup auto>
+<script lang="ts" setup>
+import { $getStore } from "@/frame/app";
 import pageWrapper from "@/components/pageWrapper.vue"
 function onChange(e) {
   let {

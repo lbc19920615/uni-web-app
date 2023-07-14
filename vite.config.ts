@@ -57,11 +57,12 @@ export default defineConfig({
         filter: /\.vue$/,
         replace(source, path) {
           new RegExp('pages\\/.*\\/.*\\.vue');
-          const imagesAlt = globSync(['src/pages/*/*.vue', 'src/components/*.vue']).map(
-            (item) => {
-              return item.replaceAll('\\', '/');
-            }
-          );
+          const imagesAlt = globSync([
+            'src/pages/*/*.vue',
+            'src/components/*.vue'
+          ]).map((item) => {
+            return item.replaceAll('\\', '/');
+          });
           // console.log(imagesAlt);
           const isMatch = imagesAlt.some((v) => {
             return path.endsWith(v);
@@ -125,7 +126,10 @@ export default defineConfig({
       '^/api': {
         target: env.apiBaseUrl, // 后端服务实际地址
         changeOrigin: true, // 开启代理
-        rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path) => {
+          // console.log( env.apiBaseUrl, path.replace(/^\/api/, ''));
+          return path.replace(/^\/api/, '');
+        }
       }
     }
   }

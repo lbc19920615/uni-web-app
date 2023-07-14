@@ -4,7 +4,7 @@ import { getCommonParams } from '@/config/commonParams';
 import env from '@/config/env';
 import { hideLoading, showLoading } from '@/config/serviceLoading';
 
-function reject(err: { errno: number; errmsg: string }) {
+function handleFail(err: { errno: number; errmsg: string }) {
   const { errmsg = '抢购火爆，稍候片刻！', errno = -1 } = err;
   switch (errno) {
     case 10000:
@@ -37,14 +37,15 @@ function baseRequest(
   url: string,
   data: { isLoading: any }
 ) {
-  return new Promise((resolve) => {
+  let errmsg = ''
+  return new Promise((resolve, reject) => {
     showLoading(data.isLoading);
     delete data.isLoading;
-    let responseDate: unknown;
+    let responseData: unknown;
     uni.request({
       url: apiBaseUrl + url,
       method,
-      timeout: 20000,
+      timeout: 3000,
       header: {
         'content-type':
           method === 'GET'
@@ -54,27 +55,36 @@ function baseRequest(
       data,
       success: (res: any) => {
         if (res.statusCode >= 200 && res.statusCode < 400) {
-          if (res.data.errno === 0) {
-            responseDate = res.data;
-          } else {
-            reject(res.data);
-          }
+          // if (res.data.errno === 0) {
+          //   responseData = res.data;
+          // } else {
+          //   handleFail(res.data);
+          // }
+          responseData = res.data;
         } else {
-          reject({
+          errmsg = '稍候片刻！'
+          handleFail({
             errno: -1,
-            errmsg: '抢购火爆，稍候片刻！'
+            errmsg
           });
         }
       },
-      fail: () => {
-        reject({
+      fail: (e) => {
+        // console.log(e);
+
+        errmsg = '请求超时~'
+        handleFail({
           errno: -1,
-          errmsg: '网络不给力，请检查你的网络设置~'
+          errmsg
         });
       },
       complete: (data) => {
-        console.log(data, 'data');
-        resolve(responseDate);
+        console.log('baseRequest complete', responseData, data);
+        if (typeof responseData === 'undefined') {
+          reject(errmsg ? { errMsg: errmsg} : data )
+        } else {
+          resolve(responseData);
+        }
         hideLoading();
       }
     });
@@ -89,6 +99,11 @@ const http = {
     }) as Http.Response<T>,
   post: <T>(api: string, params: any) =>
     baseRequest('POST', api, {
+      ...getCommonParams(),
+      ...params
+    }) as Http.Response<T>,
+  put: <T>(api: string, params: any) =>
+    baseRequest('PUT', api, {
       ...getCommonParams(),
       ...params
     }) as Http.Response<T>

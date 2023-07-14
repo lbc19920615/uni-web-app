@@ -83,7 +83,8 @@
   </page-wrapper>
 </template>
 
-<script setup lang="ts" auto>
+<script setup lang="ts">
+import { $getStore } from "@/frame/app";
 import { checkLocationEnable } from "@/utils/permission";
 import { sleep } from "@/utils/time";
 import IconMask from "@/components/iconMask.vue";

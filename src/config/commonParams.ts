@@ -14,6 +14,7 @@ export function getCommonParams() {
     commonParams
   );
 }
+
 export function setCommonParams(params: Object) {
   Object.assign(commonParams, params);
 }

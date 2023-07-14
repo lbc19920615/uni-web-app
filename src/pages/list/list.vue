@@ -37,7 +37,8 @@
   </page-wrapper>
 </template>
 
-<script setup lang="ts" auto>
+<script setup lang="ts">
+import { $getStore } from "@/frame/app";
 import ShopCard from "@/components/ShopCard.vue";
 import PageLoading from "@/components/pageLoading.vue";
 // import { clearStoreCache } from "@/frame/storeMan";
