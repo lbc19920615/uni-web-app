@@ -85,7 +85,7 @@ function scanCls(ret: RetObjType, cls: Class, cache = {}, {handleKey = null, nee
     return true
   })
 
-  console.log('keys', cls, keys);
+  // console.log('keys', cls, keys);
 
 
   if (!handleKey) {

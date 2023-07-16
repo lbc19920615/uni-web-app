@@ -2,7 +2,7 @@
     import { injectStore } from "@/frame/storeMan";
 
     
-  @injectStore('state')
+  @injectStore('TestGen2_state')
   class state {
  a = 1;
  b = 2;

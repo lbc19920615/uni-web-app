@@ -1,9 +1,9 @@
 
-  <template>
+<template>
 
-  <page-wrapper-detail>
+<page-wrapper-detail>
 <scroll-view __eid__="id111"  scroll-y="true" class="h-full">
-  <uni-forms  ref="form" :rules="def.rules" :modelValue="def.formData" class="overflow-hidden height-260" @click="">
+  <uni-forms  ref="form" form="def" :rules="def.rules" :modelValue="def.formData" class="overflow-hidden height-260" @click="">
     
   <uni-forms-item label="姓名11" name="name">
     <uni-easyinput v-model="def.formData.name" 
@@ -12,15 +12,14 @@
   
   </uni-forms>
   <button __eid__="id__dzukp4"  @click="function() {submitForm('form')}" class="">保存</button></scroll-view>
- </page-wrapper-detail>
+</page-wrapper-detail>
   
 </template>
 
 <script setup lang="ts">
 
-// { field, required, defineSimpleForm, useSimpleForm, isArray, format, validateFunction }
 import * as f from "@/frame/formMan";
-import { $getStore } from "@/frame/app";
+import { $getStore,  $reqService, isNoneValue} from "@/frame/app";
 
 const $frame = {
   f
@@ -29,8 +28,6 @@ const $frame = {
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
 let $page = $CurrentInstance.proxy;
-
-// console.log(def);
 
 let submitForm  = function(ref) {
   $page.$refs[ref].validate().then(res => {
@@ -43,6 +40,11 @@ let submitForm  = function(ref) {
   })
 }
 
+onLoad(async () => {
+  let ret = await $reqService('some')
+  if (isNoneValue(ret)) return;
+  console.log(ret);
+})
 
 
 
@@ -78,17 +80,15 @@ let submitForm  = function(ref) {
     return InnerCls
   })
   
-  let {ins: state} = $getStore('state');
+  let {ins: state} = $getStore('TestGen2_state');
   
         ;console.log($frame)
         
 
-  
 </script>
 
 <style lang="scss">
 
-  
+
   
 </style>
-  

@@ -1,5 +1,5 @@
 
-  <template>
+<template>
 
 <page-wrapper-detail>
   <ComGen></ComGen>

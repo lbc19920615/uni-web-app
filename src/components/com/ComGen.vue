@@ -1,5 +1,5 @@
 
-  <template>
+<template>
 
     <da-tree  :field="{ label: 'name', key: 'id' }" :data="state.items" class="" defaultExpandAll>
       <template #label="scope">
@@ -7,7 +7,7 @@
       </template>
     </da-tree>
     <view __eid__="id__2zne4v"  class="">{{state.items}}
-</view>
+</view><button __eid__="id__zopstj"  class="">实打实打算</button><button __eid__="id__a6v3lp"  class="">button</button>
 </template>
 
 <script setup lang="ts">
@@ -48,9 +48,6 @@ onLoad(async () => {
   
         ;let roomTreeData = ref([
 ])
-
-
-
 
         
 
