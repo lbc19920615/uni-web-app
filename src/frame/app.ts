@@ -1,5 +1,7 @@
 import { getStore } from "@/frame/storeMan";
 import { initServiceRes, reqService } from "@/frame/serviceMan";
+import * as f from "@/frame/formMan";
+import Nid from "nid";
 
 interface Config {
    context: {
@@ -7,7 +9,13 @@ interface Config {
    }
 }
 
+export let $nid = Nid
+
 export let $reqService = reqService
+
+export const $frame = {
+  f
+};
 
 export function isNoneValue(v: any) {
   return typeof v === 'undefined'

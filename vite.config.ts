@@ -33,8 +33,9 @@ export default defineConfig({
         'uni-app',
         'pinia',
         {
+          '@/frame/app': ['$nid'],
           '@/helper/pinia-auto-refs': ['useStore'],
-          '@/frame/serviceMan': ['HttpService']
+          '@/frame/serviceMan': ['HttpService'],
         }
       ],
       exclude: ['createApp'],

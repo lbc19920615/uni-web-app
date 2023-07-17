@@ -1,25 +1,18 @@
 
 <template>
-
+<view __eid__="id__2zne4v"  class="">{{state.items.length}}
+</view>
 <da-tree  :field="{ label: 'name', key: 'id' }" :data="state.items" class="" defaultExpandAll>
   <template #label="scope">
   {{ scope.item }}
   </template>
 </da-tree>
-<view __eid__="id__2zne4v"  class="">{{state.items}}
-</view><button __eid__="id__zopstj"  class="">实打实打算</button>
-<video  src="https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/2minute-demo.mp4" class="w-full"></video>
-
+<button __eid__="id__zopstj"  class="">实打实打算</button>
 </template>
 
 <script setup lang="ts">
 
-import * as f from "@/frame/formMan";
-import { $getStore,  $reqService, isNoneValue} from "@/frame/app";
-
-const $frame = {
-  f
-};
+import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
 
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
@@ -36,11 +29,6 @@ let submitForm  = function(ref) {
   })
 }
 
-onLoad(async () => {
-  let ret = await $reqService('some')
-  if (isNoneValue(ret)) return;
-  console.log(ret);
-})
 
 
 
@@ -48,9 +36,9 @@ onLoad(async () => {
         ;
 let {ins: state} = $getStore('ComGen_state');
   
-        ;let roomTreeData = ref([
-])
-
+let {ins: other} = $getStore('ComGen_other');
+  
+        ;console.log($nid())
         
 
 </script>
