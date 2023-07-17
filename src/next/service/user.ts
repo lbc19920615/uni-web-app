@@ -1,5 +1,7 @@
 @HttpService()
-export class some {
+class some {
     method = 'get'
     url = ''
 }
+
+export { some }    
