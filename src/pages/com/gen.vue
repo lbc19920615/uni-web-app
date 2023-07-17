@@ -1,4 +1,3 @@
-
 <template>
 
 <page-wrapper-detail>
@@ -14,3 +13,7 @@
 <style lang="scss">
 
 </style>
+
+<script lang="ts">
+
+</script>

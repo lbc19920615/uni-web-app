@@ -1,4 +1,3 @@
-
 <template>
 <view __eid__="id__2zne4v"  class="">{{state.items.length}}
 </view>
@@ -48,3 +47,16 @@ let {ins: other} = $getStore('ComGen_other');
 
   
 </style>
+
+<script lang="ts">
+
+export default {
+  name: 'com-gen',
+  props: {
+    test: {
+      type: String
+    }
+  }
+}  
+
+</script>
