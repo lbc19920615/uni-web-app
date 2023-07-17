@@ -3,12 +3,13 @@
   &__content {
     height: calc(100% - var(--navigation-bar-height) - var(--tabbar-height) - var(--safe-area-inset-top));
     //height: 100%;
+    overflow: hidden;
   }
 }
 .page-wrapper--noTabbar {
   --tabbar-height: 0;
   .page-wrapper__content {
-    //height: calc(100% - var(--navigation-bar-height) - var(--safe-area-inset-top));
+    height: calc(100% - var(--navigation-bar-height) - var(--safe-area-inset-top));
   }
 }
 

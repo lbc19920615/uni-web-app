@@ -961,7 +961,7 @@
 
   .da-tree {
     width: 100%;
-    height: 100%;
+    // height: 100%;
 
     &-scroll {
       width: 100%;

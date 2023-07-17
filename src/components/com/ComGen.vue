@@ -2,7 +2,7 @@
 <template>
 <view __eid__="id__2zne4v"  class="">{{state.items.length}}
 </view>
-<da-tree  :field="{ label: 'name', key: 'id' }" :data="state.items" class="" defaultExpandAll>
+<da-tree  :field="{ label: 'name', key: 'id' }" :data="state.items" class="h-740" defaultExpandAll>
   <template #label="scope">
   {{ scope.item }}
   </template>
@@ -38,7 +38,9 @@ let {ins: state} = $getStore('ComGen_state');
   
 let {ins: other} = $getStore('ComGen_other');
   
-        ;console.log($nid())
+        ;let some1 = $mock({ name: String });
+
+console.log(some1);
         
 
 </script>

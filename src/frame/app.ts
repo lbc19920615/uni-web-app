@@ -1,4 +1,5 @@
 import { getStore } from "@/frame/storeMan";
+import { mock } from "@/frame/mock";
 import { initServiceRes, reqService } from "@/frame/serviceMan";
 import * as f from "@/frame/formMan";
 import Nid from "nid";
@@ -10,6 +11,8 @@ interface Config {
 }
 
 export let $nid = Nid
+
+export let $mock = mock
 
 export let $reqService = reqService
 

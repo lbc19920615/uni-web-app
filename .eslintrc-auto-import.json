@@ -1,5 +1,6 @@
 {
   "globals": {
+    "$mock": true,
     "$nid": true,
     "Component": true,
     "ComponentPublicInstance": true,

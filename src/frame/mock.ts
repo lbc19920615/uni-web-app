@@ -1,5 +1,6 @@
 import { uuidv4 } from "./utils/uuidv4";
 import { deepClone } from "@/utils/clone";
+import Nid from "nid";
 
 let folderIndex = 0;
 
@@ -49,4 +50,21 @@ export function mockShops(total = 100) {
   }
 
   return arr
+}
+
+
+export function mock(def: Record<string,any>, {len = 20} = {}) {
+  let items = []
+  for (let i = 0; i < len; i ++) {
+    let item = {
+      id: i+1
+    }
+    Object.entries(def).forEach(([key, value]: [string, any]) => {
+      if (value === String) {
+        item[key] = Nid()
+      }
+    })
+    items.push(item)
+  }
+  return {items}
 }
