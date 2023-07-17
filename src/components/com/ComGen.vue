@@ -3,11 +3,11 @@
 <view __eid__="id__2zne4v"  class="">{{state.items.length}}
 </view>
 <da-tree  :field="{ label: 'name', key: 'id' }" :data="state.items" class="h-740" defaultExpandAll>
-  <template #label="scope">
-  {{ scope.item }}
-  </template>
+
+<template  v-slot:label="scope" class=""><view __eid__="id__1bint5"  class="">{{scope.item}}</view></template>
+
 </da-tree>
-<button __eid__="id__zopstj"  class="">实打实打算</button>
+<button __eid__="id__zopstj"  class="" @click="state.add">button</button>
 </template>
 
 <script setup lang="ts">
@@ -38,9 +38,7 @@ let {ins: state} = $getStore('ComGen_state');
   
 let {ins: other} = $getStore('ComGen_other');
   
-        ;let some1 = $mock({ name: String });
-
-console.log(some1);
+        ;
         
 
 </script>

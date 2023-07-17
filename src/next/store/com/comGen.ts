@@ -8,6 +8,12 @@ let $mock = mock
 class state {
   a = 1
   items = $mock({ name: String }).items
+  add() {
+    let items = $mock({ name: String }).items
+    items.forEach(v => {
+      this.items.push(v)
+    })
+  }
 }
    
 

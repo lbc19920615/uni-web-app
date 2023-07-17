@@ -6,6 +6,7 @@ import presetRemToRpx from './preset-rem-to-rpx';
 const sizeMapping: Record<string, string> = {
   fs: 'font-size',
   height: 'height',
+  width: 'width',
   gap: 'gap'
 };
 

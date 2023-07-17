@@ -27,7 +27,7 @@
           <view class="da-tree-item__checkbox--icon da-tree-radio-outline" v-else></view>
         </view>
         <view class="da-tree-item__label" :class="'da-tree-item__label--'+item.checkedStatus"
-          @click="handleLabelClick(item)">{{ item.label }} <slot name="label" v-bind:item="item"></slot> <text class="da-tree-item__label--append"
+          @click="handleLabelClick(item)"><slot name="label" v-bind:item="item"></slot> <text class="da-tree-item__label--append"
             v-if="item.append">{{ item.append }}</text></view>
       </view>
     </scroll-view>
