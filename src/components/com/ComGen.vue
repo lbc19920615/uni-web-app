@@ -1,9 +1,8 @@
 <template>
-<view __eid__="id__2zne4v"  class="">{{state.items.length}}
-</view>
+
 <da-tree  :field="{ label: 'name', key: 'id' }" :data="state.items" class="h-740" defaultExpandAll>
 
-<template  v-slot:label="scope" class=""><view __eid__="id__1bint5"  class="">{{scope.item}}</view></template>
+<template  v-slot:label="scope" class="">{{scope.item}}</template>
 
 </da-tree>
 <button __eid__="id__zopstj"  class="" @click="state.add">button</button>

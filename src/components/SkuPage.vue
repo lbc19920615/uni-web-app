@@ -47,10 +47,9 @@
   </view>
 </template>
 
-<script setup lang="ts" auto>
+<script setup lang="ts">
 import { sleep } from "@/utils/time";
 import { useRefresh } from "@/hooks/useRefresh";
-import { mockListData } from "@/frame/mock";
 import apiTest from "@/api/apiTest";
 import { deepClone } from "@/utils/clone";
 

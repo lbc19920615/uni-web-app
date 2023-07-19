@@ -36,12 +36,12 @@
 }
 </style>
 
-<script setup lang="ts" auto>
+<script setup lang="ts">
 import UniNumberBox from "@/uni_modules/uni-number-box/components/uni-number-box/uni-number-box.vue";
 import NumberBox from "@/components/NumberBox.vue";
 
 let {proxy} = getCurrentInstance()
-let maxSkuBuyTotalNum = $app.globalData.shopConfig.maxSkuBuyTotalNum;
+let maxSkuBuyTotalNum = getApp().globalData.shopConfig.maxSkuBuyTotalNum;
 
 
 defineEmits(['item_change'])

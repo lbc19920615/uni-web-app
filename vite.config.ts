@@ -33,7 +33,7 @@ export default defineConfig({
         'uni-app',
         'pinia',
         {
-          '@/frame/app': ['$nid', '$mock'],
+          '@/frame/app': ['$nid', '$mock', '$getStore'],
           '@/helper/pinia-auto-refs': ['useStore'],
           '@/frame/serviceMan': ['HttpService'],
         }
