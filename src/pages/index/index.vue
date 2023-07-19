@@ -40,7 +40,9 @@
               </view>
             </view>
 
-            <view class="shop-act-section bgc-background height-240 mb-20" style="border-radius: 30rpx;">
+            <view class="shop-act-section bgc-background height-240 mb-20" 
+            @click="goToAct('act1')"
+            style="border-radius: 30rpx;">
               <view class="p-20">活动专区1</view>
             </view>
 
@@ -95,6 +97,14 @@ function openTest() {
 
 function goPage(item) {
   forward(item.path, {})
+}
+
+function goToAct(name) {
+  forward('act', {name})
+  // uni.navigateTo({
+  //   url: '/pages/test/act'
+  // });
+  
 }
 
 </script>

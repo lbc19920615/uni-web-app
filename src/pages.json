@@ -40,6 +40,14 @@
       "root": "pages/test",
       "pages": [
         {
+          "name": "act",
+          "path": "act",
+          "style": {
+            "navigationBarTitleText": "活动",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "name": "gen",
           "path": "gen",
           "style": {

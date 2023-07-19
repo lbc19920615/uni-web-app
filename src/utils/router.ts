@@ -35,6 +35,8 @@ export function forward(name: string, query: Types.Query = {}): any {
   if (needAuthPath.includes(name)) {
     return forward('login');
   }
+  console.log(pagesMap);
+  
   const targetPage = pagesMap.find((i) => i.name === name);
   if (!targetPage) return;
   const isReplace = query.replace;
@@ -42,11 +44,13 @@ export function forward(name: string, query: Types.Query = {}): any {
   const { type, path } = targetPage;
   const url = restoreUrl(path, query);
   const params = { url };
-  console.log(type,params);
+  console.log(type, targetPage, params);
   if (type === 'tabBarPage') {
     return uni.switchTab(params);
   }
   if (!isReplace) {
+    console.log(params);
+    
     return uni.navigateTo(params);
   }
   uni.redirectTo(params);
