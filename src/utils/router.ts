@@ -49,8 +49,7 @@ export function forward(name: string, query: Types.Query = {}): any {
     return uni.switchTab(params);
   }
   if (!isReplace) {
-    console.log(params);
-    
+    // console.log(params);
     return uni.navigateTo(params);
   }
   uni.redirectTo(params);

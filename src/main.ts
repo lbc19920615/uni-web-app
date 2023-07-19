@@ -5,7 +5,9 @@ import { createSSRApp } from 'vue';
 import zx from "@/uni_modules/zx";
 import App from './App.vue';
 import store from '@/store';
-
+// #ifdef MP-WEIXIN
+import "./polyfill.js"
+// #endif
 
 // 路由格式化
 import { spaNavigate } from '@/utils/navigate';
