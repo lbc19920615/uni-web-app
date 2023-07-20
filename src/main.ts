@@ -9,8 +9,8 @@ import store from '@/store';
 import "./polyfill.js"
 // #endif
 
-import {templateCalc} from "@/utils/calc"
-let a = templateCalc('1')
+// import {templateCalc} from "@/utils/calc"
+// let a = templateCalc('1')
 
 // 路由格式化
 import { spaNavigate } from '@/utils/navigate';

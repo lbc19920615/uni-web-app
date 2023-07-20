@@ -4,15 +4,15 @@
       {{ state.options }}
       <mp-html :content="state.html" :editable="true" @linktap="onLinkTap"></mp-html>
 
-      <view id="good" style="position: absolute; z-index: var(--result);">&nbsp;</view>
+      <view id="good" style="font-size: 12px; position: absolute; scale: var(--result);">&nbsp;</view>
     </view>
   </page-wrapper-detail>
 </template>
 
 <script setup lang="ts">
 import mpHtml from '@/components/mp-html/mp-html.vue'
-// import { sleep } from '@/utils/time'
-import { templateCalc } from '@/utils/calc'
+import { sleep } from '@/utils/time'
+// import { templateCalc } from '@/utils/calc'
 import { deepClone } from '@/utils/clone'
 let { proxy } = getCurrentInstance()
 import JSON5 from 'json5'
@@ -119,11 +119,11 @@ async function queryRect(key) {
       size: true,
       // scrollOffset: true,
       // properties: ['scrollX', 'scrollY'],
-      computedStyle: ['zIndex', 'backgroundColor'],
+      computedStyle: ['scale', 'fontSize', 'backgroundColor'],
     }, function (res) {
       console.log(res);
       
-      resolve(parseFloat(res.zIndex))
+      resolve(parseFloat(res.scale ) )
     }).exec();
   })
 }
@@ -134,7 +134,7 @@ let funMap = {
   main: {
     assignMents: [
       // ['fun', 'p3', ['fun1', ['p1']]],
-      ['assign', 'p1', `(@(fun,[1, '$gloA1']) + 1) + 1 + $gloA1`],
+      ['assign', 'p1', `(@(fun,[1, '$gloA1']) + 1) / $gloA1`],
       ['assign', 'p2', `@(str_append,['1', '2'])`],
       ['log', `hello p1: $p1`]
       // ['if', 'p1', '__if_fun1', '__if_fun2'],    
@@ -195,13 +195,15 @@ async function runFun(name, funContext = {}) {
         // val = templateCalc(newCssCode, {})
         if (['+', '-', '/', '*'].some(v => newCssCode.includes(v))) {
 
-          val = templateCalc(newCssCode, {})          
+          // val = templateCalc(newCssCode, {})          
+          
+          console.log(newCssCode);
           
           
             
-          // cssStyle.value = `--result: calc(${newCssCode})`;
-          // await sleep(30);
-          // val = await queryRect(key);
+          cssStyle.value = `--result: calc(${newCssCode})`;
+          await sleep(30);
+          val = await queryRect(key);
         }
         else {
           val = newCssCode
