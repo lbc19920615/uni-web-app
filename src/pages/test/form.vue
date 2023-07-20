@@ -43,6 +43,7 @@ import { field, required, defineSimpleForm, useSimpleForm, isArray, format, vali
 import { deepClone } from "@/utils/clone";
 import PageWrapperDetail from "@/components/pageWrapperDetail.vue";
 
+
 function validateEmail(rule,value,data,callback){
   if (typeof value === 'string') {
     if (!value.match(/\w+[^\s]+(\.[^\s]+){1,}/)) {

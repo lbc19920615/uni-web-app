@@ -1,9 +1,11 @@
 
-    import { injectStore } from "@/frame/storeMan";
+import { injectStore } from "@/frame/storeMan";
+import { mock } from "@/frame/mock";
+let $mock = mock
 
     
-  @injectStore('TestGen2_state')
-  class state {
+@injectStore('TestGen2_state')
+class state {
  a = 1;
  b = 2;
 get c() {
@@ -14,4 +16,4 @@ s() {
 }
 
 }
-  
+   

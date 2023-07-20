@@ -42,6 +42,7 @@
         {
           "name": "act",
           "path": "act",
+          "hide": true,
           "style": {
             "navigationBarTitleText": "活动",
             "navigationStyle": "custom"

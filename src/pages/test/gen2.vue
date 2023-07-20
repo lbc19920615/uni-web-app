@@ -1,4 +1,3 @@
-
 <template>
 
 <page-wrapper-detail>
@@ -18,12 +17,7 @@
 
 <script setup lang="ts">
 
-import * as f from "@/frame/formMan";
-import { $getStore,  $reqService, isNoneValue} from "@/frame/app";
-
-const $frame = {
-  f
-};
+import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
 
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
@@ -40,21 +34,16 @@ let submitForm  = function(ref) {
   })
 }
 
-onLoad(async () => {
-  let ret = await $reqService('some')
-  if (isNoneValue(ret)) return;
-  console.log(ret);
-})
 
 
 
 
         ;
-  let def = $frame.f.createFormContext('def', function({ context, field, required, isArray, format, validateFunction }) {
-    context.init([
-    ])
-    
-    class InnerCls {
+let def = $frame.f.createFormContext('def', function({ context, field, required, isArray, format, validateFunction }) {
+  context.init([
+  ])
+
+  class InnerCls {
   @required()
   @field('姓名')
   get name() {
@@ -75,12 +64,11 @@ onLoad(async () => {
     return []
   }
 }
+
+  return InnerCls
+})
   
-  
-    return InnerCls
-  })
-  
-  let {ins: state} = $getStore('TestGen2_state');
+let {ins: state} = $getStore('TestGen2_state');
   
         ;console.log($frame)
         
@@ -92,3 +80,7 @@ onLoad(async () => {
 
   
 </style>
+
+<script lang="ts">
+
+</script>
