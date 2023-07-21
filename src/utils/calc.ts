@@ -5,7 +5,7 @@ const operatorReg = /[()+\-/*]/g;
 
 const isStringReg = /^['"]{1}([^'"]*)['"]{1}/;
 
-const isConditionReg = /([^=\s]+)\s*([(==)(>=)(<=)><(!=)]+)\s*([^=\s]+)/;
+const isConditionReg = /([^=\s]+)\s*([(==)(>=)(<=)><(!=)(&&)(||)]+)\s*([^=\s]+)/;
 
 function getStringValue(key) {
     let matched = key.match(isStringReg)
@@ -16,7 +16,7 @@ function getStringValue(key) {
     return key
 }
 
-let EqMapFun = {
+let ConditionMapFun = {
     '==': function(left, right)  {
         return left === right
     },
@@ -34,6 +34,12 @@ let EqMapFun = {
     },
     '!=':  function(left, right)  {
         return left !== right
+    },
+    '&&':  function(left, right)  {
+        return left && right
+    },
+    '||':  function(left, right)  {
+        return left || right
     },
 }
 
@@ -92,11 +98,11 @@ const tokenToRpn = tokenList => {
                 let arr = token.match(isConditionReg)
                 // console.log(arr);
                 
-                if ( Array.isArray(arr) && arr[2] && EqMapFun[arr[2]]) {
+                if ( Array.isArray(arr) && arr[2] && ConditionMapFun[arr[2]]) {
                     let val1 =  getStringValue(arr[1])
                     let val2 =  getStringValue(arr[3])
 
-                    let val =  EqMapFun[arr[2]](val1, val2)
+                    let val =  ConditionMapFun[arr[2]](val1, val2)
                     outputs.push(
                        val
                     );
