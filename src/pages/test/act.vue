@@ -143,7 +143,7 @@ let funMap = {
       ['log', `hello p1: $p1`],
       ['assign', 's1', `(2 > 1) + 2`],
       // ['if', ['2 > 1', 'c2'], '__if_c1', '__if_c2',  '__if_else'],    
-      ['for', 10, '__loop_fun1']
+      // ['for', 10, '__loop_fun1']
     ],
   },
   fun1: {
