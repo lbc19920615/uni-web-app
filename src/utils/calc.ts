@@ -1,7 +1,41 @@
-import Big from 'big.js';
+// import Big from 'big.js';
 
 // 匹配加减乘除括号的正则
-const operatorReg = /[()+\-/* ]/g;
+const operatorReg = /[()+\-/*]/g;
+
+const isStringReg = /^['"]{1}([^'"]*)['"]{1}/;
+
+const isConditionReg = /([^=\s]+)\s*([(==)(>=)(<=)><(!=)]+)\s*([^=\s]+)/;
+
+function getStringValue(key) {
+    let matched = key.match(isStringReg)
+    if (matched) {
+        // console.log('is string', matched);
+        return matched[1]
+    }
+    return key
+}
+
+let EqMapFun = {
+    '==': function(left, right)  {
+        return left === right
+    },
+    '>=':  function(left, right)  {
+        return left >= right
+    },
+    '<=':  function(left, right)  {
+        return left <= right
+    },
+    '>':  function(left, right)  {
+        return left > right
+    },
+    '<':  function(left, right)  {
+        return left < right
+    },
+    '!=':  function(left, right)  {
+        return left !== right
+    },
+}
 
 /**
  * 将模板处理为 token 数组
@@ -17,7 +51,7 @@ const strToToken = str => {
         // 模板开头是操作数
         if (keys.length > 0 && temp.startsWith(keys[0])) {
             temp = temp.replace(keys[0], '');
-            tokens.push(keys.shift());
+            tokens.push(keys.shift().trim());
         }
         // 模板开头是操作符
         else {
@@ -49,10 +83,33 @@ const tokenToRpn = tokenList => {
     }
 
     const outputs = tokenList.reduce((outputs, token) => {
+    
+        
         // 如果是变量，直接输出
-        if (!token.match(operatorReg)) outputs.push(token);
+        if (!token.match(operatorReg)) {
+            if (token.match(isConditionReg)) {
+                // console.log('s');
+                let arr = token.match(isConditionReg)
+                // console.log(arr);
+                
+                if ( Array.isArray(arr) && arr[2] && EqMapFun[arr[2]]) {
+                    let val1 =  getStringValue(arr[1])
+                    let val2 =  getStringValue(arr[3])
+
+                    let val =  EqMapFun[arr[2]](val1, val2)
+                    outputs.push(
+                       val
+                    );
+                }
+            }
+            else {
+                outputs.push(token);
+            }
+        }
         // 如果是左括号，入操作符栈
-        else if (token === '(') operators.push(token);
+        else if (token === '(') {
+            operators.push(token);
+        }
         // 如果是右括号，把操作符弹出到遇见左括号
         else if (token === ')') {
             while (operators.length > 0) {
@@ -83,18 +140,29 @@ const tokenToRpn = tokenList => {
  * 运算符到实际操作的映射
  */
 const calculators = {
-    '+': (num1, num2) => (new Big(num1).plus(num2)),
-    '-': (num1, num2) => (new Big(num1).minus(num2)),
-    '*': (num1, num2) => (new Big(num1).times(num2)),
-    '/': (num1, num2) => (new Big(num1).div(num2))
+    // '+': (num1, num2) => (new Big(num1).plus(num2)),
+    // '-': (num1, num2) => (new Big(num1).minus(num2)),
+    // '*': (num1, num2) => (new Big(num1).times(num2)),
+    // '/': (num1, num2) => (new Big(num1).div(num2))
+    '+': (num1, num2) => (num1 + num2),
+    '-': (num1, num2) => (num1 - num2),
+    '*': (num1, num2) => (num1 * num2),
+    '/': (num1, num2) => (num1 / num2)
 }
 
 /**
  * 从数据集里获取对应的数据
  */
 const getValues = (key, values) => {
-    if (!key) return 0;
-    if (typeof key === 'string') return values[key] || Number(key) || 0;
+    if (!key) return 0;    
+    if (typeof key === 'boolean') {
+        return Number(key) || 0;
+    }
+    if (typeof key === 'string') {
+        // console.log(key);
+        let parsedKey = getStringValue(key)
+        return values[parsedKey] || Number(parsedKey) || 0;
+    }
     return key;
 }
 
@@ -111,11 +179,17 @@ const calcRpn = function(tokens, values) {
 
         if (!calculator) numarr.push(token);
         else {
+
             // 这两个值的创建顺序不能变，否则 pop 出来的值就反了
             const val2 = getValues(numarr.pop(), values);
             const val1 = getValues(numarr.pop(), values);
             const result = calculator(val1, val2);
-            numarr.push(result.toNumber());
+            let resultVal = result;
+            if (result.toNumber) {
+                resultVal = result.toNumber()
+            }
+
+            numarr.push(resultVal);
         }
     }
     return numarr.pop();
@@ -123,7 +197,11 @@ const calcRpn = function(tokens, values) {
 
 export const templateCalc = (template, values) => {
     const tokens = strToToken(template)
+    // console.log(tokens);
+
     const rpn = tokenToRpn(tokens)
+    // console.log(rpn);    
+
     const result = calcRpn(rpn, values)
 
     return result

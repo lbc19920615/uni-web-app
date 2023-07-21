@@ -4,7 +4,7 @@
       {{ state.options }}
       <mp-html :content="state.html" :editable="true" @linktap="onLinkTap"></mp-html>
 
-      <view id="good" style="font-size: 12px; position: absolute; scale: var(--result);">&nbsp;</view>
+      <view id="some_div" style="font-size: 12px; position: absolute; scale: var(--result);">&nbsp;</view>
     </view>
   </page-wrapper-detail>
 </template>
@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import mpHtml from '@/components/mp-html/mp-html.vue'
 import { sleep } from '@/utils/time'
-// import { templateCalc } from '@/utils/calc'
+import { templateCalc } from '@/utils/calc'
 import { deepClone } from '@/utils/clone'
 let { proxy } = getCurrentInstance()
 import JSON5 from 'json5'
@@ -84,46 +84,50 @@ async function makestyle(cssCode = '', funContext = {}) {
     let regexp = /@\(([^\)]*)\)/g
  
     let newCssCode =  parseArgs(cssCode, funContext)
-    let match = newCssCode.match(regexp)
+    let match = newCssCode.match(regexp);
+    // console.log(match);
+    
 
-    match.forEach(async (funcArgBody, funcIndex) => {
-      let funcNameRe = funcArgBody.match(/@\(([^,)]*)/)
-      let funcName = funcNameRe[1]
-      let args = funcArgBody.slice(funcNameRe[0].length).slice(1).slice(0, -1);
-      // console.log(funcArgBody);
-      // console.log(funcName);
-      // console.log(args);
-      if (functions[funcName]) {
-        let ret = await functions[funcName](...JSON5.parse(args));
-        // console.log(ret);
+    if (Array.isArray(match)) {
+      match.forEach(async (funcArgBody, funcIndex) => {
+        let funcNameRe = funcArgBody.match(/@\(([^,)]*)/)
+        let funcName = funcNameRe[1]
+        let args = funcArgBody.slice(funcNameRe[0].length).slice(1).slice(0, -1);
+        // console.log(funcArgBody);
+        // console.log(funcName);
+        // console.log(args);
+        if (functions[funcName]) {
+          let ret = await functions[funcName](...JSON5.parse(args));
+          // console.log(ret);
 
-        newCssCode = newCssCode.replace(funcArgBody, ret)
-      }
+          newCssCode = newCssCode.replace(funcArgBody, ret)
+        }
 
-      if (funcIndex > match.length - 2) {
-        resolve(newCssCode)
-      }
-    });
+        if (funcIndex > match.length - 2) {
+          resolve(newCssCode)
+        }
+      });
+    } else {
+      // console.log(newCssCode);
+      
+      resolve(newCssCode)
+    }
   })
 }
 
 
 async function queryRect(key) {
   return new Promise(resolve => {
-    // query.select('#good').boundingClientRect(function (data) {
-    //   console.log(`得到布局位置信息 ${key}` + JSON.stringify(data));
-    //   resolve(data.left)
-    // }).exec();
-    query.select('#good').fields({
+    query.select('#some_div').fields({
       // dataset: true,
       size: true,
       // scrollOffset: true,
       // properties: ['scrollX', 'scrollY'],
       computedStyle: ['scale', 'fontSize', 'backgroundColor'],
     }, function (res) {
-      console.log(res);
+      // console.log(res);
       
-      resolve(parseFloat(res.scale ) )
+      resolve(parseFloat(res.scale) )
     }).exec();
   })
 }
@@ -136,9 +140,10 @@ let funMap = {
       // ['fun', 'p3', ['fun1', ['p1']]],
       ['assign', 'p1', `(@(fun,[1, '$gloA1']) + 1) / $gloA1`],
       ['assign', 'p2', `@(str_append,['1', '2'])`],
-      ['log', `hello p1: $p1`]
-      // ['if', 'p1', '__if_fun1', '__if_fun2'],    
-      // ['for', 10, '__loop_fun1']
+      ['log', `hello p1: $p1`],
+      ['assign', 's1', `(2 > 1) + 2`],
+      // ['if', ['2 > 1', 'c2'], '__if_c1', '__if_c2',  '__if_else'],    
+      ['for', 10, '__loop_fun1']
     ],
   },
   fun1: {
@@ -152,21 +157,26 @@ let funMap = {
     ],
     outVars: ['fun1_p1']
   },
-  __if_fun1: {
+  __if_c1: {
     assignMents: [
-      ['assign', 'p1', `1px + @(fun,[1,2,"3"])`],
+      ['assign', 'p1', `1 + @(fun,[1,2,"3"])`],
     ],
     outVars: ['p1']
   },
-  __if_fun2: {
+  __if_c2: {
     assignMents: [
-      ['assign', 'p1', `1px + @(fun,[1,2,"3"])`],
+      ['assign', 'p1', `1 + @(fun,[1,2,"3"])`],
     ],
     outVars: ['p1']
+  },
+  __if_else: {
+    assignMents: [
+    ],
+    outVars: []
   },
   __loop_fun1: {
     assignMents: [
-      ['assign', 'p1', `1px + @(get,["p1"])`],
+      ['assign', 'p1', `1 + $p1`],
     ],
     outVars: ['p1']
   }
@@ -190,24 +200,22 @@ async function runFun(name, funContext = {}) {
       let type = assignMents[i][0]
       if (type === 'assign') {
         let [type, key, item] = assignMents[i]
-        let val = undefined
-        let newCssCode: any = await makestyle(item, funContext)
-        // val = templateCalc(newCssCode, {})
-        if (['+', '-', '/', '*'].some(v => newCssCode.includes(v))) {
+        let val = undefined;
+        // console.log(item);
+        let newCssStr: any = await makestyle(item, funContext);
 
-          // val = templateCalc(newCssCode, {})          
-          
-          console.log(newCssCode);
-          
-          
-            
-          cssStyle.value = `--result: calc(${newCssCode})`;
-          await sleep(30);
-          val = await queryRect(key);
+        if (['+', '-', '/', '*'].some(v => newCssStr.includes(v))) {
+          // cssStyle.value = `--result: calc(${newCssStr})`;
+          // await sleep(30);
+          // val = await queryRect(key);
+          val = templateCalc(newCssStr, {})
         }
         else {
-          val = newCssCode
+          val = newCssStr
         }
+
+        val = templateCalc(newCssStr, {})
+        
         // console.log(key, newCssCode, val);        
 
         yield [key, val];
@@ -229,8 +237,18 @@ async function runFun(name, funContext = {}) {
         yield [key, val]
       }
       else if (type === 'if') {
-        let [type, condition, fun1Name, fun2Name] = assignMents[i]
-        let funName = condition ? fun1Name : fun2Name;
+        let [type, conditions, ...functions] = assignMents[i]
+        let funNameIndex = -1;
+        conditions.some((condition, index) =>{
+          if (templateCalc(condition, {})) {
+            funNameIndex = index;
+            return true
+          } 
+          return false
+        });
+
+        let funName = functions.at(funNameIndex)
+
 
         // console.log(assignMents[i]);
         let objfunContext = deepClone(funContext)
@@ -315,9 +333,6 @@ function onLinkTap(e) {
 </script>
 
 <style lang="scss">
-//  .act-con {
-//     --text-color: rgb(67, 179, 179)
-//   }
 .act-con {
   --result: 0
 }
