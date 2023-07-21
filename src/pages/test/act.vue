@@ -148,7 +148,7 @@ let funMap = {
   },
   fun1: {
     assignMents: [
-      ['assign', 'fun1_p1', `(@(get,["a1"]) + 1px) + 1px + @(fun,[1,2,"3"])`],
+      ['assign', 'fun1_p1', `($a1 + 1) + 1 + @(fun,[1,2,"3"])`],
       // ['assign', 'return', `@(get,["p3"])`],
     ],
     params: [
