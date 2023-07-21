@@ -19,7 +19,7 @@ async function queryRect(key, query = uni.createSelectorQuery()) {
       // scrollOffset: true,
       // properties: ['scrollX', 'scrollY'],
       computedStyle: ['scale', 'fontSize', 'backgroundColor'],
-    }, function (res) {
+    }, function (res: any): void {
       // console.log(res);
 
       resolve(parseFloat(res.scale))
@@ -58,7 +58,7 @@ function parseArgs(argStr, funContext = {}) {
 }
 
 async function makestyle(cssCode = '', funContext = {}) {
-  // console.log(funContext);
+
   return new Promise(resolve => {
     let functions = {
       async fun(...args) {
@@ -66,9 +66,7 @@ async function makestyle(cssCode = '', funContext = {}) {
       },
       async get(...args) {
         let name = args[0]
-        // console.log(funContext[name]);
-
-        return (funContext[name] ?? 0) + 'px'
+        return (funContext[name] ?? 0)
       },
       str_append(...args) {
         let str = ''
@@ -146,12 +144,10 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           // }
 
           if (cssHack) {
-            cssHack()
+            val = await cssHack(newCssStr, funContext)
+          } else {
+            val = templateCalc(newCssStr, {})
           }
-
-          val = templateCalc(newCssStr, {})
-
-          // console.log(key, newCssCode, val);        
 
           yield [key, val];
         }
