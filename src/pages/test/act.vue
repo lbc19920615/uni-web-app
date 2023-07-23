@@ -30,12 +30,12 @@ let cssCalcContainer = initCssContainer({
     main: {
       assignMents: [
         // ['fun', 'p3', ['fun1', ['p1']]],
-        ['assign', 'p1', `(@(fun,[1, '$gloA1']) + 1) / $gloA1`],
+        ['assign', 'p1', `(@(fun,[1, $gloA1]) + 1) / $gloA1`],
         ['assign', 'p2', `@(str_append,['1', '2'])`],
         ['log', `hello p1: $p1`],
         ['assign', 's1', `(2 > 1) + 2`],
-        // ['if', ['2 > 1', 'c2'], '__if_c1', '__if_c2',  '__if_else'],    
-        // ['for', 10, '__loop_fun1']
+        // ['if', ['2 > 1', 'c2'], '__if_c1', '__if_c2',  '__if_else_empty'],    
+        ['for', 10, 'index', '__loop_fun1']
       ],
     },
     fun1: {
@@ -61,14 +61,23 @@ let cssCalcContainer = initCssContainer({
       ],
       outVars: ['p1']
     },
-    __if_else: {
+    __if_else_empty: {
       assignMents: [
+      ],
+      outVars: []
+    },
+    __loop_fun1_c1: {
+      assignMents: [
+        ['log', `hello LOOP_INDEX: $index`],
+        ['break']
       ],
       outVars: []
     },
     __loop_fun1: {
       assignMents: [
         ['assign', 'p1', `1 + $p1`],
+        // ['log', `hello LOOP_INDEX: $LOOP_INDEX`],
+        ['if', ['$index > 5'], '__loop_fun1_c1', '__if_else_empty']
       ],
       outVars: ['p1']
     }
@@ -83,7 +92,14 @@ onShow(() => {
   state.options = lastPage?.options || lastPage?.$page?.options;
 
   setTimeout(async () => {
-    await cssCalcContainer.runCalc()
+    try {
+      await cssCalcContainer.runCalc('main', {
+        gloA1: 3
+      })
+    } catch(e) {
+      console.log('cssCalcContainer error', e);
+      
+    }
   }, 50)
 })
 

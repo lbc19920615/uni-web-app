@@ -1,6 +1,6 @@
 <template>
   <page-wrapper-detail>
-    <view class="p-20">
+    <scroll-view class="height-1260" scroll-y>
       {{def.formData}}
       <uni-forms ref="dynamicForm2" :rules="def.rules" :modelValue="def.formData">
         <uni-forms-item label="姓名" name="name">
@@ -20,17 +20,36 @@
               class="mb-10"
               v-model="def.formData.domains[item.id]" placeholder="请输入域名" />
             <button
-                    @click="def.vmMap.domains.funDel(item.id, () => { funDeleteProperty(def.formData.domains, item.id) })">删除</button>
+                    @click="def.vmMap.domains.$del(item.id, () => { funDeleteProperty(def.formData.domains, item.id) })">删除</button>
           </view>
         </uni-forms-item>
+        <!-- {{ def.vmMap.objArr.list }} -->
+        <view  v-for="(item,index) in def.vmMap.objArr.list">
+            <!-- {{ item }} -->
+          <uni-forms-item
+                v-for="[propName, propDef] in item.props"
+                                :key="item.id + '__' + propName" 
+                                :label="item.label+' '+index + ' ' + propName"
+                                required :rules="propDef.rules" 
+                                :name="'objArr[' + index + '].' + propName">
+            <view class="form-item">
+              <uni-easyinput
+                class="mb-10"
+                v-model="def.formData.objArr[index][propName]" :placeholder="'请输入' + item.label + ' ' + propName" />
+            </view>
+          </uni-forms-item>
+          <button
+                    @click="def.vmMap.objArr.$del(item.id, () => { funDeleteProperty(def.formData.objArr, index) })">删除</button>
+        </view>
       </uni-forms>
 
       <view>
-        <button type="primary" class="mb-20"  @click="def.vmMap.domains.funAdd">新增域名</button>
+        <button type="primary" class="mb-20"  @click="def.vmMap.domains.$add">新增域名</button>
+        <button type="primary" class="mb-20"  @click="def.vmMap.objArr.$add(initObjarr)">新增obj</button>
         <button type="primary" class="mb-20"  @click="submitForm('dynamicForm2')">提交</button>
       </view>
 
-    </view>
+    </scroll-view>
   </page-wrapper-detail>
 </template>
 
@@ -44,6 +63,7 @@ import { deepClone } from "@/utils/clone";
 import PageWrapperDetail from "@/components/pageWrapperDetail.vue";
 
 
+
 function validateEmail(rule,value,data,callback){
   if (typeof value === 'string') {
     if (!value.match(/\w+[^\s]+(\.[^\s]+){1,}/)) {
@@ -51,6 +71,20 @@ function validateEmail(rule,value,data,callback){
     }
   }
   return true
+}
+
+
+function initObjarr(obj) {
+  // console.log(obj);
+  let ret = {}
+  if (Array.isArray(obj.props)) {
+    obj.props.forEach(([propName]) => {
+      ret[propName] = ''
+    })
+  }
+
+  def.formData.objArr.push(ret)
+
 }
 
 class A {
@@ -95,14 +129,29 @@ class A {
   get domains() {
     return {}
   }
+
+  @field('数组', {
+    dynamic: true, 
+    itemCls: 'ObjItem'
+  })
+  get objArr() {
+    return []
+  }
 }
 
 let def = useSimpleForm('A');
 
 console.log(def.formData);
 
-let funDeleteProperty = function(obj, id) {
-  Reflect.deleteProperty(obj, id)
+let funDeleteProperty = function(obj: any, ...args) {
+  console.log(obj, args);
+  
+  if (Array.isArray(obj)) {
+    obj.splice(args[0], 1)
+  }
+  else {
+    Reflect.deleteProperty(obj, args[0]);
+  }
 }
 
 

@@ -59,10 +59,16 @@ function parseArgs(argStr, funContext = {}) {
 
 async function makestyle(cssCode = '', funContext = {}) {
 
+  
   return new Promise(resolve => {
     let functions = {
       async fun(...args) {
-        return 1
+        console.log(this);
+        
+        if (Array.isArray(args) && args.length > 0) {
+          return args.at(-1)
+        }
+        return 0
       },
       async get(...args) {
         let name = args[0]
@@ -79,6 +85,8 @@ async function makestyle(cssCode = '', funContext = {}) {
 
     let regexp = /@\(([^\)]*)\)/g
 
+    // console.log(funContext);
+    
     let newCssCode = parseArgs(cssCode, funContext)
     let match = newCssCode.match(regexp);
     // console.log(match);
@@ -93,7 +101,10 @@ async function makestyle(cssCode = '', funContext = {}) {
         // console.log(funcName);
         // console.log(args);
         if (functions[funcName]) {
-          let ret = await functions[funcName](...JSON5.parse(args));
+          // let parsedArgs = parseArgs(args, funContext)
+          // console.log(args);
+          
+          let ret = await functions[funcName].bind({})(...JSON5.parse(args));
           // console.log(ret);
 
           newCssCode = newCssCode.replace(funcArgBody, ret)
@@ -112,6 +123,15 @@ async function makestyle(cssCode = '', funContext = {}) {
 }
 
 
+let BreakFLagSymbol = Symbol('BreakFLag');
+
+
+let curRunCalcPoint = {
+  context: null,
+  name: ''
+}
+
+
 export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
   async function runCalc(name = 'main', funContext = {}) {
 
@@ -119,12 +139,21 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
       throw new Error(`no fun ${name}`)
     }
 
+    curRunCalcPoint = {
+      context: funContext,
+      name: name
+    }
+
     let curFun = cssMap[name]
     let assignMents = curFun?.assignMents
     let outVars = curFun.outVars ?? []
+    let hasBreak = false;
+
 
     async function* __run() {
-      for (let i = 0; i < assignMents.length; i++) {
+
+      for (let i = 0; i < assignMents.length; i++) {    
+        
         // console.log(funContext);
         let type = assignMents[i][0]
         if (type === 'assign') {
@@ -171,12 +200,18 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           let [type, conditions, ...functions] = assignMents[i]
           let funNameIndex = -1;
           conditions.some((condition, index) => {
-            if (templateCalc(condition, {})) {
+            let newStr = parseArgs(condition, funContext);
+            console.log(newStr);
+            
+            if (templateCalc(newStr, {})) {
               funNameIndex = index;
               return true
             }
             return false
           });
+
+          // console.log(funNameIndex);
+          
 
           let funName = functions.at(funNameIndex)
 
@@ -188,18 +223,34 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           let outVars = fun.outVars ?? [];
           outVars.forEach(key => {
             funContext[key] = objfunContext[key]
-          })
+          });
+
+          // console.log(val);
+
+          if (val === BreakFLagSymbol) {
+            hasBreak = true
+          }
         }
         else if (type === 'for') {
-          let [type, condition, funName] = assignMents[i]
+          let [type, max, indexName = 'LOOP_INDEX', funName] = assignMents[i]
           let fun = cssMap[funName]
-          let objfunContext = deepClone(funContext)
+          let objfunContext: any = deepClone(funContext)
           let outVars = fun.outVars ?? [];
-          for (let i = 0; i < condition; i++) {
+          for (let i = 0; i < max; i++) {
+            objfunContext[indexName]  = i;
             let val = await runCalc(funName, objfunContext);
             outVars.forEach(key => {
               objfunContext[key] = objfunContext[key]
             })
+
+            // console.log(val);
+            
+            if (val === BreakFLagSymbol) {
+               console.log('for break');
+              //  throw new Error(`no fun ${curRunCalcPoint.name}`)
+              //  return Promise.reject('sss')
+               break;
+            }
           }
 
           outVars.forEach(key => {
@@ -220,6 +271,11 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
 
           console.log(...result);
         }
+        else if (type === 'break') {
+          // console.log(funContext, curRunCalcPoint);
+          
+          yield BreakFLagSymbol
+        }
         else {
           yield undefined
         }
@@ -228,21 +284,34 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
 
 
     // let ret;
-    for await (const ret of __run()) {
-      // console.log(`yield ${name}`, num);
-      // Expected output: 1
-      // ret = num
-      if (Array.isArray(ret)) {
-        let [key, val] = ret
-        funContext[key] = val
+    try {
+      for await (const ret of __run()) {
+        // console.log(`yield ${name}`, num);
+        // Expected output: 1
+        // ret = num
+        if (Array.isArray(ret)) {
+          let [key, val] = ret
+          funContext[key] = val
+        }
+        if (ret === BreakFLagSymbol) {
+          hasBreak = true
+        }
       }
+    } catch(e) {
+      console.log('error', e);      
+      throw e;
     }
 
-    console.log(funContext);
+    if (hasBreak) {
+      return BreakFLagSymbol
+    }
+
+    // console.log(funContext);
 
 
     return funContext[outVars[0]]
   }
+
   return {
     runCalc
   }

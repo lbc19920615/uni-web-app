@@ -1,10 +1,11 @@
 import { deepClone } from "@/utils/clone";
-import { UnwrapNestedRefs } from "@vue/reactivity";
+import { getObj } from "@/utils/collection";
+import Nid from "nid";
 
 let currentDef = {}
 let cacheDefs = {}
 
-// console.log(cacheDefs);
+// console.log(cacheDefs)
 
 function commonFormat(formatType, value: any) {
   if (formatType === 'number') {
@@ -51,14 +52,16 @@ export function isArray({itemType = '', min = 0} = {}) {
   }
 }
 
-export function field(label = '', {dynamic = false} ={}) {
+export function field(label = '', {dynamic = false, props = {}, itemCls =  null} ={}) {
   // console.log("first(): factory evaluated");
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     // console.log("first(): called", currentDef);
     currentDef[propertyKey] = {
       rules: [],
       label: label ?? propertyKey,
-      initValue: descriptor.get()
+      initValue: descriptor.get(),
+      props,
+      itemCls
     }
     if (dynamic) {
       currentDef[propertyKey].vmType = 'arrayVmTpl'
@@ -68,6 +71,7 @@ export function field(label = '', {dynamic = false} ={}) {
 }
 
 export function required() {
+
   // console.log("second(): factory evaluated");
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     currentDef[propertyKey].rules.push({
@@ -78,6 +82,13 @@ export function required() {
 }
 
 type MixinConfig = String | [String, any]
+
+export function initForm(name) {
+  return function(target, key) {
+    // console.log('111', target.constructor, key);
+    defineSimpleForm(name, target.constructor)
+  }
+}
 
 /**
  *
@@ -206,16 +217,17 @@ export function initSimpleForm(name, { mixins= [] } = {}) {
   return currentDef
 }
 
-interface RuleOption {
+interface RuleOption extends Record<any, any> {
   rules: Array<any>,
   label: String,
   vmType: String | undefined,
-  initValue: any
+  initValue: any,
+  props: Array<any> | undefined
 }
 
 interface SimpleFormInf extends Record<any, any>{
   rules: Record<any, any>
-  formData: UnwrapNestedRefs<Object>
+  formData: Record<string, any>
   vmMap: Record<any, any>
   getFormData(): Record<any, any>
   reset(): Void<any>
@@ -229,6 +241,7 @@ export function useSimpleForm(name) {
     rules: {},
     formData: reactive(record),
     vmMap: {},
+    optMap: {},
     // @ts-ignore
     getFormData(){},
     reset(){},
@@ -238,32 +251,77 @@ export function useSimpleForm(name) {
   let defs = deepClone(cacheDefs[name])
 
   Object.entries(defs).forEach(([key, def]: [string, RuleOption]) => {
+    obj.optMap[key] = def;
     if (def?.vmType === 'arrayVmTpl') {
+      
       obj.vmMap[key] = (function() {
         let list = reactive([])
 
-        function funAdd() {
-          let obj: Record<any, any> = {
+
+        function $item(def) {
+          // console.log(obj);
+          let ret = {}
+          if (Array.isArray(def.props)) {
+            def.props.forEach(([propName]) => {
+              ret[propName] = ''
+            })
+          }
+          return ret;
+        }
+
+        function $add(item, afterCb: Function) {
+          let newDef: Record<any, any> = {
             label:  def.label,
-            rules:  def.rules
+            rules:  def.rules,
+            props:  def.props ?? []
           }
-          obj.id = Date.now()
-          list.push(obj)
-        }
+          if (def?.itemCls) {
+            let clsName = def?.itemCls
+            let clsDef = cacheDefs[clsName]
+            newDef.props = Object.entries(clsDef) 
+          }
+          newDef.id = Nid(10);
+          list.push(newDef);
 
-        function funDel(id, afterCb: Function) {
-          let index = list.findIndex(v => v.id === id)
-          list.splice(index, 1);
+          /**
+           * init data
+           */
+          let target = getObj(obj.formData, [key]);
+          if (target) {
+            target.push(item ?? $item(newDef))
+          }
           if (afterCb) {
-            afterCb()
+            afterCb(newDef, ctx, list)
           }
         }
 
-        return {
-          list,
-          funAdd,
-          funDel,
+        function $del(id,  afterCb: Function) {
+          let index = list.findIndex(v => v.id === id);
+          // console.log(index, id, list);
+          
+          if (index > -1) {
+            list.splice(index, 1);
+            let target = getObj(obj.formData, [key]);
+            // console.log(id, list, target, index);
+            
+            if (target) {
+              target.splice(index, 1)
+            }
+            if (afterCb) {
+              afterCb()
+            }
+          }
+
         }
+
+        var ctx = {
+          list,
+          $item,
+          $add,
+          $del,
+        }
+
+        return ctx;
       })();
     }
   })
@@ -289,6 +347,15 @@ export function useSimpleForm(name) {
     return formData
   }
 
+  function formatObjData(originItem: Record<any, any>, itemDef: RuleOption) {
+    let newObj = {}
+    Object.entries(originItem).forEach(([key, item]: [string, any]) => {
+      let formatType = itemDef.formatType
+      newObj[key] = commonFormat(formatType, item)
+    })
+    return newObj;
+  }
+
   /**
    * 设置
    * @param data
@@ -296,8 +363,20 @@ export function useSimpleForm(name) {
   obj.setFormData = function(data) {
     Object.entries(data).forEach(([key, item]: [string, any]) => {
       let formatType = defs[key].formatType
-      // console.log(obj.formData);
-      obj.formData[key] = commonFormat(formatType, data[key])
+     
+      // console.log(defs[key]);
+      
+      if (defs[key].vmType === "arrayVmTpl") {
+        let itemDef = cacheDefs[defs[key].itemCls]
+        // console.log(itemDef);
+        data[key].forEach(item => {
+          obj.vmMap[key].$add(formatObjData(item, itemDef))
+        })
+
+      } else {
+        obj.formData[key] = commonFormat(formatType, data[key])
+      }
+      // console.log( defs[key], obj);
     })
   }
 

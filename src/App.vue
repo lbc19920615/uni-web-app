@@ -1,4 +1,4 @@
-<script setup lang="ts" auto>
+<script setup lang="ts">
 import { onHide, onLaunch, onShow } from '@dcloudio/uni-app';
 import Button from "@/uni_modules/uv-ui-tools/libs/mixin/button";
 import { $getStore } from "@/frame/app";
@@ -146,7 +146,7 @@ radio  .wx-radio-input.wx-radio-input-checked {
 <!-- #endif -->
 
 
-@import "@/uni_modules/zx/index.scss";
+@import "@/frame/zx/index.scss";
 
 
 .text-thirdly {

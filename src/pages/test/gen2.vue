@@ -1,16 +1,33 @@
 <template>
 
 <page-wrapper-detail>
-<scroll-view __eid__="id111"  scroll-y="true" class="h-full">
-  <uni-forms  ref="form" form="def" :rules="def.rules" :modelValue="def.formData" class="overflow-hidden height-260" @click="">
+<scroll-view __eid__="id111"  scroll-y="true" class="h-full height-1350"><view __eid__="id__894a5o"  class="">{{ def.formData }}</view>
+  <uni-forms  ref="form" form="def" :rules="def.rules" :modelValue="def.formData" class="overflow-hidden" @click="">
     
-  <uni-forms-item label="姓名11" name="name">
+  <uni-forms-item :label="def.optMap.name.label" name="name">
     <uni-easyinput v-model="def.formData.name" 
-    type="text" placeholder="请输入姓名11" />
+    type="text" :placeholder="'请输入' + def.optMap.name.label" />
   </uni-forms-item>
   
+  <view  v-for='(item,index) in def.vmMap.objArr.list'>
+    <uni-forms-item v-for="[propName, propDef] in item.props"
+                    :key="item.id + '__' + propName" 
+                    :label="item.label +' ' +index + ' ' + propName"
+                    :rules="propDef.rules" 
+                    :name="'objArr[' + index + '].' + propName">
+      <view class="form-item">
+        <uni-easyinput
+          class="mb-10"
+          v-model="def.formData.objArr[index][propName]" 
+          :placeholder="'请输入' + item.label + ' ' + propName" /> 
+      </view>
+    </uni-forms-item>
+     
+    <view __eid__="id__hoyu09" class=""><button __eid__="id__nygr7e" class="" @click="def.vmMap.objArr.$del(item.id)">删除</button></view>
+  </view>
+  
   </uni-forms>
-  <button __eid__="id__dzukp4"  @click="function() {submitForm('form')}" class="">保存</button></scroll-view>
+  <button __eid__="id__dzukp4"  @click="function() {submitForm('form')}" class="">保存</button><button __eid__="id__ptcc3m"  class="" @click="def.vmMap.objArr.$add">arritem</button></scroll-view>
 </page-wrapper-detail>
   
 </template>
@@ -63,6 +80,14 @@ let def = $frame.f.createFormContext('def', function({ context, field, required,
   get hobby() {
     return []
   }
+
+  @field('数组', {
+    dynamic: true, 
+    itemCls: 'ObjItem'
+  })
+  get objArr() {
+    return []
+  }
 }
 
   return InnerCls
@@ -70,7 +95,22 @@ let def = $frame.f.createFormContext('def', function({ context, field, required,
   
 let {ins: state} = $getStore('TestGen2_state');
   
-        ;console.log($frame)
+        ;onLoad(() => {
+  let form =  $page.$refs['form'];
+
+  def.setFormData({
+    objArr: [
+      {
+        name1: '11',
+        name2: '22'
+      },
+      {
+        name1: '1223231',
+        name2: '22'
+      }
+    ]
+  })
+})
         
 
 </script>

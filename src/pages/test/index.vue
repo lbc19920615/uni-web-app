@@ -38,7 +38,7 @@
   </pageWrapper>
 </template>
 
-<script setup lang="ts" auto>
+<script setup lang="ts">
 import pageWrapper from "@/components/pageWrapper.vue"
 import { forward } from '@/utils/router';
 import { useModal } from '@/uni_modules/zx'

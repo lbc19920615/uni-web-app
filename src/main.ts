@@ -2,7 +2,7 @@ import 'uno.css';
 import './extend.js'
 // @ts-ignore
 import { createSSRApp } from 'vue';
-import zx from "@/uni_modules/zx";
+import zx from "./frame/zx";
 import App from './App.vue';
 import store from '@/store';
 // #ifdef MP-WEIXIN
@@ -14,6 +14,7 @@ import "./polyfill.js"
 
 // 路由格式化
 import { spaNavigate } from '@/utils/navigate';
+
 const _oldnavigateBack = uni.navigateBack;
 uni.navigateBack = function (args, ...rest) {
   spaNavigate(function(){
