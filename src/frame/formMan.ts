@@ -28,7 +28,6 @@ export function validateFunction(fun: Function, {} ={}) {
   }
 }
 
-
 export function format(type = '', {} ={}) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     currentDef[propertyKey].rules.push({
@@ -181,7 +180,6 @@ export function defineSimpleForm(name, target: any, { mixins= [] } = {}) {
   return currentDef
 }
 
-
 export function initSimpleForm(name, { mixins= [] } = {}) {
   // console.log('entry', name, context);
   // if (cacheDefs[name]) {
@@ -257,13 +255,12 @@ export function useSimpleForm(name) {
       obj.vmMap[key] = (function() {
         let list = reactive([])
 
-
         function $item(def) {
           // console.log(obj);
           let ret = {}
           if (Array.isArray(def.props)) {
-            def.props.forEach(([propName]) => {
-              ret[propName] = ''
+            def.props.forEach(([propName, propDef]: [string, RuleOption]) => {
+              ret[propName] = propDef.initValue
             })
           }
           return ret;
@@ -286,10 +283,19 @@ export function useSimpleForm(name) {
           /**
            * init data
            */
-          let target = getObj(obj.formData, [key]);
-          if (target) {
-            target.push(item ?? $item(newDef))
-          }
+    
+            let target = getObj(obj.formData, [key]);
+            if (target) {
+              if (def.itemCls) {
+                target.push(item ?? $item(newDef))
+              }
+              else {
+                // console.log(def);
+                
+                target.push(item ?? commonFormat(def.formatType, item) ?? '')
+              }
+            }
+          
           if (afterCb) {
             afterCb(newDef, ctx, list)
           }
@@ -367,11 +373,20 @@ export function useSimpleForm(name) {
       // console.log(defs[key]);
       
       if (defs[key].vmType === "arrayVmTpl") {
-        let itemDef = cacheDefs[defs[key].itemCls]
-        // console.log(itemDef);
-        data[key].forEach(item => {
-          obj.vmMap[key].$add(formatObjData(item, itemDef))
-        })
+        if (defs[key].itemCls) {
+          let itemDef = cacheDefs[defs[key].itemCls]
+          // console.log(itemDef);
+          data[key].forEach(item => {
+            obj.vmMap[key].$add(formatObjData(item, itemDef))
+          })
+        }
+        else {
+          data[key].forEach(item => {
+            obj.vmMap[key].$add(item, function() {
+              
+            })
+          })
+        }
 
       } else {
         obj.formData[key] = commonFormat(formatType, data[key])
@@ -384,7 +399,6 @@ export function useSimpleForm(name) {
   return obj
 }
 
-
 export function createFormContext(formName = '', cb: Function) {
   let context = {
     cls: null,
@@ -396,12 +410,10 @@ export function createFormContext(formName = '', cb: Function) {
     }
   }
 
-
  let cls = cb({ field, required, defineSimpleForm, useSimpleForm, isArray, format, validateFunction, context })
 
 // console.log(context.cls);
   context.start(cls)
-
 
  return useSimpleForm(formName);
 }

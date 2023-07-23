@@ -14,18 +14,16 @@
         </uni-forms-item>
         <uni-forms-item v-for="(item,index) in def.vmMap.domains.list"
                         :key="item.id" :label="item.label+' '+item.id"
-                        required :rules="item.rules" :name="'domains[' + item.id + ']'">
+                        required :rules="item.rules" :name="'domains[' + index + ']'">
           <view class="form-item">
             <uni-easyinput
               class="mb-10"
-              v-model="def.formData.domains[item.id]" placeholder="请输入域名" />
+              v-model="def.formData.domains[index]" placeholder="请输入域名" />
             <button
-                    @click="def.vmMap.domains.$del(item.id, () => { funDeleteProperty(def.formData.domains, item.id) })">删除</button>
+                    @click="def.vmMap.domains.$del(item.id)">删除</button>
           </view>
         </uni-forms-item>
-        <!-- {{ def.vmMap.objArr.list }} -->
         <view  v-for="(item,index) in def.vmMap.objArr.list">
-            <!-- {{ item }} -->
           <uni-forms-item
                 v-for="[propName, propDef] in item.props"
                                 :key="item.id + '__' + propName" 
@@ -39,13 +37,13 @@
             </view>
           </uni-forms-item>
           <button
-                    @click="def.vmMap.objArr.$del(item.id, () => { funDeleteProperty(def.formData.objArr, index) })">删除</button>
+                    @click="def.vmMap.objArr.$del(item.id)">删除</button>
         </view>
       </uni-forms>
 
       <view>
-        <button type="primary" class="mb-20"  @click="def.vmMap.domains.$add">新增域名</button>
-        <button type="primary" class="mb-20"  @click="def.vmMap.objArr.$add(initObjarr)">新增obj</button>
+        <button type="primary" class="mb-20"  @click="def.vmMap.domains.$add()">新增域名</button>
+        <button type="primary" class="mb-20"  @click="def.vmMap.objArr.$add()">新增obj</button>
         <button type="primary" class="mb-20"  @click="submitForm('dynamicForm2')">提交</button>
       </view>
 
@@ -127,7 +125,7 @@ class A {
   @required()
   @field('域名', {dynamic: true})
   get domains() {
-    return {}
+    return []
   }
 
   @field('数组', {
@@ -184,9 +182,10 @@ function submitForm(ref) {
 // 业务代码
 setTimeout(() => {
   def.setFormData({
-    age: "1111"
+    age: "1111",
+    domains: ['1111']
   })
-}, 1000)
+}, 500)
 </script>
 
 <style lang="scss">
