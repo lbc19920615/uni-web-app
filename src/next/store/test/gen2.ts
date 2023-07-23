@@ -15,5 +15,15 @@ s() {
   this.a = this.a + 1
 }
 
+  hobby = [
+    {
+      text: '111',
+      value: '111'
+    },
+    {
+      text: '222',
+      value: '222'
+    }
+  ]
 }
    

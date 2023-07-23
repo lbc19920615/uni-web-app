@@ -3,10 +3,13 @@
 <page-wrapper-detail>
 <scroll-view __eid__="id111"  scroll-y="true" class="h-full height-1350"><view __eid__="id__894a5o"  class="">{{ def.formData }}</view>
   <uni-forms  ref="form" form="def" :rules="def.rules" :modelValue="def.formData" class="overflow-hidden" @click="">
-    
+    <view __eid__="_custom" ></view>
   <uni-forms-item :label="def.optMap.name.label" name="name">
-    <uni-easyinput v-model="def.formData.name" 
-    type="text" :placeholder="'请输入' + def.optMap.name.label" />
+    <uni-easyinput v-model="def.formData.name" type="text" :placeholder="'请输入' + def.optMap.name.label" />
+  </uni-forms-item>
+  
+  <uni-forms-item :label="def.optMap.hobby.label" name="hobby">
+    <uni-data-checkbox multiple v-model="def.formData.hobby" :localdata="state.hobby"/>
   </uni-forms-item>
   
   <view  v-for='(item,index) in def.vmMap.objArr.list'>
@@ -22,12 +25,12 @@
           :placeholder="'请输入' + item.label + ' ' + propName" /> 
       </view>
     </uni-forms-item>
-     
-    <view __eid__="id__hoyu09" class=""><button __eid__="id__nygr7e" class="" @click="def.vmMap.objArr.$del(item.id)">删除</button></view>
+    <view __eid__="id__hoyu09" class=""><button __eid__="id__nygr7e" class="" @click="def.vmMap.objArr.$del(item.id)">删除</button></view> 
+    <view __eid__="_custom"></view>
   </view>
   
   </uni-forms>
-  <button __eid__="id__dzukp4"  @click="function() {submitForm('form')}" class="">保存</button><button __eid__="id__ptcc3m"  class="" @click="def.vmMap.objArr.$add">arritem</button></scroll-view>
+  <button __eid__="id__dzukp4"  @click="function() {submitForm('form')}" class="">保存</button><button __eid__="id__ptcc3m"  class="" @click="def.vmMap.objArr.$add()">arritem</button></scroll-view>
 </page-wrapper-detail>
   
 </template>
@@ -96,20 +99,7 @@ let def = $frame.f.createFormContext('def', function({ context, field, required,
 let {ins: state} = $getStore('TestGen2_state');
   
         ;onLoad(() => {
-  let form =  $page.$refs['form'];
-
-  def.setFormData({
-    objArr: [
-      {
-        name1: '11',
-        name2: '22'
-      },
-      {
-        name1: '1223231',
-        name2: '22'
-      }
-    ]
-  })
+  let form =  $page.$refs['form']
 })
         
 
