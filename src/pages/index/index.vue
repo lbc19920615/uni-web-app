@@ -2,8 +2,12 @@
 <template>
 
 
-  <pageWrapper :show-nav="false" >
-    <view class="h-full overflow-hidden">
+  <pageWrapper :show-nav="false"   >
+
+
+    <view class="h-full overflow-hidden" >
+
+
       <scroll-view class="h-full" scroll-y>
        <view class="bgc-black  height-750">
         <video id="myVideo"
@@ -18,10 +22,13 @@
       </view>
 
       <view class="position-absolute w-full p-40 pt-0"
+
             style="left: 0; top:650rpx; box-sizing: border-box; z-index: 100">
 
 <!--            <view style="height: 650rpx; pointer-events: none">&nbsp;</view>-->
-            <view class="bgc-background rounded-3xl pb-30 mb-20">
+            <view class="bgc-background rounded-3xl pb-30 mb-20"
+            >
+
               <view class="flex items-center justify-between w-full p-20" style=" box-sizing: border-box;">
                 <view>微信用户</view>
                 <view>优惠券&nbsp;10张</view>
@@ -72,7 +79,7 @@
 import { $getStore } from "@/frame/app";
 import pageWrapper from "@/components/pageWrapper.vue"
 import { forward } from '@/utils/router';
-import { useModal } from '@/uni_modules/zx'
+import { useModal } from '@/frame/zx'
 import { cacheStore } from "@/frame/storeMan";
 import { openWebview } from "@/utils/navigate";
 

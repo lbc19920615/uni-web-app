@@ -1,5 +1,22 @@
 // import Big from 'big.js';
 
+let n1 = ((-~{}) + '');
+let n2 = ((-~{})+(-~{}) + '');
+let n3 = ((-~{})+(-~{})+(-~{})+'');
+let n4 = ((-~{})+(-~{})+(-~{})+(-~{})+'');
+let n5 = ((-~{})+(-~{})+(-~{})+(-~{})+(-~{})+'');
+let n6 = ((-~{})+(-~{})+(-~{})+(-~{})+(-~{})+(-~{})+'');
+let n7 = ((-~{})+(-~{})+(-~{})+(-~{})+(-~{})+(-~{})+(-~{})+'');
+let n8 = ((-~{})+(-~{})+(-~{})+(-~{})+(-~{})+(-~{})+(-~{})+(-~{})+'');
+let n9 = ((-~{})+(-~{})+(-~{})+(-~{})+(-~{})+(-~{})+(-~{})+(-~{})+(-~{})+'');
+
+
+let s1 = String.fromCodePoint(Number(n4 + n3))
+let s2 = String.fromCodePoint(Number(n4 + n5))
+let s3 = String.fromCodePoint(Number(n4 + n2))
+let s4 = String.fromCodePoint(Number(n4 + n7))
+
+
 // 匹配加减乘除括号的正则
 const operatorReg = /[()+\-/*]/g;
 
@@ -150,10 +167,10 @@ const calculators = {
     // '-': (num1, num2) => (new Big(num1).minus(num2)),
     // '*': (num1, num2) => (new Big(num1).times(num2)),
     // '/': (num1, num2) => (new Big(num1).div(num2))
-    '+': (num1, num2) => (num1 + num2),
-    '-': (num1, num2) => (num1 - num2),
-    '*': (num1, num2) => (num1 * num2),
-    '/': (num1, num2) => (num1 / num2)
+    [s1]: (num1, num2) => (num1 + num2),
+    [s2]: (num1, num2) => (num1 - num2),
+    [s3]: (num1, num2) => (num1 * num2),
+    [s4]: (num1, num2) => (num1 / num2)
 }
 
 /**

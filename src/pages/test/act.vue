@@ -2,7 +2,13 @@
   <page-wrapper-detail>
     <view class="act-con" :style="cssStyle">
       {{ state.options }}
-      <mp-html :content="state.html" :editable="true" @linktap="onLinkTap"></mp-html>
+
+      <scroll-view style="height: 600rpx;" scroll-y>
+        <view class="grid  grid-cols-10">
+          <view v-for="code in strCodeArr">{{ code }}</view>
+        </view>
+      </scroll-view>
+      <!-- <mp-html :content="state.html" :editable="true" @linktap="onLinkTap"></mp-html> -->
 
       <view id="some_div" style="font-size: 12px; position: absolute; scale: var(--result);">&nbsp;</view>
     </view>
@@ -10,10 +16,12 @@
 </template>
 
 <script setup lang="ts">
-import mpHtml from '@/components/mp-html/mp-html.vue'
+// import mpHtml from '@/components/mp-html/mp-html.vue'
 // import { sleep } from '@/utils/time'
 
 let { proxy } = getCurrentInstance()
+
+// import {strCodeArr} from "@/utils/code"
 
 import {initCssContainer} from "@/utils/style"
 
