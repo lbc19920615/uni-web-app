@@ -1,8 +1,9 @@
 import { deepClone } from "@/utils/clone";
 import { getObj } from "@/utils/collection";
 import Nid from "nid";
-import { forEach } from './../uni_modules/uv-ui-tools/libs/luch-request/utils';
 import { isObject } from "@/utils/is";
+import { field } from '@/frame/formMan';
+import { format } from '@/frame/formMan';
 
 let currentDef = {}
 let cacheDefs = {}
@@ -22,6 +23,14 @@ export let Utils = {
   commonFormat
 }
 
+function createFormat(propertyKey, type) {
+  currentDef[propertyKey].rules.push({
+    format: type,
+    errorMessage: `${currentDef[propertyKey].label}项应该为${type}类型`
+  })
+  currentDef[propertyKey].formatType = type
+}
+
 export function validateFunction(fun: Function, {} ={}) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     currentDef[propertyKey].rules.push({
@@ -32,11 +41,7 @@ export function validateFunction(fun: Function, {} ={}) {
 
 export function format(type = '', {} ={}) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    currentDef[propertyKey].rules.push({
-      format: type,
-      errorMessage: `${currentDef[propertyKey].label}项应该为${type}类型`
-    })
-    currentDef[propertyKey].formatType = type
+    createFormat(propertyKey, type)
   }
 }
 
@@ -53,33 +58,65 @@ export function isArray({itemType = '', min = 0} = {}) {
   }
 }
 
-export function field(label = '', {dynamic = false, widgetType = 'text', props = {}, itemCls =  null} ={}) {
+function createField(label = '', propertyKey, initValue, {dynamic = false, widgetType = 'text', props = {}, itemCls =  null} ={}) {
+  currentDef[propertyKey] = {
+    rules: [],
+    label: label ?? propertyKey,
+    initValue: initValue,
+    widgetType,
+    props,
+    itemCls
+  }
+  if (dynamic) {
+    currentDef[propertyKey].vmType = 'arrayVmTpl'
+    // currentDef[propertyKey].vm.add()
+  }
+}
+
+function createRequired(propertyKey) {
+  currentDef[propertyKey].rules.push({
+    'required': true,
+    errorMessage: `${currentDef[propertyKey].label}项必填`
+  })
+}
+
+export let esObj = {
+  field: null,
+  required: null,
+  format: null
+}
+esObj.field  = function(label = '', option) {
+  return function(value, context) {
+    // console.log(value, context.access.get());
+    createField(label, context.name, context.access.get(), option)
+  }
+}
+
+esObj.required  = function() {
+  return function(value, context) {
+    // console.log(value, context.access.get());
+    createRequired(context.name)
+  }
+}
+
+esObj.format = function(type) {
+  return function(value, context) {
+    createFormat(context.name, type)
+  }
+}
+
+export function field(label = '', option) {
   // console.log("first(): factory evaluated");
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     // console.log("first(): called", currentDef);
-    currentDef[propertyKey] = {
-      rules: [],
-      label: label ?? propertyKey,
-      initValue: descriptor.get(),
-      widgetType,
-      props,
-      itemCls
-    }
-    if (dynamic) {
-      currentDef[propertyKey].vmType = 'arrayVmTpl'
-      // currentDef[propertyKey].vm.add()
-    }
+    createField(label, propertyKey, descriptor.get(), option)
   };
 }
 
 export function required() {
-
   // console.log("second(): factory evaluated");
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    currentDef[propertyKey].rules.push({
-      'required': true,
-      errorMessage: `${currentDef[propertyKey].label}项必填`
-    })
+    createRequired(propertyKey)
   };
 }
 

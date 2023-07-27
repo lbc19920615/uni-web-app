@@ -47,6 +47,28 @@ export default defineConfig({
       extensions: ['vue'],
       dts: 'src/components.d.ts'
     }),
+    babel({
+      extensions: ['.js'],
+      include: ['src/**/*'],
+      // exclude: [/node_modules/, /uni_modules/],
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            targets: {
+              chrome: '58',
+              ie: '11'
+            },
+            useBuiltIns: 'entry',
+            corejs: '3.31.0'
+          }
+        ]
+      ],
+      plugins: [
+        // ['@babel/plugin-transform-arrow-functions', { spec: true }]
+        ['@babel/plugin-proposal-decorators', { version: '2023-05' }]
+      ]
+    }),
     /**
      * 支持自动添加变量
      *
@@ -94,28 +116,7 @@ export default defineConfig({
         targets: b
       }
     }),
-    // babel({
-    //   extensions: ['.js'],
-    //   // include: ['src/*'],
-    //   exclude: [/node_modules/, /uni_modules/],
-    //   presets: [
-    //     [
-    //       '@babel/preset-env',
-    //       {
-    //         targets: {
-    //           chrome: '58',
-    //           ie: '11'
-    //         },
-    //         useBuiltIns: 'entry',
-    //         corejs: '3.31.0'
-    //       }
-    //     ]
-    //   ],
-    //   plugins: [
-    //     ['@babel/plugin-transform-arrow-functions', { spec: true }]
-    //     // ['@babel/plugin-proposal-decorators', { version: '2023-05' }]
-    //   ]
-    // }),
+
     Unocss()
   ],
   server: {

@@ -31,6 +31,7 @@ export function initFrame(config: Config) {
   import.meta.glob('../next/store/*.ts', { eager: true });
   import.meta.glob('../next/store/*/*.ts', { eager: true });
   import.meta.glob('../next/form/*.ts', { eager: true });
+  import.meta.glob('../next/form/*.js', { eager: true });
   let modules = import.meta.glob('../next/service/*.ts', { eager: true });
   initServiceRes(modules)
 
