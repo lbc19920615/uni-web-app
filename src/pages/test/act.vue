@@ -16,6 +16,8 @@
 </template>
 
 <script setup lang="ts">
+import { getCurPageOptions } from "@/utils/uni"
+
 // import mpHtml from '@/components/mp-html/mp-html.vue'
 // import { sleep } from '@/utils/time'
 
@@ -95,9 +97,8 @@ let cssCalcContainer = initCssContainer({
 
 
 onShow(() => {
-  let lastPage = getCurrentPages().at(-1);
   // console.log(lastPage);
-  state.options = lastPage?.options || lastPage?.$page?.options;
+  state.options = getCurPageOptions()
 
   setTimeout(async () => {
     try {

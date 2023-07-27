@@ -1,6 +1,8 @@
 import { deepClone } from "@/utils/clone";
 import { getObj } from "@/utils/collection";
 import Nid from "nid";
+import { forEach } from './../uni_modules/uv-ui-tools/libs/luch-request/utils';
+import { isObject } from "@/utils/is";
 
 let currentDef = {}
 let cacheDefs = {}
@@ -51,7 +53,7 @@ export function isArray({itemType = '', min = 0} = {}) {
   }
 }
 
-export function field(label = '', {dynamic = false, props = {}, itemCls =  null} ={}) {
+export function field(label = '', {dynamic = false, widgetType = 'text', props = {}, itemCls =  null} ={}) {
   // console.log("first(): factory evaluated");
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     // console.log("first(): called", currentDef);
@@ -59,6 +61,7 @@ export function field(label = '', {dynamic = false, props = {}, itemCls =  null}
       rules: [],
       label: label ?? propertyKey,
       initValue: descriptor.get(),
+      widgetType,
       props,
       itemCls
     }
@@ -332,7 +335,22 @@ export function useSimpleForm(name) {
     }
   })
 
-  obj.rules = defs
+  obj.rules = defs;
+
+  obj.getItemClsDef = function(key) {
+    if (defs[key]?.itemCls) {
+      return cacheDefs[defs[key]?.itemCls]
+    }
+    return null
+  }
+
+  obj.getItemClsDefProp = function(key, propName) {
+    let itemClsDef = obj.getItemClsDef(key);
+    if (itemClsDef) {
+      return itemClsDef[propName]
+    }
+    return ''
+  }
 
   obj.reset = function() {
     Object.entries(defs).forEach(([key, def]: [string, RuleOption]) => {
@@ -349,14 +367,36 @@ export function useSimpleForm(name) {
     Object.entries(formData).forEach(([key, item]: [string, any]) => {
         let formatType = defs[key].formatType
         formData[key] = commonFormat(formatType, formData[key])
+
+        if (Array.isArray(formData[key])) {
+          // console.log(cacheDefs, defs[key]);
+          let itemClsDef = obj.getItemClsDef(key);
+          if (itemClsDef) {
+            console.log(itemClsDef);
+            
+            let arr = formData[key];
+           arr.forEach((item, index) => {
+              if (isObject(item)) {
+               arr[index] = formatObjData(item, itemClsDef)
+              }
+            });
+
+            console.log(arr);
+            
+          }
+        
+        }
+
+        
     })
     return formData
   }
+  
 
   function formatObjData(originItem: Record<any, any>, itemDef: RuleOption) {
     let newObj = {}
     Object.entries(originItem).forEach(([key, item]: [string, any]) => {
-      let formatType = itemDef.formatType
+      let formatType = itemDef[key].formatType
       newObj[key] = commonFormat(formatType, item)
     })
     return newObj;

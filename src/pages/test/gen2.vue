@@ -1,7 +1,7 @@
 <template>
 
 <page-wrapper-detail>
-<scroll-view __eid__="id111"  scroll-y="true" class="h-full height-1350"><view __eid__="id__894a5o"  class="">{{ def.formData }}</view>
+<scroll-view __eid__="id111"  scroll-y="true" class="h-full height-1350"><view __eid__="id__894a5o"  class="">{{ def.getFormData() }}</view>
   <uni-forms  ref="form" form="def" :rules="def.rules" :modelValue="def.formData" class="overflow-hidden" @click="">
     <view __eid__="_custom" ></view>
   <uni-forms-item :label="def.optMap.name.label" name="name">
@@ -12,6 +12,14 @@
     <uni-data-checkbox multiple v-model="def.formData.hobby" :localdata="state.hobby"/>
   </uni-forms-item>
   
+<view  class="dis-flex items-start">
+  <uni-forms-item :label="def.optMap.age.label" name="age">
+    <uni-easyinput v-model="def.formData.age" type="number" :placeholder="'请输入' + def.optMap.age.label" />
+  </uni-forms-item>
+  
+<ResendButton  type="" text="" class=""></ResendButton>
+</view>
+
   <view  v-for='(item,index) in def.vmMap.objArr.list'>
     <uni-forms-item v-for="[propName, propDef] in item.props"
                     :key="item.id + '__' + propName" 
@@ -19,10 +27,17 @@
                     :rules="propDef.rules" 
                     :name="'objArr[' + index + '].' + propName">
       <view class="form-item">
-        <uni-easyinput
-          class="mb-10"
-          v-model="def.formData.objArr[index][propName]" 
-          :placeholder="'请输入' + item.label + ' ' + propName" /> 
+        
+  <template v-if="def.getItemClsDefProp('objArr', propName)?.widgetType === 'number'">
+    <uni-easyinput v-model="def.formData.objArr[index][propName]" type="number" :placeholder="'请输入' + item.label"  />
+  </template>
+  <template v-else-if="def.getItemClsDefProp('objArr', propName)?.widgetType === 'multiCheckbox'">
+    <uni-data-checkbox multiple v-model="def.formData.objArr[index][propName]"  v-bind="$pageFormConfig['objArr'][propName]" />
+  </template>
+  <template v-else>
+    <uni-easyinput v-model="def.formData.objArr[index][propName]" type="text" :placeholder="'请输入' + item.label" />
+  </template>
+  
       </view>
     </uni-forms-item>
     <view __eid__="id__hoyu09" class=""><button __eid__="id__nygr7e" class="" @click="def.vmMap.objArr.$del(item.id)">删除</button></view> 
@@ -30,7 +45,11 @@
   </view>
   
   </uni-forms>
-  <button __eid__="id__dzukp4"  @click="function() {submitForm('form')}" class="">保存</button><button __eid__="id__ptcc3m"  class="" @click="def.vmMap.objArr.$add()">arritem</button></scroll-view>
+  
+<button  type="" @click="def.vmMap.objArr.$add()" class="mb-20">添加arr</button>
+
+<button  type="primary" @click="function() {submitForm('form')}" class="">保存</button>
+</scroll-view>
 </page-wrapper-detail>
   
 </template>
@@ -102,6 +121,16 @@ let {ins: state} = $getStore('TestGen2_state');
   let form =  $page.$refs['form']
 })
         
+  let $pageFormConfig = {};
+
+    
+  $pageFormConfig['objArr'] = {
+  hobby: {
+    localdata:state.hobby
+  }
+};
+  
+  
 
 </script>
 

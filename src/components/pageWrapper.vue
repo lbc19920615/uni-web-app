@@ -38,7 +38,8 @@ defineProps({
     default: true
   },
   cusCls: {
-    type: String
+    type: String,
+    default: ''
   }
 })
 </script>

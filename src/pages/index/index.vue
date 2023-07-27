@@ -72,6 +72,8 @@
 
       </scroll-view>
     </view>
+
+
   </pageWrapper>
 </template>
 
@@ -80,8 +82,8 @@ import { $getStore } from "@/frame/app";
 import pageWrapper from "@/components/pageWrapper.vue"
 import { forward } from '@/utils/router';
 import { useModal } from '@/frame/zx'
-import { cacheStore } from "@/frame/storeMan";
 import { openWebview } from "@/utils/navigate";
+
 
 let {ins: store, refs} = $getStore("Home")
 const {proxy} = getCurrentInstance()

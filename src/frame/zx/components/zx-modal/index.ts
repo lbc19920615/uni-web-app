@@ -35,11 +35,11 @@ export const defaultModalOptions: ModalOptions = {
 export const modalDefaultKey = Symbol('__MODAL__') as InjectionKey<Ref<boolean>>
 export const modalDefaultOptionKey = Symbol('__MODAL_OPTION__') as InjectionKey<Ref<ModalOptions>>
 
-export function useModal(selector: string = ''): Modal {
+export function useModal(id: string = ''): Modal {
   const modalShow = ref<boolean>(false) // 是否展示modal
   const modalOption = ref<ModalOptions>(defaultModalOptions) // Modal选项
-  const modalKey = selector ? '__MODAL__' + selector : modalDefaultKey
-  const modalOptionKey = selector ? '__MODAL_OPTION__' + selector : modalDefaultOptionKey
+  const modalKey = id ? '__MODAL__' + id : modalDefaultKey
+  const modalOptionKey = id ? '__MODAL_OPTION__' + id : modalDefaultOptionKey
   provide(modalOptionKey, modalOption)
   provide(modalKey, modalShow)
   const showModal = (option: ModalOptions) => {

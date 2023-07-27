@@ -87,6 +87,10 @@ html, page {
   button[type=primary] {
     background-color: var(--primary-color);
   }
+
+  uni-button[disabled] {
+    color: rgba(120, 120, 120, 0.6);
+  }
 }
 
 <!-- #ifdef H5 -->

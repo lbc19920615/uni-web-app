@@ -36,6 +36,27 @@ function getColorRules(Mapping: Record<string, string>): Rule<{}>[] {
 
 rules = rules.concat(getColorRules(colorMapping));
 
+const commonMapping: Record<string, Function> = {
+  dis: function(d) {
+    return { ['display']: `${d}` }
+  },
+};
+
+
+function getCommonRules(Mapping: Record<string, Function>): Rule<{}>[] {
+  return Object.keys(Mapping).map((key) => {
+    const fun = Mapping[key];
+    return [
+      new RegExp(`^${key}-([\\w-]+)$`),
+      ([, d]) => fun(d)
+    ];
+  });
+}
+
+
+rules = rules.concat(getCommonRules(commonMapping));
+
+
 // console.log(rules);
 
 export default defineConfig({

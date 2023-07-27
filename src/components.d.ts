@@ -26,6 +26,7 @@ declare module '@vue/runtime-core' {
     PageWrapper: typeof import('./components/pageWrapper.vue')['default']
     PageWrapperDetail: typeof import('./components/pageWrapperDetail.vue')['default']
     PullList: typeof import('./components/pullList.vue')['default']
+    ResendButton: typeof import('./components/ResendButton.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShopCard: typeof import('./components/ShopCard.vue')['default']

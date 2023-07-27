@@ -1,4 +1,4 @@
-import { initForm, field, required } from "@/frame/formMan"
+import { initForm, field, required, format, isArray  } from "@/frame/formMan"
 
 class ObjItem {  
   @initForm('ObjItem')
@@ -10,9 +10,17 @@ class ObjItem {
     return ''
   }
 
+  @format('number')
   @required()
-  @field('name2')
-  get name2() {
-    return ''
+  @field('num1', {widgetType: 'number'})
+  get num1() {
+    return 0
+  }
+
+  @isArray({ min: 2 })
+  @required()
+  @field('爱好', {widgetType: 'multiCheckbox'})
+  get hobby() {
+    return []
   }
 }

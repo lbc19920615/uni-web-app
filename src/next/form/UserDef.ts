@@ -1,4 +1,4 @@
-import { defineSimpleForm, field, required } from "@/frame/formMan";
+import { defineSimpleForm, field, required, format, isArray } from "@/frame/formMan";
 
 class VeryBase {
   static {
