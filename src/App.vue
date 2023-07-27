@@ -56,7 +56,6 @@ let globalData = {
       callbacks[e.name](e.detail)
     })
     globalData.worker = worker;
-
     globalData.sendMsg = function(detail, callback) {
       let name = 'functest'
       callbacks[name] = callback
@@ -68,8 +67,26 @@ let globalData = {
   }
   // 创建实验worker
   createNewWorker();
+  // #endif
 
-    // #endif
+  // #ifdef H5
+  let worker = new Worker('/static/webworkers/index.js');
+  worker.onmessage = function(e) {
+    let data = e.data
+    if (callbacks[data.name]) {
+      callbacks[data.name](data.detail)
+    }
+  }
+  globalData.worker = worker;
+  globalData.sendMsg = function(detail, callback) {
+    let name = 'functest'
+    callbacks[name] = callback
+    globalData.worker.postMessage({
+      name: name,
+      detail: detail
+    })
+  }
+  // #endif
 
 export default {
   onLaunch() {
