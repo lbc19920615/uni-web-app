@@ -132,5 +132,6 @@
         "text": "我的"
       }
     ]
-  }
+  },
+  "workers": "static/workers"
 }

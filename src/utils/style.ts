@@ -2,6 +2,7 @@ import { templateCalc } from '@/utils/calc'
 import { deepClone } from '@/utils/clone'
 
 import JSON5 from 'json5'
+import { sleep } from './time';
 
 const varregexp = /\$([^\t\n\s\]\)'"])*/g;
 
@@ -57,73 +58,102 @@ function parseArgs(argStr, funContext = {}) {
   return argStr
 }
 
-async function makestyle(cssCode = '', funContext = {}) {
-
-  
-  return new Promise(resolve => {
-    let functions = {
-      async fun(...args) {
-        console.log(this);
-        
-        if (Array.isArray(args) && args.length > 0) {
-          return args.at(-1)
-        }
-        return 0
-      },
-      async get(...args) {
-        let name = args[0]
-        return (funContext[name] ?? 0)
-      },
-      str_append(...args) {
-        let str = ''
-        args.forEach(item => {
-          str = str + item
-        })
-        return str
+function createFunc() {
+  return  {
+    fun(...args) {
+      // console.log('fun');
+      
+      if (Array.isArray(args) && args.length > 0) {
+        return args.at(-1)
       }
+      return 0
+    },
+    // get(...args) {
+    //   let name = args[0]
+    //   return (funContext[name] ?? 0)
+    // },
+    str_append(...args) {
+      // console.log('str_append');
+      let str = ''
+      args.forEach(item => {
+        str = str + item
+      })
+      return str
+    },
+    async fetch(...args) {
+      await sleep(1000);
+      return `fetch ${args}`
     }
+  }
+}
 
-    let regexp = /@\(([^\)]*)\)/g
+function makestyleCore(newCssCode = '', funContext = {}, context: any = {}) {
 
-    // console.log(funContext);
-    
-    let newCssCode = parseArgs(cssCode, funContext)
-    let match = newCssCode.match(regexp);
-    // console.log(match);
+  let functions = createFunc() 
+
+  let regexp = /@\(([^\)]*)\)/g
+
+  // console.log(funContext);
+  let match = newCssCode.match(regexp);
 
 
-    if (Array.isArray(match)) {
-      match.forEach(async (funcArgBody, funcIndex) => {
-        let funcNameRe = funcArgBody.match(/@\(([^,)]*)/)
-        let funcName = funcNameRe[1]
-        let args = funcArgBody.slice(funcNameRe[0].length).slice(1).slice(0, -1);
-        // console.log(funcArgBody);
-        // console.log(funcName);
+  if (Array.isArray(match)) {
+    match.some( async (funcArgBody, funcIndex) => {
+      let funcNameRe = funcArgBody.match(/@\(([^,)]*)/)
+      let funcName = funcNameRe[1]
+      let args = funcArgBody.slice(funcNameRe[0].length).slice(1).slice(0, -1);
+      // console.log(funcArgBody);
+      // console.log(funcName);
+      // console.log(args);
+      if (functions[funcName]) {
+        // let parsedArgs = parseArgs(args, funContext)
         // console.log(args);
-        if (functions[funcName]) {
-          // let parsedArgs = parseArgs(args, funContext)
-          // console.log(args);
-          
-          let ret = await functions[funcName].bind({})(...JSON5.parse(args));
-          // console.log(ret);
-
-          newCssCode = newCssCode.replace(funcArgBody, ret)
+        if (context.run) {
+          await context.run(functions[funcName], funcArgBody, args)
         }
+      }
 
-        if (funcIndex > match.length - 2) {
-          resolve(newCssCode)
+      if (funcIndex > match.length - 2) {
+        if (context.done) {
+          await context.done()
         }
-      });
-    } else {
-      // console.log(newCssCode);
+        return true
+      }
+      return false
+    });
+    
+  } 
+}
 
-      resolve(newCssCode)
+function makestyle(cssCode = '', funContext = {}) {
+  let newCssCode = parseArgs(cssCode, funContext)
+  makestyleCore(newCssCode, funContext, {
+    run(fun, funcArgBody, args) {
+      let ret = fun.bind({})(...JSON5.parse(args));
+      newCssCode = newCssCode.replace(funcArgBody, ret)
     }
+  })
+  return newCssCode
+}
+
+function asyncmakestyle(cssCode = '', funContext = {}) {
+  return new Promise(resolve => {
+    let newCssCode = parseArgs(cssCode, funContext)
+    makestyleCore(newCssCode, funContext, {
+      async run(fun, funcArgBody, args) {
+        let ret = await fun.bind({})(...JSON5.parse(args));
+        newCssCode = newCssCode.replace(funcArgBody, ret)
+      },
+      async done() {
+        resolve(newCssCode)
+      }
+    });
   })
 }
 
 
 let BreakFLagSymbol = Symbol('BreakFLag');
+let VoidFLagSymbol = Symbol('VoidFlag');
 
 
 let curRunCalcPoint = {
@@ -160,17 +190,8 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           let [type, key, item] = assignMents[i]
           let val = undefined;
           // console.log(item);
-          let newCssStr: any = await makestyle(item, funContext);
-
-          // if (['+', '-', '/', '*'].some(v => newCssStr.includes(v))) {
-          //   // cssStyle.value = `--result: calc(${newCssStr})`;
-          //   // await sleep(30);
-          //   // val = await queryRect(key);
-          //   val = templateCalc(newCssStr, {})
-          // }
-          // else {
-          //   val = newCssStr
-          // }
+          // let newCssStr: any = await makestyle(item, funContext);
+          let newCssStr: any = makestyle(item, funContext);
 
           if (cssHack) {
             val = await cssHack(newCssStr, funContext)
@@ -179,6 +200,27 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           }
 
           yield [key, val];
+        }
+
+        else if (type === 'await:assign') {
+          let [type, key, item] = assignMents[i]
+          let val = undefined;
+          // console.log(item);
+          // let newCssStr: any = await makestyle(item, funContext);
+          let newCssStr: any = await asyncmakestyle(item, funContext);
+
+          if (cssHack) {
+            val = await cssHack(newCssStr, funContext)
+          } else {
+            val = templateCalc(newCssStr, {})
+          }
+
+          if (key) {
+           
+             yield [key, val]; 
+          } else {
+            yield VoidFLagSymbol
+          }
         }
         else if (type === 'fun') {
           let [type, key, item] = assignMents[i]
@@ -195,6 +237,47 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           let val = await runCalc(item[0], inlineContext)
           // funContext[key] = val
           yield [key, val]
+        }
+        else if (type === 'worker') {
+          let [type, conditions, ...functions] = assignMents[i]
+          let funNameIndex = -1;
+          conditions.some((condition, index) => {
+            let newStr = parseArgs(condition, funContext);
+            // console.log(newStr);
+            
+            if (templateCalc(newStr, {})) {
+              funNameIndex = index;
+              return true
+            }
+            return false
+          });
+
+          // console.log(funNameIndex);
+          
+
+          let funName = functions.at(funNameIndex)
+
+
+          // console.log(assignMents[i]);
+          let objfunContext = deepClone(funContext)
+                  // let val = await runCalc(funName, objfunContext)
+          let fun = cssMap[funName]
+
+
+          // #ifdef MP-WEIXIN
+          getApp().globalData.sendMsg({some: 1}, function(e) {  
+              let outVars = fun.outVars ?? [];
+              outVars.forEach(key => {
+                funContext[key] = 1
+              });
+              console.log('sendMsg', funContext);
+          })
+          // #endif
+   
+
+          // if (val === BreakFLagSymbol) {
+          //   hasBreak = true
+          // }
         }
         else if (type === 'if') {
           let [type, conditions, ...functions] = assignMents[i]
@@ -293,9 +376,13 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           let [key, val] = ret
           funContext[key] = val
         }
-        if (ret === BreakFLagSymbol) {
+        else if (ret === BreakFLagSymbol) {
           hasBreak = true
         }
+        else if (ret === VoidFLagSymbol) {
+          // 
+        }
+        else {}
       }
     } catch(e) {
       console.log('error', e);      
@@ -306,8 +393,13 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
       return BreakFLagSymbol
     }
 
-    // console.log(funContext);
+    if (name == 'main') {
 
+      console.log('main', funContext);
+    } else {
+      // console.log('other', funContext);
+      
+    }
 
     return funContext[outVars[0]]
   }

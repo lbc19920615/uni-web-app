@@ -40,10 +40,13 @@ let cssCalcContainer = initCssContainer({
     main: {
       assignMents: [
         // ['fun', 'p3', ['fun1', ['p1']]],
+        // ['assign', 's111', `@(fetch,['1', '2'])`],
+        // ['worker', ['2 > 1'], '__fetch_c1',  '__if_else_empty'],    
         ['assign', 'p1', `(@(fun,[1, $gloA1]) + 1) / $gloA1`],
         ['assign', 'p2', `@(str_append,['1', '2'])`],
         ['log', `hello p1: $p1`],
         ['assign', 's1', `(2 > 1) + 2`],
+        ['await:assign', '', `@(fetch,['1', '2'])`],
         // ['if', ['2 > 1', 'c2'], '__if_c1', '__if_c2',  '__if_else_empty'],    
         ['for', 10, 'index', '__loop_fun1']
       ],
@@ -58,6 +61,12 @@ let cssCalcContainer = initCssContainer({
         'a2'
       ],
       outVars: ['fun1_p1']
+    },
+    __fetch_c1: {
+      assignMents: [
+        ['assign', 'f1', `1 + @(fun,[1,2,"3"])`],
+      ],
+      outVars: ['f1']
     },
     __if_c1: {
       assignMents: [

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow } from '@dcloudio/uni-app';
-import Button from "@/uni_modules/uv-ui-tools/libs/mixin/button";
-import { $getStore } from "@/frame/app";
-import { sleep } from "@/utils/time";
+// import Button from "@/uni_modules/uv-ui-tools/libs/mixin/button";
+// import { $getStore } from "@/frame/app";
+// import { sleep } from "@/utils/time";
 onLaunch(async () => {
   console.log('App Launch');
 
@@ -13,6 +13,7 @@ onLaunch(async () => {
   // await sleep(1000)
   //
   // storeList.setItems();
+
 });
 onShow(() => {
   console.log('App Show');
@@ -20,6 +21,9 @@ onShow(() => {
 onHide(() => {
   console.log('App Hide');
 })
+
+
+
 </script>
 
 <script lang="ts">
@@ -28,6 +32,45 @@ import { initFrame } from "@/frame/app";
 import pageJson from "./pages.json"
 import appConfig from "./config.json"
 
+let globalData = {
+    version: '1.0.1',
+    infoSync: uni.getSystemInfoSync(),
+    cacheSync: false,
+    tabbar: pageJson.tabBar,
+    ...appConfig
+  }
+
+  let callbacks = {}
+  // #ifdef MP-WEIXIN
+  function createNewWorker() {
+    const worker = wx.createWorker('static/workers/index.js', {
+      useExperimentalWorker: true
+    })
+    // 监听worker被系统回收事件
+    worker.onProcessKilled(() => {
+      // 重新创建一个worker
+      createNewWorker()
+    })
+ 
+    worker.onMessage((e) => {
+      callbacks[e.name](e.detail)
+    })
+    globalData.worker = worker;
+
+    globalData.sendMsg = function(detail, callback) {
+      let name = 'functest'
+      callbacks[name] = callback
+      globalData.worker.postMessage({
+        name: name,
+        detail: detail
+      })
+    }
+  }
+  // 创建实验worker
+  createNewWorker();
+
+    // #endif
+
 export default {
   onLaunch() {
     // console.log("Launch");
@@ -35,13 +78,13 @@ export default {
       context: this
     })
   },
-  globalData: {
-    version: '1.0.1',
-    infoSync: uni.getSystemInfoSync(),
-    cacheSync: false,
-    tabbar: pageJson.tabBar,
-    ...appConfig
-  }
+  onUnload() {
+    if (globalData.worker) {
+      globalData.worker.terminate()
+    }
+  },
+  globalData: globalData,
+
 }
 </script>
 
