@@ -1,22 +1,26 @@
 <template>
 
-<da-tree  :field="{ label: 'name', key: 'id' }" :data="state.items" class="h-740" defaultExpandAll>
+<da-tree  :field="{ label: 'name', key: 'id' }" :data="state.items" style="color:rgba(8, 5, 5, 0.45)" class="h-740" defaultExpandAll>
 
 <template  v-slot:label="scope" class="">{{scope.item}}</template>
 
 </da-tree>
-<button __eid__="id__zopstj"  class="" @click="state.add">button</button>
+<button __eid__="id__zopstj"  style="" class="" @click="state.add">添加</button>
 </template>
 
 <script setup lang="ts">
 
 import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
+import { getCurPageOptions } from "@/utils/uni"
 
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
 let $page = $CurrentInstance.proxy;
+function $sel(name) {
+  return $page.$refs[name]
+}
 
-let submitForm  = function(ref) {
+function submitForm(ref = '') {
   $page.$refs[ref].validate().then(res => {
     uni.showToast({
       title: '校验通过'
@@ -30,7 +34,6 @@ let submitForm  = function(ref) {
 
 
 
-
         ;
 let {ins: state} = $getStore('ComGen_state');
   
@@ -38,6 +41,10 @@ let {ins: other} = $getStore('ComGen_other');
   
         ;
         
+  let $pageFormConfig = {};
+
+    
+  
 
 </script>
 

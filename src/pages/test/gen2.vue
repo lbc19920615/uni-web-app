@@ -48,8 +48,18 @@
   
 <button  type="" @click="def.vmMap.objArr.$add()" class="mb-20">添加arr</button>
 
-<button  type="primary" @click="function() {submitForm('form')}" class="">保存</button>
+<button  type="primary" @click="function() {submitForm('form')}" class="mb-20">保存</button>
+
+<button  type="" open-type="" class="" @click="$sel('popup').open('bottom')">sheet</button>
 </scroll-view>
+<uni-popup  ref="popup" background-color="#fff" class=""><view __eid__="id__1934iq"  class="">view</view>
+<da-tree  :field="{ label: 'name', key: 'id' }" :data="state.items" class="h-740" defaultExpandAll>
+<view __eid__="id__br8mj5" >
+<template  v-slot:label="scope" class="">{{scope.item}}</template>
+</view>
+</da-tree>
+</uni-popup>
+
 </page-wrapper-detail>
   
 </template>
@@ -57,12 +67,16 @@
 <script setup lang="ts">
 
 import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
+import { getCurPageOptions } from "@/utils/uni"
 
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
 let $page = $CurrentInstance.proxy;
+function $sel(name) {
+  return $page.$refs[name]
+}
 
-let submitForm  = function(ref) {
+function submitForm(ref = '') {
   $page.$refs[ref].validate().then(res => {
     uni.showToast({
       title: '校验通过'
@@ -72,7 +86,6 @@ let submitForm  = function(ref) {
     console.log('err', err);
   })
 }
-
 
 
 
@@ -105,7 +118,7 @@ let def = $frame.f.createFormContext('def', function({ context, field, required,
 
   @field('数组', {
     dynamic: true, 
-    itemCls: 'ObjItem'
+    itemCls: 'ObjItem1'
   })
   get objArr() {
     return []

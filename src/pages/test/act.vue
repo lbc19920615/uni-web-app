@@ -3,6 +3,24 @@
     <view class="act-con" :style="cssStyle">
       {{ state.options }}
 
+
+<!-- <rt-scroll lL="10">
+  <view class="w-120 h-80">11111</view>
+  <view class="w-120 h-80">11111</view>
+  <view class="w-120 h-80">11111</view>
+  <view class="w-120 h-80">11111</view>
+  <view class="w-120 h-80">11111</view>
+  <view class="w-120 h-80">11111</view>
+  <view class="w-120 h-80">11111</view>
+  <view class="w-120 h-80">11111</view>
+  <view class="w-120 h-80">11111</view>
+  <view class="w-120 h-80">11111</view>
+</rt-scroll> -->
+
+      <uni-popup ref="popup" background-color="#fff" >
+				<view class="popup-content"><text class="text">popup 内容</text></view>
+			</uni-popup>
+
       <scroll-view style="height: 600rpx;" scroll-y>
         <view class="grid  grid-cols-10">
           <view v-for="code in strCodeArr">{{ code }}</view>
@@ -22,6 +40,7 @@ import { getCurPageOptions } from "@/utils/uni"
 // import { sleep } from '@/utils/time'
 
 let { proxy } = getCurrentInstance()
+
 
 // import {strCodeArr} from "@/utils/code"
 
@@ -109,7 +128,9 @@ onShow(() => {
   // console.log(lastPage);
   state.options = getCurPageOptions()
 
+
   setTimeout(async () => {
+
     try {
       await cssCalcContainer.runCalc('main', {
         gloA1: 3

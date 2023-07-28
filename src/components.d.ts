@@ -29,6 +29,7 @@ declare module '@vue/runtime-core' {
     ResendButton: typeof import('./components/ResendButton.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    RtScroll: typeof import('./components/rt-scroll/rt-scroll.vue')['default']
     ShopCard: typeof import('./components/ShopCard.vue')['default']
     SkuCart: typeof import('./components/SkuCart.vue')['default']
     SkuPage: typeof import('./components/SkuPage.vue')['default']

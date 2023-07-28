@@ -7,3 +7,5 @@ export function getCurPageOptions() {
   // console.log(lastPage);
    return lastPage?.options || lastPage?.$page?.options;
 }
+
+

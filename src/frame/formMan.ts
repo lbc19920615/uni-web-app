@@ -2,11 +2,11 @@ import { deepClone } from "@/utils/clone";
 import { getObj } from "@/utils/collection";
 import Nid from "nid";
 import { isObject } from "@/utils/is";
-import { field } from '@/frame/formMan';
-import { format } from '@/frame/formMan';
+
 
 let currentDef = {}
 let cacheDefs = {}
+let currentName = ''
 
 // console.log(cacheDefs)
 
@@ -31,31 +31,16 @@ function createFormat(propertyKey, type) {
   currentDef[propertyKey].formatType = type
 }
 
-export function validateFunction(fun: Function, {} ={}) {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    currentDef[propertyKey].rules.push({
-      validateFunction: fun
-    })
-  }
-}
 
-export function format(type = '', {} ={}) {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    createFormat(propertyKey, type)
-  }
-}
-
-export function isArray({itemType = '', min = 0} = {}) {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    currentDef[propertyKey].rules.push({
-      validateFunction:function(rule,value,data,callback){
-        if (value.length < min) {
-          callback(`${currentDef[propertyKey].label}至少${min}个`)
-        }
-        return true
+function createIsArray(propertyKey, {itemType = '', min = 0} = {} ) {
+  currentDef[propertyKey].rules.push({
+    validateFunction:function(rule,value,data,callback){
+      if (value.length < min) {
+        callback(`${currentDef[propertyKey].label}至少${min}个`)
       }
-    })
-  }
+      return true
+    }
+  })
 }
 
 function createField(label = '', propertyKey, initValue, {dynamic = false, widgetType = 'text', props = {}, itemCls =  null} ={}) {
@@ -80,14 +65,57 @@ function createRequired(propertyKey) {
   })
 }
 
-export let esObj = {
+function createValidateFunction(propertyKey, fun) {
+  currentDef[propertyKey].rules.push({
+    validateFunction: fun
+  })
+}
+
+export function validateFunction(fun: Function, {} ={}) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    createValidateFunction(propertyKey, fun)
+  }
+}
+
+export function format(type = '', {} ={}) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    createFormat(propertyKey, type)
+  }
+}
+
+export function isArray(option) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    createIsArray(propertyKey, option)
+  }
+}
+
+export let esObj: Record<any, any> = {
   field: null,
   required: null,
-  format: null
+  format: null,
+  validateFunction: null,
+  isArray: null,
 }
+
+
+esObj.init = function(target) {
+
+ let ret =  target()
+
+  for (let v of ret) {
+    // console.log(v);
+    v.__formName__ = v.name
+  }
+
+}
+
+
+
 esObj.field  = function(label = '', option) {
   return function(value, context) {
-    // console.log(value, context.access.get());
+    console.log(currentName);
+    
+    // console.log(value, context.access.get());    
     createField(label, context.name, context.access.get(), option)
   }
 }
@@ -104,6 +132,25 @@ esObj.format = function(type) {
     createFormat(context.name, type)
   }
 }
+
+esObj.isArray = function(option) {
+  return function(value, context) {
+    createIsArray(context.name, option)
+  }
+}
+
+esObj.validateFunction = function(fun) {
+  return function(value, context) {
+    createValidateFunction(context.name, fun)
+  }
+}
+
+
+esObj.defForm  = function(name, context) {
+  // console.log(context);
+  initSimpleForm(name)
+}
+
 
 export function field(label = '', option) {
   // console.log("first(): factory evaluated");
@@ -185,6 +232,7 @@ export function defineSimpleForm(name, target: any, { mixins= [] } = {}) {
   if (!cacheDefs[name]) {
     cacheDefs[name] = {}
   }
+  
 
   let proto: any = Reflect.getPrototypeOf(target)
 
@@ -214,9 +262,11 @@ export function defineSimpleForm(name, target: any, { mixins= [] } = {}) {
   }
 
   currentDef = cacheDefs[name]
+  currentName = name
 
   // target.FORM_NAME = name
   target.__formName__ = name
+
   return currentDef
 }
 
@@ -251,6 +301,7 @@ export function initSimpleForm(name, { mixins= [] } = {}) {
   }
 
   currentDef = cacheDefs[name]
+  currentName = name
 
   return currentDef
 }

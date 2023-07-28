@@ -1,5 +1,4 @@
 worker.onMessage(e => {
-    // console.log(e)
     worker.postMessage(e)
 })
 
