@@ -35,16 +35,41 @@
 
 <script setup lang="ts">
 import { getCurPageOptions } from "@/utils/uni"
+import {initCssContainer} from "@/utils/style"
+import { initModelContext, injectControl } from "@/frame/model";
 
 // import mpHtml from '@/components/mp-html/mp-html.vue'
 // import { sleep } from '@/utils/time'
+
+let appContext = initModelContext('app');
+let $control = new Proxy(appContext, {
+  get(proxyObj, name) {
+    // console.log(proxyObj, name);
+    return proxyObj.getControl(name)
+  }
+})
 
 let { proxy } = getCurrentInstance()
 
 
 // import {strCodeArr} from "@/utils/code"
 
-import {initCssContainer} from "@/utils/style"
+@injectControl('some')
+class Some1 {
+  config = 1
+  dialogVisible = false
+  isOk = false
+  get some() {
+    return this.config
+  }
+  dom() {
+    this.config = 22
+  }
+}
+
+console.log($control['some']);
+
+
 
 let state = reactive({
   options: {},

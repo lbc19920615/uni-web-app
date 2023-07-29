@@ -2,21 +2,23 @@
 	<view>
 		<view class="tabview">
 			<scroll-view class="scrollView" scroll-x show-scrollbar="false" :scroll-left="scrollLeft"
-				scroll-with-animation style="height: 74rpx;">
+				scroll-with-animation style="height: var(--zx-tab-nav-height, 74rpx)">
 				<view class="tabBox" :style="{ 'justify-content': isOutWindow ? '' : 'space-around'}">
 					<view class="items" v-for="(item, index) in tabValue" :key="index" 
 					@click="updateTab(index)">
+						<slot name="before" v-bind="{index: index, item: item}"></slot>
 						<view class="tabText" :class="index == tIndex ? 'active' : ''"
 							:style="{ 'font-size': fontSize + 'px', color: index == tIndex ? textColor : ''}">
-							{{item}}
+							<text>{{item}}</text>
 						</view>
+						<slot name="after" v-bind="{index: index, item: item}"></slot>
 					</view>
 				</view>
 				<view class="underscore"
 					:style="{ width: inderWidth + 'px', 'margin-left': indexLeft + boxLeft + 'px', 'background-color': underlineColor }" />
 			</scroll-view>
 		</view>
-		<view class="gap" style="height: 74rpx;" :style="{'background-color': background }" />
+		<view class="gap" style="height: var(--zx-tab-nav-height, 74rpx)" :style="{'background-color': background }" />
 	</view>
 </template>
 
@@ -174,16 +176,17 @@
 	}
 
 	.items {
-		line-height: 60rpx;
-		padding: 0 20rpx;
+		line-height: 30rpx;
+		padding: 10rpx 20rpx;
 	}
 
 	.tabText {
 		color: #666666;
+		line-height: 60rpx;
 	}
 
 	.active {
-		font-weight: bold;
+		/* font-weight: bold; */
 	}
 
 	.underscore {

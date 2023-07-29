@@ -16,7 +16,7 @@ s() {
 }
 
   tabIndex = 0;
-  tabs = ['示例1',  '示例2', '示例2', '示例2', '示例2', '示例2', '示例2', '示例2', '示例2', '示例2', '示例2'];
+  tabs = ['示例1',  '示例2', '示例3'];
 
 onSwiperChane(e) {
   this.tabIndex = e.detail.current;

@@ -69,12 +69,25 @@
 import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
 import { getCurPageOptions } from "@/utils/uni"
 
+
+import { initModelContext, injectControl } from "@/frame/model";
+let appContext = initModelContext(app);
+let $control = new Proxy(appContext, {
+  get(proxyObj, name) {
+    // console.log(proxyObj, name);
+    return proxyObj.getControl(name)
+  }
+})
+
+
+
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
 let $page = $CurrentInstance.proxy;
 function $sel(name) {
   return $page.$refs[name]
 }
+
 
 function submitForm(ref = '') {
   $page.$refs[ref].validate().then(res => {

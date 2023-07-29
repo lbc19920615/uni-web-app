@@ -113,7 +113,7 @@ esObj.init = function(target) {
 
 esObj.field  = function(label = '', option) {
   return function(value, context) {
-    console.log(currentName);
+    // console.log(currentName);
     
     // console.log(value, context.access.get());    
     createField(label, context.name, context.access.get(), option)

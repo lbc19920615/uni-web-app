@@ -7,7 +7,9 @@ const sizeMapping: Record<string, string> = {
   fs: 'font-size',
   height: 'height',
   width: 'width',
-  gap: 'gap'
+  gap: 'gap',
+  bdrs: 'border-radius',
+  lineH: 'line-height'
 };
 
 function getSizeRules(Mapping: Record<string, string>): Rule<{}>[] {

@@ -979,6 +979,7 @@
       visibility: hidden;
       opacity: 0;
       transition: opacity 0.2s linear;
+      margin-bottom: var(--da-tree-item-mb, 0);
 
       &.is-show {
         height: auto;

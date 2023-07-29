@@ -8,7 +8,9 @@
 
 <view  class="dis-flex"><view __eid__="id__fcpkga"  class="">view1</view><view __eid__="id__79dosj"  class="">view</view></view>
 
-<ZxTab  v-model="state.tabIndex" :tabValue="state.tabs" class=""></ZxTab>
+<ZxTab  v-model="state.tabIndex" :tabValue="state.tabs" style="--zx-tab-nav-height:120rpx" class="">
+<template  v-slot:before="scope" class=""><view __eid__="id__k1vct2"  class="">{{scope.index}}</view></template>
+</ZxTab>
 
 <swiper  :current="state.tabIndex" @change="state.onSwiperChane" class="">
 <swiper-item  class=""><view __eid__="id__exjfky"  class="bgc-primary h-full">swiper1</view></swiper-item>
@@ -23,12 +25,16 @@
 <script setup lang="ts">
 
 import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
+import { getCurPageOptions } from "@/utils/uni"
 
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
 let $page = $CurrentInstance.proxy;
+function $sel(name) {
+  return $page.$refs[name]
+}
 
-let submitForm  = function(ref) {
+function submitForm(ref = '') {
   $page.$refs[ref].validate().then(res => {
     uni.showToast({
       title: '校验通过'
@@ -38,7 +44,6 @@ let submitForm  = function(ref) {
     console.log('err', err);
   })
 }
-
 
 
 
