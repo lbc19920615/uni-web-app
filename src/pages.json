@@ -77,7 +77,7 @@
           "name": "mixue",
           "path": "mixue",
           "style": {
-            "navigationBarTitleText": "",
+            "navigationBarTitleText": "蜜雪冰城列表",
             "navigationStyle": "custom"
           }
         }
@@ -89,6 +89,14 @@
         {
           "name": "gen",
           "path": "gen",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "name": "skuCalc",
+          "path": "skuCalc",
           "style": {
             "navigationBarTitleText": "",
             "navigationStyle": "custom"

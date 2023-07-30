@@ -7,7 +7,7 @@
         <view v-for="category in categories"
               class="list-page__category pl-10"
               @click="goToIndex(category.APP_SKU_INDEX)">
-          <view>跳{{category?.APP_SKU_INDEX}}</view>
+          <view>跳 <view>{{category?.category_name}}</view></view>
         </view>
       </view>
       <scroll-view
@@ -25,22 +25,29 @@
         @refresherabort="obj.onAbort">
         <view style="height: var(--list-con-height)"
               v-if="items.length < 1">empty</view>
-        <view class="list-card-item pb-30"
+        <view class="list-card-item box-border"
               :id="'item-' + index"
               :class="{['item-' + index]: true}"
               v-for="(item, index) in items">
           <view class="pb-20" v-if="item.needShowCategory">
-            标题栏 {{item.category_id}}
-          </view>
+            种类介绍栏 {{item.category_id}}
+          </view>              
           <view class="flex gap-20">
+            <view class="w-150 h-150 bgc-text-fourth bdrs-10">&nbsp;</view>
             <view class="flex-1">
-              <view>{{ item.sku_id }}</view>
-              <view>{{index + 1}} </view>
-            </view>
-            <view>
-              <button @click="onClickSku(item)">购买</button>
+              <view class="flex h-180 gap-20">
+                <view class="flex-1">
+                  <view>{{ item.sku_id }}</view>
+                  <view>{{index + 1}} </view>
+                </view>
+                <view>
+                  <!-- <button @click="onClickSku(item)">购买</button> -->
+                  <com-sku-calc @sku-calc-submit="onSkuCalcSubmit($event, item)"></com-sku-calc>
+                </view>
+              </view>
             </view>
           </view>
+          <view class="h-150" v-if="index > items.length - 2">&nbsp;</view>
         </view>
       </scroll-view>
     </view>
@@ -95,6 +102,44 @@ function reset(newItems = []) {
 function onClickSku(item: any) {
   // console.log('onClickSku', item);
   proxy.$emit('buy-sku', deepClone(unref(item)))
+}
+
+function onSkuCalcSubmit(e, item: any) {
+  let newItem = deepClone(unref(item))
+  newItem.extra = deepClone(unref(e));
+
+  let somePriceTotal = 0;
+  let somePrice = []
+  let someGood = []
+  e.some.map(v => {
+      let arr = v.split(':')
+      let price =  parseFloat(arr.at(-1));
+      if (!Number.isNaN(price)) {
+        // // 转换成分
+        // price = price * 100
+        somePriceTotal = somePriceTotal + price;
+      } else {
+        price = 0
+      }
+      somePrice.push(price)
+      someGood.push(arr[0])
+  })
+
+  if (!newItem.sku_tags) {
+    newItem.sku_tags = []
+  }
+
+  newItem.sku_tags.push(e.name)
+  newItem.sku_tags.push(e.age)
+
+  if (somePrice.length > 0) {
+    newItem.sku_price = newItem.sku_price + somePriceTotal   
+    newItem.sku_price_display =  newItem.sku_price / 100
+    newItem.sku_tags = newItem.sku_tags.concat(someGood)
+  }
+
+  console.log(e, somePrice, newItem);
+  proxy.$emit('buy-sku', newItem)
 }
 
 // list 跳转
@@ -160,7 +205,6 @@ async function fetchItems(): Promise<any> {
 }
 
 async function getData() {
-
   let {items, newData} = await fetchItems()
   categories.splice(0)
   newData.categories.forEach(v => {
@@ -210,13 +254,5 @@ setTimeout(() => {
   &-scroll-con {
     height: var(--list-con-height);
   }
-
-
-  &-card-item {
-    //min-height: var(--list-item-height);
-    //contain-intrinsic-size: auto var(--list-item-height);
-    //content-visibility: auto
-  }
-
 }
 </style>

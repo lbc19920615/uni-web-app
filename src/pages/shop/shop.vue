@@ -36,9 +36,9 @@
     <view
       class="flex flex-col w-full h-full sku-sell" style="position: relative"
       v-else>
-      <view class="mb-30 p-20">
-        <view class="fs-38 mb-10">商铺信息 <view class="arrow arrow-right"></view></view>
-        <view class="text-thirdly">{{ partStore.name }}</view>
+      <view class=" p-20">
+        <view class="fs-38 mb-10">{{ partStore.name }} <view class="arrow arrow-right"></view></view>
+        <view class="text-thirdly">直线距离1000m</view>
       </view>
 
 <!--      <button @click="onAdd">onAdd</button>-->
@@ -97,7 +97,7 @@ const {proxy} = getCurrentInstance()
 
 let {ins: store, refs, getSubStore} = $getStore("Shop");
 let {ins: partStore} = getSubStore('part')
-console.log(partStore);
+// console.log(partStore);
 
 
 let { longitude, latitude, showMap, shopStep,needGetLocation } = refs
