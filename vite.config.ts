@@ -7,8 +7,6 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { defineConfig } from 'vite';
 import babel from '@rollup/plugin-babel';
-import { globSync } from 'glob';
-import replace from './plugin/vite-plugin-filter-replace';
 
 import env from './src/config/env';
 
@@ -69,47 +67,6 @@ export default defineConfig({
         ['@babel/plugin-proposal-decorators', { version: '2023-05' }]
       ]
     }),
-    /**
-     * 支持自动添加变量
-     *
-     * 支持 @auto-export getStore("Home") 自动添加添加导出
-     * let {k1, k2, k3} = storeToRefs(store);
-     * let { action1 } = store;
-     */
-    // replace([
-    //   {
-    //     filter: /\.vue$/,
-    //     replace(source, path) {
-    //       new RegExp('pages\\/.*\\/.*\\.vue');
-    //       const imagesAlt = globSync([
-    //         'src/pages/*/*.vue',
-    //         'src/components/*.vue'
-    //       ]).map((item) => {
-    //         return item.replaceAll('\\', '/');
-    //       });
-    //       // console.log(imagesAlt);
-    //       const isMatch = imagesAlt.some((v) => {
-    //         return path.endsWith(v);
-    //       });
-    //       // console.log(imagesAlt, path);
-    //       if (isMatch) {
-    //         // console.log(source, path);
-    //         source = source.replace(
-    //           `<script setup lang="ts" auto>`,
-    //           `
-    //         <script setup lang="ts" auto>
-    //         const $app = getApp();
-    //         const $frame = $app.globalData.frame;
-    //         const $getStore = $frame.getStore;
-
-
-    //         `
-    //         );
-    //       }
-    //       return source;
-    //     }
-    //   }
-    // ]),
     uni({
       viteLegacyOptions: {
         // targets: 'last 2 versions, > 0.3%, Firefox ESR'
