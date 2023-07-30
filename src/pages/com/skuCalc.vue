@@ -22,7 +22,6 @@ let $control = new Proxy(appContext, {
 })
 
 
-
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
 let $page = $CurrentInstance.proxy;
@@ -36,16 +35,20 @@ function $callCom(refName, method, args = []) {
   return $sel(refName)?.run(methodArr[0], methodArr.slice(1).join('.'), args);
 }
 
+
 function submitForm(ref = '') {
-  $page.$refs[ref].validate().then(res => {
-    uni.showToast({
-      title: '校验通过'
+  return new Promise(resolve => {
+    $page.$refs[ref].validate().then(res => {
+      // uni.showToast({
+      //   title: '校验通过'
+      // })
+      resolve()
+    }).catch(err => {
+      console.log('err', err);
     })
-    console.log(res);
-  }).catch(err => {
-    console.log('err', err);
   })
 }
+
 
 
 ;

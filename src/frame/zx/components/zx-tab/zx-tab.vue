@@ -6,12 +6,12 @@
 				<view class="tabBox" :style="{ 'justify-content': isOutWindow ? '' : 'space-around'}">
 					<view class="items" v-for="(item, index) in tabValue" :key="index" 
 					@click="updateTab(index)">
-						<slot name="before" v-bind="{index: index, item: item}"></slot>
+						<slot name="before"  :index="index"></slot>
 						<view class="tabText" :class="index == tIndex ? 'active' : ''"
 							:style="{ 'font-size': fontSize + 'px', color: index == tIndex ? textColor : ''}">
 							<text>{{item}}</text>
 						</view>
-						<slot name="after" v-bind="{index: index, item: item}"></slot>
+						<slot name="after" :index="index"></slot>
 					</view>
 				</view>
 				<view class="underscore"

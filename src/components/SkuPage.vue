@@ -40,8 +40,9 @@
                   <view>{{ item.sku_id }}</view>
                   <view>{{index + 1}} </view>
                 </view>
-                <view>
+                <view class="flex items-center gap-10">
                   <!-- <button @click="onClickSku(item)">购买</button> -->
+                  <view>{{ getItemCartDetail(item, 'num') }}</view>
                   <com-sku-calc @sku-calc-submit="onSkuCalcSubmit($event, item)"></com-sku-calc>
                 </view>
               </view>
@@ -59,8 +60,12 @@ import { sleep } from "@/utils/time";
 import { useRefresh } from "@/hooks/useRefresh";
 import apiTest from "@/api/apiTest";
 import { deepClone } from "@/utils/clone";
+import get from "lodash/get"
 
 defineEmits(['buy-sku'])
+
+let {ins: cartStore} = $getStore("Cart");
+
 
 let items = reactive([]);
 let categories = reactive([]);
@@ -138,8 +143,21 @@ function onSkuCalcSubmit(e, item: any) {
     newItem.sku_tags = newItem.sku_tags.concat(someGood)
   }
 
-  console.log(e, somePrice, newItem);
+  // console.log(e, somePrice, newItem);
   proxy.$emit('buy-sku', newItem)
+}
+
+function getItemCartDetail(newItem, path = '') {
+  let items =  cartStore.filterItems([
+    ['0', 'eq', newItem.sku_id]
+  ])
+  if (items.length > 0) {
+    let [item] = items
+    if (item) {
+      return get(item[1], path)
+    }
+  }
+  return ''
 }
 
 // list 跳转

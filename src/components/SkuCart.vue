@@ -37,7 +37,6 @@
 </style>
 
 <script setup lang="ts">
-import UniNumberBox from "@/uni_modules/uni-number-box/components/uni-number-box/uni-number-box.vue";
 import NumberBox from "@/components/NumberBox.vue";
 
 let {proxy} = getCurrentInstance()
@@ -48,9 +47,9 @@ defineEmits(['item_change'])
 
 let {ins: store, refs} = $getStore("Cart");
 
-function onInputBox(e) {
-  console.log('onInputBox',e);
-}
+// function onInputBox(e) {
+//   console.log('onInputBox',e);
+// }
 
 function onChangeCheckAll() {
   store.toggleCheckAll()

@@ -32,11 +32,14 @@ function createFormat(propertyKey, type) {
 }
 
 
-function createIsArray(propertyKey, {itemType = '', min = 0} = {} ) {
+function createIsArray(propertyKey, {itemType = '', min = 0, max = Number.MAX_SAFE_INTEGER} = {} ) {
   currentDef[propertyKey].rules.push({
     validateFunction:function(rule,value,data,callback){
       if (value.length < min) {
         callback(`${currentDef[propertyKey].label}至少${min}个`)
+      }
+      if (value.length > max) {
+        callback(`${currentDef[propertyKey].label}最多${max}个`)
       }
       return true
     }

@@ -3,6 +3,7 @@ import { deepClone } from "@/utils/clone";
 import { getObj } from "@/utils/collection";
 import { transform } from "@/utils/price";
 import appConfig from "../../config.json"
+import { findAll } from "@/frame/list";
 
 @partialStore("BaseCart")
 class BaseCart {
@@ -35,6 +36,12 @@ class BaseCart {
       this.items[index][1].num =  this.items[index][1].num + 1
       // console.log('pushItem', this.items);
     }
+  }
+
+  filterItems(conditions = []): Array<any> {
+    // console.log(deepClone(unref(this.items)));
+    
+    return findAll(deepClone(unref(this.items)), conditions)
   }
 
   delItem(index) {

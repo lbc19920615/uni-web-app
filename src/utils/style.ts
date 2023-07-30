@@ -58,20 +58,29 @@ function parseArgs(argStr, funContext = {}) {
   return argStr
 }
 
+function regVal(val) {
+  if (typeof val === 'string') {
+    // console.log(`'${val}'`);
+    return `'${val}'`
+  }
+  return val
+}
+
 function createFunc() {
   return  {
-    fun(...args) {
+    lastArg(...args) {
       // console.log('fun');
       
       if (Array.isArray(args) && args.length > 0) {
-        return args.at(-1)
+
+        
+        let val = args.at(-1)
+
+
+        return regVal(val)
       }
       return 0
     },
-    // get(...args) {
-    //   let name = args[0]
-    //   return (funContext[name] ?? 0)
-    // },
     str_append(...args) {
       // console.log('str_append');
       let str = ''
@@ -133,6 +142,8 @@ function makestyle(cssCode = '', funContext = {}) {
       newCssCode = newCssCode.replace(funcArgBody, ret)
     }
   })
+  // console.log(newCssCode);
+  
   return newCssCode
 }
 
@@ -193,9 +204,13 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           // let newCssStr: any = await makestyle(item, funContext);
           let newCssStr: any = makestyle(item, funContext);
 
+          // console.log(newCssStr);
+          
           if (cssHack) {
             val = await cssHack(newCssStr, funContext)
           } else {
+            // console.log(newCssStr);
+            
             val = templateCalc(newCssStr, {})
           }
 
@@ -315,12 +330,20 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           }
         }
         else if (type === 'for') {
-          let [type, max, indexName = 'LOOP_INDEX', funName] = assignMents[i]
+          let [type, max, loopArg, funName] = assignMents[i]
+          let [valueName = 'LOOP_ITEM', indexName = 'LOOP_INDEX'] = loopArg
           let fun = cssMap[funName]
           let objfunContext: any = deepClone(funContext)
           let outVars = fun.outVars ?? [];
-          for (let i = 0; i < max; i++) {
-            objfunContext[indexName]  = i;
+
+          let len = max
+          if (max.length) {
+            len = max.length
+          }
+
+          for (let i = 0; i < len; i++) {
+            objfunContext[indexName] = i;
+            objfunContext[valueName] = max[i]; 
             let val = await runCalc(funName, objfunContext);
             outVars.forEach(key => {
               objfunContext[key] = objfunContext[key]

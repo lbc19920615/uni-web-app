@@ -176,13 +176,16 @@ const calculators = {
 /**
  * 从数据集里获取对应的数据
  */
-const getValues = (key, values) => {
+const getValues = (key, values, {raw = false} = {}) => {
+    if (raw) {
+        return key
+    }
     if (!key) return 0;    
     if (typeof key === 'boolean') {
         return Number(key) || 0;
     }
     if (typeof key === 'string') {
-        // console.log(key);
+        // console.log(key, values);
         let parsedKey = getStringValue(key)
         return values[parsedKey] || Number(parsedKey) || 0;
     }
@@ -204,7 +207,15 @@ const calcRpn = function(tokens, values) {
         else {
 
             // 这两个值的创建顺序不能变，否则 pop 出来的值就反了
-            const val2 = getValues(numarr.pop(), values);
+            let last = numarr.pop()
+            let lastIsRaw = false
+            if (isStringReg.test(last)) {
+                console.log('isStr', last);
+                lastIsRaw = true
+                last = getStringValue(last)
+            }
+            
+            const val2 = getValues(last, values, {raw: lastIsRaw});
             const val1 = getValues(numarr.pop(), values);
             const result = calculator(val1, val2);
             let resultVal = result;

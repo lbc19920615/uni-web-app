@@ -41,8 +41,6 @@
         <view class="text-thirdly">直线距离1000m</view>
       </view>
 
-<!--      <button @click="onAdd">onAdd</button>-->
-
       <view class="flex items-center w-full pb-20 pt-20"
             style="position: absolute; bottom: 0; left: 0; z-index: 11111; background-color: #fff; height: var(--sku-cart-action-h); border-top: 1px solid #eee"
             v-show="isOpen || totalCount > 0"
@@ -114,25 +112,8 @@ function open(){
   // console.log(proxy.$refs?.popup);
 }
 
-function onAdd() {
-  let skuId = "sku" + Date.now()
-  storeCart.pushItem(skuId, {
-    num: 1,
-    extra: {
-      sku_id: skuId,
-      sku_price:10,
-      sku_name: 'sku1',
-      sku_tags: ['大杯','5分糖','正常冰']
-    }
-  })
-  proxy.$nextTick(() => {
-    onCartChange()
-  })
-}
-
 function onChangeSku(item: any) {
   // console.log(item);
-  // onAdd()
   storeCart.pushItem(item.sku_id, createBaseListItemConfig(item))
   proxy.$nextTick(() => {
     onCartChange()

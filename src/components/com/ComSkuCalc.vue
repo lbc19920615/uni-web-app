@@ -1,5 +1,5 @@
 <template>
-<view __eid__="id__ztw8n6"  class="">{{vm.price}}
+<view __eid__="id__ztw8n6"  class="">
 <button  type="" open-type="" class="" @click="vm.openPopup()">+</button>
 </view>
 <uni-popup  ref="popup" background-color="#fff" style="z-index:20000" class=""><view __eid__="id__fcg7j4"  class="pb-150">
@@ -42,7 +42,6 @@ let $control = new Proxy(appContext, {
 })
 
 
-
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
 let $page = $CurrentInstance.proxy;
@@ -56,16 +55,20 @@ function $callCom(refName, method, args = []) {
   return $sel(refName)?.run(methodArr[0], methodArr.slice(1).join('.'), args);
 }
 
+
 function submitForm(ref = '') {
-  $page.$refs[ref].validate().then(res => {
-    uni.showToast({
-      title: '校验通过'
+  return new Promise(resolve => {
+    $page.$refs[ref].validate().then(res => {
+      // uni.showToast({
+      //   title: '校验通过'
+      // })
+      resolve()
+    }).catch(err => {
+      console.log('err', err);
     })
-    console.log(res);
-  }).catch(err => {
-    console.log('err', err);
   })
 }
+
 
 defineExpose({
   run(vmName, methodName, args = [])  {
@@ -101,6 +104,7 @@ let def = $frame.f.createFormContext('def', function({ context, field, required,
     return '5分甜'
   }
 
+  @isArray({ max: 2 })
   @field('小料')
   get some() {
     return []
@@ -163,9 +167,13 @@ class Some1 {
   }
   submit() {
     console.log(1111)
-    $page.$emit('sku-calc-submit', def.getFormData())
+submitForm('form').then(() => {
+
+      $page.$emit('sku-calc-submit', def.getFormData())
     def.reset()
     $sel('popup').close()
+})
+    
   }
 }
 

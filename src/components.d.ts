@@ -31,8 +31,10 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     RtScroll: typeof import('./components/rt-scroll/rt-scroll.vue')['default']
+    RtScrollY: typeof import('./components/rt-scroll/rt-scroll-y.vue')['default']
     ShopCard: typeof import('./components/ShopCard.vue')['default']
     SkuCart: typeof import('./components/SkuCart.vue')['default']
     SkuPage: typeof import('./components/SkuPage.vue')['default']
+    Spacer: typeof import('./components/Spacer.vue')['default']
   }
 }
