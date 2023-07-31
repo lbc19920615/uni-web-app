@@ -236,15 +236,15 @@ export function getStore(key) {
 }
 
 
-export function cacheStore(storeIns, { handleCache, key }: any ={}) {
+export function cacheStore(storeIns, { handleCache, key, needKeys = [] }: any ={}) {
   let ins =  storeMap.get(key ?? storeIns.__STORE_NAME__);
-  let keyName = storePrefix + ins.__STORE_NAME__
+  let keyName = storePrefix + storeIns.__STORE_NAME__
   let val = uni.getStorageSync(keyName)
   let cache = typeof val != 'object' ? {} : val
   // console.log(cache);
 
   let cacheObj = {}
-  let __NeedCacheKeys__ = ins.__NeedCacheKeys__
+  let __NeedCacheKeys__ = (Array.isArray(needKeys) && needKeys.length > 0) ? needKeys : ins.__NeedCacheKeys__
 
   __NeedCacheKeys__.forEach(key => {
     let value = unref(storeIns[key])

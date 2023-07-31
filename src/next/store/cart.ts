@@ -109,4 +109,5 @@ export default class extends BaseCart {
     // console.log('getSelectedItems', items, res);
     return {num, price, price_display, items: res}
   }
+
 }

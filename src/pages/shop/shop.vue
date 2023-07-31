@@ -83,7 +83,7 @@
 
 <script setup lang="ts">
 import { $getStore } from "@/frame/app";
-import { checkLocationEnable } from "@/utils/permission";
+// import { checkLocationEnable } from "@/utils/permission";
 import { sleep } from "@/utils/time";
 import IconMask from "@/components/iconMask.vue";
 import PageLoading from "@/components/pageLoading.vue";
@@ -151,6 +151,9 @@ function onRegionchange(e) {
 onShow(async () => {
   await sleep(300)
   store.shopStep = 'selected'
+  proxy.$nextTick(() => {
+    onCartChange()
+  })
   // console.log(refs.needGetLocation, needGetLocation.value);
   // if (refs.needGetLocation.value) {
   //   store.shopStep = 'needSelect'

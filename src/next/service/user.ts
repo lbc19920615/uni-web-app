@@ -1,6 +1,4 @@
 import { z, ZodError } from "zod"
-
-
 @HttpService()
 class some {
     method = 'get'

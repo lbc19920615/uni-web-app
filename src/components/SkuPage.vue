@@ -41,7 +41,6 @@
                   <view>{{index + 1}} </view>
                 </view>
                 <view class="flex items-center gap-10">
-                  <!-- <button @click="onClickSku(item)">购买</button> -->
                   <view>{{ getItemCartDetail(item, 'num') }}</view>
                   <com-sku-calc @sku-calc-submit="onSkuCalcSubmit($event, item)"></com-sku-calc>
                 </view>
@@ -104,10 +103,6 @@ function reset(newItems = []) {
   }, 300);
 }
 
-function onClickSku(item: any) {
-  // console.log('onClickSku', item);
-  proxy.$emit('buy-sku', deepClone(unref(item)))
-}
 
 function onSkuCalcSubmit(e, item: any) {
   let newItem = deepClone(unref(item))

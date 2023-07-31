@@ -4,6 +4,8 @@
       <view class="flex items-center pb-20" >
         <radio @click="onChangeCheckAll" :checked="store.checkedLen > 0" />
         <view>共{{refs.checkedLen}}件</view>
+        <Spacer class="flex-1"></Spacer>
+        <view @click="clearAllItems">清空</view>
       </view>
     </view>
     <scroll-view style="max-height: 560rpx" scroll-y>
@@ -50,6 +52,11 @@ let {ins: store, refs} = $getStore("Cart");
 // function onInputBox(e) {
 //   console.log('onInputBox',e);
 // }
+
+function clearAllItems() {
+  store.clearAllItems()
+  proxy.$emit("item_change")
+}
 
 function onChangeCheckAll() {
   store.toggleCheckAll()
