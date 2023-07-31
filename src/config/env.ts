@@ -3,7 +3,7 @@ const apiEnv: ApiEnv = 'dev';
 const envMap = {
   dev: {
     baseUrl: 'http://m.dev.xxx.com',
-    apiBaseUrl: 'http://127.0.0.1:3100'
+    apiBaseUrl: 'http://127.0.0.1:8080'
   },
   beta: {
     baseUrl: 'http://m.beta.xxx.com',

@@ -3,12 +3,37 @@ import __http from "@/utils/request";
 
 let httpServiceModules = {};
 
+
+
+/**
+ * 
+ * @param serviceName {string}
+ * @param data 
+ * @returns 
+ */
 export async function reqService(serviceName = '', data = {}) {
   if (httpServiceModules[serviceName]) {
     let def = new httpServiceModules[serviceName];
     // console.log(def);
     let [err, ret] = await __to(__http[def.method](def.url, data))
     // console.log(err, ret);
+
+    let dataIsValidateStruct = true
+    let structParseError = null
+    if (def.resSchema) {
+      let {error = null} = def.resSchema.safeParse(ret);
+      if (error) {
+        dataIsValidateStruct = false
+        structParseError = error
+      }
+    }
+
+    if (!dataIsValidateStruct) {
+      console.log('error', structParseError)
+
+      return undefined
+    }
+
     if (err) {
       return undefined
     }

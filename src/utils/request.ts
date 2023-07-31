@@ -3,9 +3,10 @@ import { forward } from './router';
 import { getCommonParams } from '@/config/commonParams';
 import env from '@/config/env';
 import { hideLoading, showLoading } from '@/config/serviceLoading';
+import { z, ZodError } from "zod"
 
 function handleFail(err: { errno: number; errmsg: string }) {
-  const { errmsg = '抢购火爆，稍候片刻！', errno = -1 } = err;
+  const { errmsg = '稍候片刻！', errno = -1 } = err;
   switch (errno) {
     case 10000:
       // 特殊异常处理
@@ -63,6 +64,8 @@ function baseRequest(
           responseData = res.data;
         } else {
           errmsg = '稍候片刻！'
+          console.log(`${res.statusCode}错误`, res);
+          
           handleFail({
             errno: -1,
             errmsg
@@ -79,7 +82,7 @@ function baseRequest(
         });
       },
       complete: (data) => {
-        console.log('baseRequest complete', responseData, data);
+        console.log('request complete', responseData, data);
         if (typeof responseData === 'undefined') {
           reject(errmsg ? { errMsg: errmsg} : data )
         } else {

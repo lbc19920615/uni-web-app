@@ -28,6 +28,7 @@ import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
 import { getCurPageOptions } from "@/utils/uni"
 
 
+import { z, ZodError } from "zod"
 import { initModelContext, injectControl } from "@/frame/model";
 let appContext = initModelContext('test-gen');
 let $control = new Proxy(appContext, {
@@ -36,6 +37,9 @@ let $control = new Proxy(appContext, {
     return proxyObj.getControl(name)
   }
 })
+function isDefined(v) {
+  return typeof v !== 'undefined'
+}
 
 
 const $app = getApp();
@@ -72,7 +76,14 @@ function submitForm(ref = '') {
         ;
 let {ins: state} = $getStore('TestGen_state');
   
-        ;console.log(1)
+        ;onLoad(async () => {
+  let res = await $reqService('testDeep')  
+  console.log('ssssss', res)
+  if (isDefined(res)) {
+    console.log('good')
+  }
+}) 
+
         
   let $pageFormConfig = {};
 
