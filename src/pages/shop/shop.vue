@@ -90,6 +90,7 @@ import PageLoading from "@/components/pageLoading.vue";
 
 import {createBaseListItemConfig} from "@/next/store/baseList";
 import LockButton from "@/components/LockButton.vue";
+import { forward } from "@/utils/router";
 
 const {proxy} = getCurrentInstance()
 
@@ -123,8 +124,11 @@ function onChangeSku(item: any) {
 // 结算
 async function sendRequest(e) {
   console.log('sendRequest', storeCart.getCollect(), e);
-  await sleep(3000);
+  await sleep(300);
   e.unLock()
+  forward("order", {
+    orderId: 'order000000001'
+  })
 }
 
 let totalPrice = ref(0);

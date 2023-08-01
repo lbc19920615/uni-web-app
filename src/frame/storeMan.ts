@@ -235,6 +235,23 @@ export function getStore(key) {
   }
 }
 
+export function cacheStoreRun(storeIns, runtime = function(proxyObj: any) {}) {
+  let needKeys = []
+  let proxyObj = new Proxy(storeIns, {
+    set(target, name, value) {
+      target[name] = value
+      needKeys.push(name)
+      return true
+    }
+  })
+
+  runtime(proxyObj);
+
+  setTimeout(() => {
+    // console.log('1111', needKeys);
+    cacheStore(storeIns, {needKeys})
+  }, 30)
+}
 
 export function cacheStore(storeIns, { handleCache, key, needKeys = [] }: any ={}) {
   let ins =  storeMap.get(key ?? storeIns.__STORE_NAME__);

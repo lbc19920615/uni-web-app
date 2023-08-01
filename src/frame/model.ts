@@ -9,6 +9,16 @@ let modelContext = {
 
 let currentModelContext = null
 
+
+export function creteProxyControl(appContext) {
+    return new Proxy(appContext, {
+        get(proxyObj, name) {
+            // console.log(proxyObj, name);
+            return proxyObj.getControl(name)
+        }
+    })
+}
+
 export function initModelContext(contextName) {
     modelContext[contextName] = {
         defs: {}

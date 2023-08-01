@@ -437,6 +437,8 @@ export function useSimpleForm(name) {
 
   obj.getItemClsDefProp = function(key, propName) {
     let itemClsDef = obj.getItemClsDef(key);
+    // console.log(itemClsDef);
+    
     if (itemClsDef) {
       return itemClsDef[propName]
     }

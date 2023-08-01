@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
     CusTabbar: typeof import('./components/cusTabbar.vue')['default']
     CusWxs: typeof import('./components/cusWxs.vue')['default']
     DaTree: typeof import('./components/da-tree/index.vue')['default']
+    DymInput: typeof import('./components/dymInput.vue')['default']
     IconMask: typeof import('./components/iconMask.vue')['default']
     LinkScrollCom: typeof import('./components/linkScrollCom.vue')['default']
     ListChat: typeof import('./components/listChat.vue')['default']

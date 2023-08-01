@@ -4,7 +4,7 @@
       {{ state.options }}
 
 
-<!-- <rt-scroll-y style="width: 160rpx; --rt-scroll-y-h: 860rpx;" :lL="10">
+      <!-- <rt-scroll-y style="width: 160rpx; --rt-scroll-y-h: 860rpx;" :lL="10">
   <view class="w-160 h-150">11111</view>
   <view class="w-160 h-150">11111</view>
   <view class="w-160 h-150">11111</view>
@@ -17,12 +17,20 @@
   <view class="w-160 h-150">11111</view>
 </rt-scroll-y> -->
 
-      <scroll-view style="height: 600rpx;" scroll-y>
-        <view class="grid  grid-cols-10">
-          <view v-for="code in strCodeArr">{{ code }}</view>
-        </view>
-      </scroll-view>
       <!-- <mp-html :content="state.html" :editable="true" @linktap="onLinkTap"></mp-html> -->
+
+      <view>{{ formData }}</view>
+      <uni-forms ref="form" :rules="dynamicRules" :model="formData">
+        <uni-forms-item name="age" label="年龄">
+          <dym-input widgetType="number" :widgetConfig="{}" v-model="formData.age" form="form" ></dym-input>
+        </uni-forms-item>
+        <uni-forms-item name="hobby" label="喜好">
+          <dym-input widgetType="multiCheckbox" :widgetConfig="{localdata: vm.hobby}" v-model="formData.hobby" form="form" ></dym-input>
+        </uni-forms-item>
+        <button class="button" @click="submitForm('form')">校验表单</button>
+      </uni-forms>
+      <!-- @change="setValue('age', formData.age)" -->
+
 
       <view id="some_div" style="font-size: 12px; position: absolute; scale: var(--result);">&nbsp;</view>
     </view>
@@ -31,11 +39,13 @@
 
 <script setup lang="ts">
 import { getCurPageOptions } from "@/utils/uni"
-import {initCssContainer} from "@/utils/style"
+import { initCssContainer } from "@/utils/style"
 import { initModelContext, injectControl } from "@/frame/model";
 
 // import mpHtml from '@/components/mp-html/mp-html.vue'
 // import { sleep } from '@/utils/time'
+let { proxy } = getCurrentInstance()
+let $page = proxy
 
 let appContext = initModelContext('app');
 let $control = new Proxy(appContext, {
@@ -45,10 +55,38 @@ let $control = new Proxy(appContext, {
   }
 })
 
-let { proxy } = getCurrentInstance()
+let formData = reactive({
+  age: '1111',
+  hobby: ''
+})
 
+let dynamicRules = {
+  age: {
+    rules: [{
+      required: true,
+      errorMessage: '年龄不能为空'
+    }]
+  }
+}
 
-// import {strCodeArr} from "@/utils/code"
+function setValue(name, value) {
+  console.log('sssssssssssssss', name, value);
+
+  // 设置表单某项对应得值来触发表单校验
+  // 接受两个参数，第一个参数为表单域的 name ，第二个参数为表单域的值
+  // proxy.$refs.form.setValue(name, value)
+}
+function submitForm(ref = '') {
+  $page.$refs[ref].validate().then(res => {
+    uni.showToast({
+      title: '校验通过'
+    })
+    console.log(res);
+  }).catch(err => {
+    console.log('err', err);
+  })
+}
+
 
 @injectControl('some')
 class Some1 {
@@ -61,9 +99,24 @@ class Some1 {
   dom() {
     this.config = 22
   }
+  hobby = [
+    {
+      text: '冰的',
+      value: '冰的'
+    },
+    {
+      text: '温的',
+      value: '温的'
+    },
+    {
+      text: '热的',
+      value: '热的'
+    },
+  ]
 }
 
-console.log($control['some']);
+let vm = $control['some']
+// console.log($control['some']);
 
 
 
@@ -156,9 +209,9 @@ onShow(() => {
       await cssCalcContainer.runCalc('main', {
         gloA1: 3
       })
-    } catch(e) {
+    } catch (e) {
       console.log('cssCalcContainer error', e);
-      
+
     }
   }, 50)
 })

@@ -27,19 +27,10 @@
 </template>
 
 <script setup lang="ts">
-
 import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
-import { getCurPageOptions } from "@/utils/uni"
-
-
-import { initModelContext, injectControl } from "@/frame/model";
+import { initModelContext, injectControl, creteProxyControl } from "@/frame/model";
 let appContext = initModelContext('com-skuCalc');
-let $control = new Proxy(appContext, {
-  get(proxyObj, name) {
-    // console.log(proxyObj, name);
-    return proxyObj.getControl(name)
-  }
-})
+let $control = creteProxyControl(appContext)
 
 
 const $app = getApp();

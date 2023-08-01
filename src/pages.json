@@ -53,7 +53,7 @@
           "path": "form",
           "hide": true,
           "style": {
-            "navigationBarTitleText": "活动",
+            "navigationBarTitleText": "表单",
             "navigationStyle": "custom"
           }
         },
@@ -78,6 +78,14 @@
           "path": "mixue",
           "style": {
             "navigationBarTitleText": "蜜雪冰城列表",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "name": "order",
+          "path": "order",
+          "style": {
+            "navigationBarTitleText": "订单结算",
             "navigationStyle": "custom"
           }
         }
