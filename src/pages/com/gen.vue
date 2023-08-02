@@ -10,42 +10,40 @@
 
 import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
 import { getCurPageOptions } from "@/utils/uni"
+import { forward } from '@/utils/router';
+import { injectStore, useCache, cacheStore, cacheStoreRun } from "@/frame/storeMan";
 
 
-import { initModelContext, injectControl } from "@/frame/model";
+import { z, ZodError } from "zod"
+import { initModelContext, injectControl, creteProxyControl } from "@/frame/model";
+import { PageMethod } from "@/frame/page";
 let appContext = initModelContext('preview__com-gen');
-let $control = new Proxy(appContext, {
-  get(proxyObj, name) {
-    // console.log(proxyObj, name);
-    return proxyObj.getControl(name)
-  }
-})
+let $control = creteProxyControl(appContext)
 
+function isDefined(v) {
+  return typeof v !== 'undefined'
+}
 
 
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
 let $page = $CurrentInstance.proxy;
-function $sel(name) {
-  return $page.$refs[name]
-}
-
-function $callCom(refName, method, args = []) {
-  let methodArr = method.split('.')
-  return $sel(refName)?.run(methodArr[0], methodArr.slice(1), args);
-}
-
+let c = new PageMethod($CurrentInstance)
+let {$sel, $submitForm, $callCom } = c.getMethods()
 
 function submitForm(ref = '') {
-  $page.$refs[ref].validate().then(res => {
-    uni.showToast({
-      title: '校验通过'
+  return new Promise(resolve => {
+    $page.$refs[ref].validate().then(res => {
+      // uni.showToast({
+      //   title: '校验通过'
+      // })
+      resolve()
+    }).catch(err => {
+      console.log('err', err);
     })
-    console.log(res);
-  }).catch(err => {
-    console.log('err', err);
   })
 }
+
 
 
 ;setTimeout(() => {

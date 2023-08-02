@@ -4,6 +4,16 @@ export const toTypeString = (value: unknown): string =>
 export const toRawType = (value: unknown): string =>
   toTypeString(value).slice(8, -1);
 
+  export function isConstructor(f: Function | any) {
+    try {
+      new f();
+    } catch (err) {
+      // verify err is the expected error and then
+      return false;
+    }
+    return true;
+  }
+
 export const isArray = Array.isArray;
 export const isMap = (val: unknown): val is Map<any, any> =>
   toTypeString(val) === '[object Map]';

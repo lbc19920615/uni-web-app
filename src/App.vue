@@ -1,19 +1,8 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow } from '@dcloudio/uni-app';
-// import Button from "@/uni_modules/uv-ui-tools/libs/mixin/button";
-// import { $getStore } from "@/frame/app";
-// import { sleep } from "@/utils/time";
+
 onLaunch(async () => {
   console.log('App Launch');
-
-  // let { ins: storeList } = $getStore("List")
-
-  // console.log(storeList);
-
-  // await sleep(1000)
-  //
-  // storeList.setItems();
-
 });
 onShow(() => {
   console.log('App Show');
@@ -21,9 +10,6 @@ onShow(() => {
 onHide(() => {
   console.log('App Hide');
 })
-
-
-
 </script>
 
 <script lang="ts">
@@ -31,6 +17,7 @@ import { initFrame } from "@/frame/app";
 // import { tabbarList } from "@/config/app";
 import pageJson from "./pages.json"
 import appConfig from "./config.json"
+import * as $glo from './glo'
 
 let globalData = {
     version: '1.0.1',
@@ -87,6 +74,14 @@ let globalData = {
     })
   }
   // #endif
+
+// const {App} = $glo
+// console.log(App);
+
+
+  if ($glo.App) {
+    $glo.App({globalData})
+  }
 
 export default {
   onLaunch() {

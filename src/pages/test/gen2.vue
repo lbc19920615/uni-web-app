@@ -5,16 +5,27 @@
   <uni-forms  ref="form" form="def" :rules="def.rules" :modelValue="def.formData" class="overflow-hidden" @click="">
     
 <uni-forms-item :label="def.optMap.name.label" name="name">
-  <uni-easyinput v-model="def.formData.name" type="text" :placeholder="'请输入' + def.optMap.name.label" />
+  <dym-input widgetType="text" 
+  :widgetConfig="{}" 
+  :placeholder="'请输入' + def.optMap.name.label"
+  v-model="def.formData.name" form="form" ></dym-input>
 </uni-forms-item>
   
 <uni-forms-item :label="def.optMap.hobby.label" name="hobby">
-  <uni-data-checkbox multiple v-model="def.formData.hobby" :localdata="state.hobby"/>
+  <dym-input widgetType="multiCheckbox" 
+  :widgetConfig="{
+  localdata: state.hobby
+}" 
+  :placeholder="'请输入' + def.optMap.hobby.label"
+  v-model="def.formData.hobby" form="form" ></dym-input>
 </uni-forms-item>
   
 <view  class="dis-flex items-start">
 <uni-forms-item :label="def.optMap.age.label" name="age">
-  <uni-easyinput v-model="def.formData.age" type="number" :placeholder="'请输入' + def.optMap.age.label" />
+  <dym-input widgetType="number" 
+  :widgetConfig="{}" 
+  :placeholder="'请输入' + def.optMap.age.label"
+  v-model="def.formData.age" form="form" ></dym-input>
 </uni-forms-item>
   
 <ResendButton ></ResendButton>
@@ -67,6 +78,7 @@ import { injectStore, useCache, cacheStore, cacheStoreRun } from "@/frame/storeM
 
 import { z, ZodError } from "zod"
 import { initModelContext, injectControl, creteProxyControl } from "@/frame/model";
+import { PageMethod } from "@/frame/page";
 let appContext = initModelContext('test-gen2');
 let $control = creteProxyControl(appContext)
 
@@ -78,16 +90,8 @@ function isDefined(v) {
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
 let $page = $CurrentInstance.proxy;
-function $sel(name) {
-  return $page.$refs[name]
-}
-
-
-function $callCom(refName, method, args = []) {
-  let methodArr = method.split('.')
-  return $sel(refName)?.run(methodArr[0], methodArr.slice(1).join('.'), args);
-}
-
+let c = new PageMethod($CurrentInstance)
+let {$sel, $submitForm, $callCom } = c.getMethods()
 
 function submitForm(ref = '') {
   return new Promise(resolve => {

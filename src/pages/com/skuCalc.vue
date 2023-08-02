@@ -10,31 +10,26 @@
 
 import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
 import { getCurPageOptions } from "@/utils/uni"
+import { forward } from '@/utils/router';
+import { injectStore, useCache, cacheStore, cacheStoreRun } from "@/frame/storeMan";
 
 
-import { initModelContext, injectControl } from "@/frame/model";
+import { z, ZodError } from "zod"
+import { initModelContext, injectControl, creteProxyControl } from "@/frame/model";
+import { PageMethod } from "@/frame/page";
 let appContext = initModelContext('preview__com-skuCalc');
-let $control = new Proxy(appContext, {
-  get(proxyObj, name) {
-    // console.log(proxyObj, name);
-    return proxyObj.getControl(name)
-  }
-})
+let $control = creteProxyControl(appContext)
+
+function isDefined(v) {
+  return typeof v !== 'undefined'
+}
 
 
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
 let $page = $CurrentInstance.proxy;
-function $sel(name) {
-  return $page.$refs[name]
-}
-
-
-function $callCom(refName, method, args = []) {
-  let methodArr = method.split('.')
-  return $sel(refName)?.run(methodArr[0], methodArr.slice(1).join('.'), args);
-}
-
+let c = new PageMethod($CurrentInstance)
+let {$sel, $submitForm, $callCom } = c.getMethods()
 
 function submitForm(ref = '') {
   return new Promise(resolve => {

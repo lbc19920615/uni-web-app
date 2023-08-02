@@ -1,3 +1,4 @@
+import { isConstructor } from "@/utils/is";
 import { reactive, computed } from "vue";
 
 
@@ -124,13 +125,38 @@ export function createModel(cls) {
     }
 }
 
+let symbol = Symbol('BaseControl')
+
+export class BaseVmControl {
+  static [symbol] = 1
+  constructor() {
+    this[symbol] = 1
+  }
+}
+
+
 export function injectControl(name = '') {
     return function(target) {
+
+        
         let clsDef = {
             state: {},
             getters: {},
             actions: {}
         }
+
+        let extendCls = Reflect.getPrototypeOf(target)
+        // console.log(extendCls);
+        
+        if (isConstructor(extendCls)) {
+            let symbols = Object.getOwnPropertySymbols(new extendCls())
+            if (symbols.includes(symbol)) {
+                // console.log('good', Object.getOwnPropertySymbols(new extendCls()));
+                scanCls(clsDef, extendCls)
+            }
+        }
+        // console.log(Object.getOwnPropertySymbols(Reflect.getPrototypeOf(extendCls)))
+
         scanCls(clsDef, target);
     
         if (!target.__def__) {

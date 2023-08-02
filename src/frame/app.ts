@@ -2,6 +2,8 @@ import { getStore } from "@/frame/storeMan";
 import { mock } from "@/frame/mock";
 import { initServiceRes, reqService } from "@/frame/serviceMan";
 import * as f from "@/frame/formMan";
+import { findAll } from "./list";
+import { deepClone } from "@/utils/clone";
 import Nid from "nid";
 
 interface Config {
@@ -9,6 +11,10 @@ interface Config {
      globalData: Record<any, any>
    }
 }
+
+export let $deepClone = deepClone;
+
+export let $filterArr = findAll
 
 export let $nid = Nid
 

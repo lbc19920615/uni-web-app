@@ -114,4 +114,54 @@ apiTest.getShopSkus = async function () {
   return data;
 };
 
+function transformSeverData(obj = {}) {
+  let str = JSON.stringify(obj);
+  return JSON.parse(str, function(key, value) {
+    // console.log(key);
+    // console.log(key, value, this);
+    if (key === 'create_time') {
+      return new Date(value);
+    }
+    if (key === 'update_time') {
+      return new Date(value);
+    }
+    if (key == 'category_skus') {
+      return value.split(',')
+    }
+    if (key.startsWith("sku_price")) {
+      // console.log('sssssssssssssssssssss', value);
+      if (!value || value === 'null') {
+        return 0
+      }
+      return parseFloat(value)
+    }
+    return value
+  })
+}
+
+apiTest.fetchShopItems = async function(): Promise<any> {
+  let data = await apiTest.getShopSkus();
+  let newData: Record<any, any> = transformSeverData(data)
+  let skus = newData.skus
+
+  // console.log('newData', newData);
+
+  let items = []
+  newData.categories.forEach(category => {
+    category.category_skus.forEach((skuId, skuIdIndex) => {
+      let sku = skus.find(item => item.sku_id === skuId);
+      sku.category_id = category.category_id
+      if (skuIdIndex === 0) {
+        sku.needShowCategory = true
+        category.APP_SKU_INDEX = items.length
+      }
+      items.push(sku)
+    })
+  })
+
+  // items = items.concat(mockListData())
+
+  return {items, newData}
+}
+
 export default apiTest;

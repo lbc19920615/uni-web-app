@@ -88,6 +88,14 @@
             "navigationBarTitleText": "订单结算",
             "navigationStyle": "custom"
           }
+        },
+        {
+          "name": "shoplist",
+          "path": "shoplist",
+          "style": {
+            "navigationBarTitleText": "商品货架",
+            "navigationStyle": "custom"
+          }
         }
       ]
     },

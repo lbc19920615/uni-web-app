@@ -122,6 +122,6 @@
 	}
 
 	.scroll-view {
-		height: var(--rt-scroll-y-h);
+		height: var(--rt-scroll-y-h, 100%);
 	}
 </style>

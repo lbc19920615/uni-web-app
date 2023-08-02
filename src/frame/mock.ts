@@ -57,7 +57,7 @@ export function mock(def: Record<string,any>, {len = 20} = {}) {
   let items = []
   for (let i = 0; i < len; i ++) {
     let item = {
-      id: i+1
+      id: Nid()
     }
     Object.entries(def).forEach(([key, value]: [string, any]) => {
       if (value === String) {
