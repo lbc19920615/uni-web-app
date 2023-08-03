@@ -906,6 +906,7 @@ export default defineComponent({
           } else {
             checkedKeys.value = null
           }
+          // console.log('ssssss', v, checkedKeys);
         }
         // checkInitData(datalist.value)
       }, {

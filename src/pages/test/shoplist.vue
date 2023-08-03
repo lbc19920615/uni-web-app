@@ -3,7 +3,7 @@
 <page-wrapper-detail>
 <view __eid__="id__0ql9az"  class="h-full dis-flex">
 <rt-scroll-y  style="background-color:rgba(241, 241, 241, 1)" class="width-160 h-full">
-<da-tree  :field="{ label: 'category_name', key: 'id' }" :data="vm.categorys" style="height:calc(100% - 120rpx)" class="" defaultExpandAll>
+<da-tree  :field="{ label: 'category_name', key: 'category_id' }" :data="vm.categorys" :defaultCheckedKeys="vm.curId" style="height:calc(100% - 120rpx)" class="" defaultExpandAll>
 
 <template  v-slot:label="scope"><view __eid__="id__hfa3uf"  class="height-90 text-center lh-90" @click="vm.onCatSet(scope)">{{scope.item.originItem.category_name}}</view></template>
 
@@ -33,6 +33,7 @@ import { initModelContext, injectControl, creteProxyControl, BaseVmControl } fro
 import { PageMethod } from "@/frame/page";
 let appContext = initModelContext('test-shoplist');
 let $control = creteProxyControl(appContext)
+import * as $glo from '@/glo'
 
 function isDefined(v) {
   return typeof v !== 'undefined'
@@ -45,18 +46,7 @@ let $page = $CurrentInstance.proxy;
 let c = new PageMethod($CurrentInstance)
 let {$sel, $submitForm, $callCom } = c.getMethods()
 
-function submitForm(ref = '') {
-  return new Promise(resolve => {
-    $page.$refs[ref].validate().then(res => {
-      // uni.showToast({
-      //   title: '校验通过'
-      // })
-      resolve()
-    }).catch(err => {
-      console.log('err', err);
-    })
-  })
-}
+let submitForm = $submitForm
 
 
 
@@ -65,35 +55,11 @@ function submitForm(ref = '') {
         ;
         ;import apiTest from "@/api/apiTest";
 
-class BaseShopVm extends BaseVmControl {
-  cachedItems = []
-  items = []
-  categorys = []
-  setCatorys(newItems = []){
-     this.categorys.splice(0, this.categorys.length)
-     this.categorys = newItems
-  }
-  onCatSet(scope) {
-    // console.log(scope.item.originItem)
-    this.setCur(scope.item.originItem)
-  }
-  setCur({category_id} = {}) {
-    this.items.splice(0, this.items.length)
-    let items = $filterArr($deepClone(this.cachedItems), [
-      ['category_id', 'eq', category_id]
-    ]);
-    // console.log(items, category_id)
-    this.items = items
-  }
-}
-
 @injectControl('vm')
-class Some1 extends BaseShopVm {
+class Some1 extends $glo.BaseShopVm {
 }
 
 let vm = $control['vm'];
-
-// console.log(vm.build())
 
 onLoad(async () => {
   let {items, newData} = await apiTest.fetchShopItems()
