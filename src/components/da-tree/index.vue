@@ -585,11 +585,18 @@ export default defineComponent({
         originItem = null,
         disabled = false
       } = item
+      // console.log(item.key, checkedKeys.value);
+      if (item.key === checkedKeys.value) {
+        return;
+      }
+
       if (props.showCheckbox) return
       if (props.onlyRadioLeaf) {
         handleExpandedChange(item)
       }
       if (disabled) return
+
+
 
       // 重置所有选择
       if (datalist.value?.length) {

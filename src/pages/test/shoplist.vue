@@ -3,7 +3,7 @@
 <page-wrapper-detail>
 <view __eid__="id__0ql9az"  style="--shop-list-tab-h:120rpx" class="h-full"><view __eid__="id__ywijy0"  style="height:calc(100% - var(--shop-list-tab-h) + 10rpx)" class="dis-flex">
 <rt-scroll-y  style="background-color:rgba(241, 241, 241, 1)" class="width-160 h-full">
-<da-tree  :field="{ label: 'category_name', key: 'category_id' }" :data="vm.categorys" :defaultCheckedKeys="vm.curId" style="height:calc(100% - 120rpx)" class="" defaultExpandAll>
+<da-tree  :field="{ label: 'category_name', key: 'category_id' }" :data="vm.categorys" :defaultCheckedKeys="vm.categorys[0]?.category_id" style="height:calc(100% - 120rpx)" class="" defaultExpandAll>
 
 <template  v-slot:label="scope"><view __eid__="id__hfa3uf"  class="height-90 text-center lh-90" @click="vm.onCatSet(scope)">{{scope.item.originItem.category_name}}</view></template>
 

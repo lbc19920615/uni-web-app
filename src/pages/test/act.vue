@@ -111,17 +111,17 @@ class Some1 {
   list = [
     {
       text: '冰的',
-      image: '/static/test.jpeg',
+      image: '/static/test.jpg',
       value: '冰的',
     },
     {
       text: '温的',
-      image: '/static/test.jpeg',
+      image: '/static/test.jpg',
       value: '温的'
     },
     {
       text: '热的',
-      image: '/static/test.jpeg',
+      image: '/static/test.jpg',
       value: '热的'
     },
   ]

@@ -2,8 +2,8 @@
 <view __eid__="id__ztw8n6"  class="">
 <button  @click="vm.openPopup()">+</button>
 </view>
-<uni-popup  ref="popup" background-color="#fff" style="z-index:20000"><view __eid__="id__fcg7j4"  class="pb-150">
-<image  src="/static/test.jpeg" class="w-full"></image>
+<uni-popup  ref="popup" background-color="#fff" style="z-index:20000;color:initial"><view __eid__="id__fcg7j4"  class="pb-150">
+<image  src="/static/test.jpg" class="w-full"></image>
 <view __eid__="id__hfaqrp"  class="mb-10">商品介绍</view>
   <uni-forms  ref="form" form="def" :rules="def.rules" :modelValue="def.formData" class="">
     
