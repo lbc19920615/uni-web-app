@@ -1,5 +1,6 @@
 import { BaseVmControl } from "./frame/model";
 import { $filterArr, $deepClone} from "@/frame/app";
+import { deepClone } from "./utils/clone";
 
 // export function App({globalData}) {
 //     console.log(globalData);   
@@ -7,6 +8,42 @@ import { $filterArr, $deepClone} from "@/frame/app";
 
 export function isDefined(v) {
   return typeof v !== 'undefined'
+}
+
+export function onSkuCalcSubmit(extra: any, item: any) {
+  let newItem = deepClone(unref(item))
+  newItem.extra = deepClone(unref(extra));
+
+  let somePriceTotal = 0;
+  let somePrice = []
+  let someGood = []
+  extra.some.map(v => {
+      let arr = v.split(':')
+      let price =  parseFloat(arr.at(-1));
+      if (!Number.isNaN(price)) {
+        // // 转换成分
+        // price = price * 100
+        somePriceTotal = somePriceTotal + price;
+      } else {
+        price = 0
+      }
+      somePrice.push(price)
+      someGood.push(arr[0])
+  })
+
+  if (!newItem.sku_tags) {
+    newItem.sku_tags = []
+  }
+
+  newItem.sku_tags.push(extra.name)
+  newItem.sku_tags.push(extra.age)
+
+  if (somePrice.length > 0) {
+    newItem.sku_price = newItem.sku_price + somePriceTotal   
+    newItem.sku_price_display =  newItem.sku_price / 100
+    newItem.sku_tags = newItem.sku_tags.concat(someGood)
+  }
+  return newItem
 }
 
 export class BaseShopVm extends BaseVmControl {

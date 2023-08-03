@@ -87,8 +87,6 @@ import { $getStore } from "@/frame/app";
 import { sleep } from "@/utils/time";
 import IconMask from "@/components/iconMask.vue";
 import PageLoading from "@/components/pageLoading.vue";
-
-import {createBaseListItemConfig} from "@/next/store/baseList";
 import LockButton from "@/components/LockButton.vue";
 import { forward } from "@/utils/router";
 
@@ -96,10 +94,8 @@ const {proxy} = getCurrentInstance()
 
 let {ins: store, refs, getSubStore} = $getStore("Shop");
 let {ins: partStore} = getSubStore('part')
-// console.log(partStore);
 
-
-let { longitude, latitude, showMap, shopStep,needGetLocation } = refs
+let { longitude, latitude, showMap, shopStep, needGetLocation } = refs
 
 let {ins: storeCart} = $getStore("Cart");
 
@@ -115,7 +111,7 @@ function open(){
 
 function onChangeSku(item: any) {
   // console.log(item);
-  storeCart.pushItem(item.sku_id, createBaseListItemConfig(item))
+  storeCart.putSku(item.sku_id, item)
   proxy.$nextTick(() => {
     onCartChange()
   })
@@ -123,7 +119,7 @@ function onChangeSku(item: any) {
 
 // 结算
 async function sendRequest(e) {
-  console.log('sendRequest', storeCart.getCollect(), e);
+  // console.log('sendRequest', storeCart.getCollect(), e);
   await sleep(300);
   e.unLock()
   forward("order", {

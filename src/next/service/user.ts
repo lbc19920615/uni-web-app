@@ -19,6 +19,4 @@ class testDeep {
     }) 
 }
 
-
-
 export { some,testDeep }

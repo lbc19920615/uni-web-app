@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     ComGen: typeof import('./components/com/ComGen.vue')['default']
     ComSkuCalc: typeof import('./components/com/ComSkuCalc.vue')['default']
     CusTabbar: typeof import('./components/cusTabbar.vue')['default']
+    CustomWaterfallsFlow: typeof import('./components/custom-waterfalls-flow/components/custom-waterfalls-flow/custom-waterfalls-flow.vue')['default']
     CusWxs: typeof import('./components/cusWxs.vue')['default']
     DaTree: typeof import('./components/da-tree/index.vue')['default']
     DymInput: typeof import('./components/dymInput.vue')['default']

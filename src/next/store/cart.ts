@@ -4,6 +4,7 @@ import { getObj } from "@/utils/collection";
 import { transform } from "@/utils/price";
 import appConfig from "../../config.json"
 import { findAll } from "@/frame/list";
+import { createBaseListItemConfig } from "./baseList";
 
 @partialStore("BaseCart")
 class BaseCart {
@@ -108,6 +109,10 @@ export default class extends BaseCart {
     })
     // console.log('getSelectedItems', items, res);
     return {num, price, price_display, items: res}
+  }
+
+  putSku(sku_id = '', item: Record<any, any>) {
+    this.pushItem(sku_id, createBaseListItemConfig(item))
   }
 
 }

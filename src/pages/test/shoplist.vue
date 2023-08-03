@@ -1,7 +1,7 @@
 <template>
 
 <page-wrapper-detail>
-<view __eid__="id__0ql9az"  class="h-full dis-flex">
+<view __eid__="id__0ql9az"  style="--shop-list-tab-h:120rpx" class="h-full"><view __eid__="id__ywijy0"  style="height:calc(100% - var(--shop-list-tab-h) + 10rpx)" class="dis-flex">
 <rt-scroll-y  style="background-color:rgba(241, 241, 241, 1)" class="width-160 h-full">
 <da-tree  :field="{ label: 'category_name', key: 'category_id' }" :data="vm.categorys" :defaultCheckedKeys="vm.curId" style="height:calc(100% - 120rpx)" class="" defaultExpandAll>
 
@@ -12,9 +12,17 @@
 <view __eid__="id__gd35uv"  class="flex-1"><view __eid__="id__5koih3"  class="height-120">control </view>
 <da-tree  :field="{ label: 'name', key: 'id' }" :data="vm.items" style="height:calc(100% - 120rpx)" class="" defaultExpandAll>
 
-<template  v-slot:label="scope"><view __eid__="id__15ga67"  class="p-20 pb-0"><view __eid__="id__fjhlie"  class="mb-10">{{scope.item.originItem}}</view><view __eid__="id__z7ys99"  class="">{{scope.item.originItem.sku_name}}</view></view></template>
+<template  v-slot:label="scope"><view __eid__="id__15ga67"  class="p-20 pb-0"><view __eid__="id__fjhlie"  class="mb-10">{{scope.item.originItem}}</view><view __eid__="id__z7ys99"  class="">{{scope.item.originItem.sku_name}}</view>
+<view  class="dis-flex">
+<Spacer  class="flex-1"></Spacer>
+
+<ComSkuCalc  @sku-calc-submit="vm.calcSubmit($event, scope.item.originItem)"></ComSkuCalc>
+</view>
+</view></template>
 
 </da-tree>
+</view></view></view><view __eid__="id__aakwk8"  style="height:var(--shop-list-tab-h);background-color:rgba(247, 247, 247, 1)" class="pos-absolute left-0 bottom-0 w-full z-index-111"><view __eid__="id__drtyvo"  class="dis-flex items-center p-20"><view __eid__="id__38ea9f"  class="flex-1">实付 &#165;{{vm.collectObj?.price_display}}</view>
+<LockButton  @submit="vm.payOrder">确认支付</LockButton>
 </view></view>
 </page-wrapper-detail>
   
@@ -55,8 +63,22 @@ let submitForm = $submitForm
         ;
         ;import apiTest from "@/api/apiTest";
 
+let {ins: storeCart} = $getStore("Cart");
+
 @injectControl('vm')
 class Some1 extends $glo.BaseShopVm {
+  calcSubmit(extra, item) {
+   let newItem = $glo.onSkuCalcSubmit(extra, item);
+    console.log('calcSubmit', extra, item, newItem)
+
+      storeCart.putSku(newItem.sku_id, newItem)
+  }
+  get collectObj() {
+    return storeCart.getCollect()
+  }
+  async payOrder(e) {
+    e.unLock()
+  }
 }
 
 let vm = $control['vm'];

@@ -106,7 +106,7 @@
           "name": "gen",
           "path": "gen",
           "style": {
-            "navigationBarTitleText": "",
+            "navigationBarTitleText": "单个列表",
             "navigationStyle": "custom"
           }
         },
@@ -114,7 +114,7 @@
           "name": "skuCalc",
           "path": "skuCalc",
           "style": {
-            "navigationBarTitleText": "",
+            "navigationBarTitleText": "商品结算",
             "navigationStyle": "custom"
           }
         }

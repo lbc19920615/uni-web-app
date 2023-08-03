@@ -3,19 +3,13 @@
     <view class="act-con" :style="cssStyle">
       {{ state.options }}
 
-
-      <!-- <rt-scroll-y style="width: 160rpx; --rt-scroll-y-h: 860rpx;" :lL="10">
-  <view class="w-160 h-150">11111</view>
-  <view class="w-160 h-150">11111</view>
-  <view class="w-160 h-150">11111</view>
-  <view class="w-160 h-150">11111</view>
-  <view class="w-160 h-150">11111</view>
-  <view class="w-160 h-150">11111</view>
-  <view class="w-160 h-150">11111</view>
-  <view class="w-160 h-150">11111</view>
-  <view class="w-160 h-150">11111</view>
-  <view class="w-160 h-150">11111</view>
-</rt-scroll-y> -->
+      <!-- <CustomWaterfallsFlow :value="vm.list">
+        <template v-slot:default="item">
+            <view class="item">
+                <view class="title">{{item.text}}</view>
+            </view>
+        </template>
+      </CustomWaterfallsFlow> -->
 
       <!-- <mp-html :content="state.html" :editable="true" @linktap="onLinkTap"></mp-html> -->
 
@@ -110,6 +104,24 @@ class Some1 {
     },
     {
       text: '热的',
+      value: '热的'
+    },
+  ]
+
+  list = [
+    {
+      text: '冰的',
+      image: '/static/test.jpeg',
+      value: '冰的',
+    },
+    {
+      text: '温的',
+      image: '/static/test.jpeg',
+      value: '温的'
+    },
+    {
+      text: '热的',
+      image: '/static/test.jpeg',
       value: '热的'
     },
   ]
