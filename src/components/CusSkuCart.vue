@@ -38,6 +38,12 @@
 }
 </style>
 
+<script lang="ts">
+export default {
+  name: 'CusSkuCart'
+}
+</script>
+
 <script setup lang="ts">
 import NumberBox from "@/components/NumberBox.vue";
 

@@ -21,9 +21,15 @@
 </view></template>
 
 </da-tree>
-</view></view></view><view __eid__="id__aakwk8"  style="height:var(--shop-list-tab-h);background-color:rgba(247, 247, 247, 1)" class="pos-absolute left-0 bottom-0 w-full z-index-111"><view __eid__="id__drtyvo"  class="dis-flex items-center p-20"><view __eid__="id__38ea9f"  class="flex-1">实付 &#165;{{vm.collectObj?.price_display}}</view>
+</view></view></view><view __eid__="id__aakwk8"  style="height:120rpx;background-color:rgba(247, 247, 247, 1);z-index:1111" class="pos-absolute left-0 bottom-0 w-full"><view __eid__="id__drtyvo"  class="dis-flex items-center p-20"><view __eid__="id__38ea9f"  class="flex-1" @click="vm.openPopup(vm?.collectObj)">实付 &#165;{{vm.collectObj?.price_display}}</view>
 <LockButton  @submit="vm.payOrder">确认支付</LockButton>
 </view></view>
+<uni-popup  ref="popup" @change="vm.onPopupChange"><view __eid__="id__pzzmfl"  style="" class="bgc-background mb-120">
+<CusSkuCart >
+<template  v-slot:desc="scope"><view __eid__="id__32yr6g"  class="">{{scope.extra.sku_name}}</view></template>
+</CusSkuCart>
+</view></uni-popup>
+
 </page-wrapper-detail>
   
 </template>
@@ -67,6 +73,7 @@ let {ins: storeCart} = $getStore("Cart");
 
 @injectControl('vm')
 class Some1 extends $glo.BaseShopVm {
+  isOpen = false
   calcSubmit(extra, item) {
    let newItem = $glo.onSkuCalcSubmit(extra, item);
     console.log('calcSubmit', extra, item, newItem)
@@ -79,13 +86,26 @@ class Some1 extends $glo.BaseShopVm {
   async payOrder(e) {
     e.unLock()
   }
+  openPopup(collectObj) {
+    console.log(collectObj)
+    if (collectObj?.price < 0.0001) {
+      return
+    }
+    if (!this.isOpen) {
+      this.isOpen = true
+      $sel('popup').open('bottom') 
+    } else {
+      this.isOpen = false
+      $sel('popup').close()
+    }
+  }
 }
 
 let vm = $control['vm'];
 
 onLoad(async () => {
   let {items, newData} = await apiTest.fetchShopItems()
-vm.cachedItems = items
+  vm.cachedItems = items
   vm.setCatorys(newData.categories)
   vm.setCur(newData.categories[0])
 })
