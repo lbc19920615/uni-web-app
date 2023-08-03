@@ -2,6 +2,7 @@ import type { Preset, Rule } from 'unocss';
 import { defineConfig, presetAttributify, presetUno } from 'unocss';
 
 import presetRemToRpx from './preset-rem-to-rpx';
+import { transformerClass } from './uno.webapp';
 
 const sizeMapping: Record<string, string> = {
   fs: 'font-size',
@@ -14,12 +15,30 @@ const sizeMapping: Record<string, string> = {
 
 function getSizeRules(Mapping: Record<string, string>): Rule<{}>[] {
   return Object.keys(Mapping).map((key) => {
-    const value = Mapping[key];
-    return [new RegExp(`^${key}-(\\d+)$`), ([, d]) => ({ [value]: `${d}rpx` })];
+    const value = Mapping[key];    
+    return [new RegExp(`^${key}-(\\d+)$`), ([, d], ...args) => {
+      return { [value]: `${d}rpx` }
+    }];
+  });
+}
+
+function getLgSizeRules(Mapping: Record<string, string>): Rule<{}>[] {
+  return Object.keys(Mapping).map((key) => {
+    const value = Mapping[key];    
+    return [new RegExp(`^${key}-(\\d+)(vw|rem|%)$`), ([, d, unit = 'rpx'], ...args) => {
+      
+      // if (value.startsWith('width')) {
+      //   console.log(d, unit);
+      // }
+      
+      return { [value]: `${d}${unit}` }
+    }];
   });
 }
 
 let rules = getSizeRules(sizeMapping);
+
+rules = rules.concat(getLgSizeRules(sizeMapping));
 
 const colorMapping: Record<string, string> = {
   bgc: 'background-color',
@@ -61,6 +80,15 @@ rules = rules.concat(getCommonRules(commonMapping));
 
 // console.log(rules);
 
+
+const myRules = {
+  // '.': '-ddd-',
+  // '/': '-ss-',
+  ':': '__',
+  // '%': '-pp-'
+}
+
+
 export default defineConfig({
   presets: [
     presetAttributify(),
@@ -72,5 +100,11 @@ export default defineConfig({
   theme: {
     preflightRoot: ['page,::before,::after']
   },
-  rules
+  transformers: [
+    transformerClass({
+      transformRules: myRules
+    })
+  ],
+  rules,
+  separators: '__'
 });

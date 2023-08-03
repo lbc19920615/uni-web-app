@@ -13,7 +13,7 @@
 
       <!-- <mp-html :content="state.html" :editable="true" @linktap="onLinkTap"></mp-html> -->
 
-      <view>{{ formData }}</view>
+      <!-- <view>{{ formData }}</view>
       <uni-forms ref="form" :rules="dynamicRules" :model="formData">
         <uni-forms-item name="age" label="年龄">
           <dym-input widgetType="number" :widgetConfig="{}" v-model="formData.age" form="form" ></dym-input>
@@ -22,7 +22,7 @@
           <dym-input widgetType="multiCheckbox" :widgetConfig="{localdata: vm.hobby}" v-model="formData.hobby" form="form" ></dym-input>
         </uni-forms-item>
         <button class="button" @click="submitForm('form')">校验表单</button>
-      </uni-forms>
+      </uni-forms> -->
       <!-- @change="setValue('age', formData.age)" -->
 
 

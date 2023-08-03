@@ -1,5 +1,5 @@
 import 'uno.css';
-import './extend.js'
+// import './extend.js'
 // @ts-ignore
 import { createSSRApp } from 'vue';
 import zx from "./frame/zx";

@@ -20,7 +20,7 @@ import appConfig from "./config.json"
 import * as $glo from './glo'
 
 let globalData = {
-    version: '1.0.1',
+    version: '1.0.3',
     infoSync: uni.getSystemInfoSync(),
     cacheSync: false,
     tabbar: pageJson.tabBar,
