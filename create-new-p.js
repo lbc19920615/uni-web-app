@@ -1,3 +1,4 @@
+// 从当前项目新建一个项目
 const fs = require('fs')
 const fse = require('fs-extra')
 const {join} = require('path')
