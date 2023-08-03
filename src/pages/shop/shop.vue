@@ -62,7 +62,7 @@
       <uni-popup ref="popup" type="bottom" @change="onPopUpChange">
         <view class="w-full bgc-white position-absolute"
               style="bottom: var(--sku-cart-popup-b);">
-          <sku-cart
+          <ComSkuCalc
             @item_change="onCartChange"
           >
             <template v-slot:desc="scope">
@@ -70,7 +70,7 @@
               <view  class="fs-32 mb-30">{{scope.extra.sku_tags ? scope.extra.sku_tags.join(',') : ''}}</view>
               <view>{{scope.extra.sku_price_display}}</view>
             </template>
-          </sku-cart>
+          </ComSkuCalc>
         </view>
       </uni-popup>
 

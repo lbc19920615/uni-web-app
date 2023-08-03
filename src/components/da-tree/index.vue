@@ -28,7 +28,8 @@
             <view class="da-tree-item__checkbox--icon da-tree-radio-outline" v-else></view>
           </view>
           <view class="da-tree-item__label" :class="'da-tree-item__label--' + item.checkedStatus"
-            @click="handleLabelClick(item)">
+            @click="handleLabelClick(item)"> 
+            <!-- {{ item.checkedStatus }} -->
             <slot name="label" v-bind:item="item"></slot> <text class="da-tree-item__label--append" v-if="item.append">{{
               item.append }}</text>
           </view>
@@ -204,6 +205,7 @@ export default defineComponent({
      * 初始化数据结构
      */
     function initData() {
+      // console.log(dataRef.value[0]);
       const data = deepClone(dataRef.value)
       datalist.value = []
       datamap.value = {}
@@ -344,6 +346,8 @@ export default defineComponent({
       } else {
         checkedKeyList = checkedKeys.value || null
       }
+
+      // console.log(checkedKeys.value);
 
       handleCheckState(list, checkedKeyList)
 

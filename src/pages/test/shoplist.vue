@@ -10,7 +10,7 @@
 </da-tree>
 </rt-scroll-y>
 <view __eid__="id__gd35uv"  class="flex-1"><view __eid__="id__5koih3"  class="height-120">control </view>
-<da-tree  :field="{ label: 'name', key: 'id' }" :data="vm.items" style="height:calc(100% - 120rpx)" class="" defaultExpandAll>
+<da-tree  :field="{ label: 'sku_name', key: 'sku_id' }" :data="vm.items" :defaultCheckedKeys="vm.items[0]" style="height:calc(100% - 120rpx)" class="" defaultExpandAll>
 
 <template  v-slot:label="scope"><view __eid__="id__15ga67"  class="p-20 pb-0"><view __eid__="id__fjhlie"  class="mb-10">{{scope.item.originItem}}</view><view __eid__="id__z7ys99"  class="">{{scope.item.originItem.sku_name}}</view>
 <view  class="dis-flex">

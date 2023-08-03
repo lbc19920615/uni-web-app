@@ -14,10 +14,11 @@ import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
 
 
 import { z, ZodError } from "zod"
-import { initModelContext, injectControl, creteProxyControl } from "@/frame/model";
+import { initModelContext, injectControl, creteProxyControl, BaseVmControl } from "@/frame/model";
 import { PageMethod } from "@/frame/page";
 let appContext = initModelContext('com-gen');
 let $control = creteProxyControl(appContext)
+import * as $glo from '@/glo'
 
 function isDefined(v) {
   return typeof v !== 'undefined'
@@ -31,18 +32,7 @@ let c = new PageMethod($CurrentInstance)
 let {$sel, $submitForm, $callCom } = c.getMethods()
 
 
-function submitForm(ref = '') {
-  return new Promise(resolve => {
-    $page.$refs[ref].validate().then(res => {
-      // uni.showToast({
-      //   title: '校验通过'
-      // })
-      resolve()
-    }).catch(err => {
-      console.log('err', err);
-    })
-  })
-}
+let submitForm = $submitForm
 
 
 defineExpose({

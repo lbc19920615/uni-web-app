@@ -11,6 +11,8 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ComGen: typeof import('./components/com/ComGen.vue')['default']
     ComSkuCalc: typeof import('./components/com/ComSkuCalc.vue')['default']
+    copy: typeof import('./components/SkuCart copy.vue')['default']
+    CusSkuCart: typeof import('./components/CusSkuCart.vue')['default']
     CusTabbar: typeof import('./components/cusTabbar.vue')['default']
     CustomWaterfallsFlow: typeof import('./components/custom-waterfalls-flow/components/custom-waterfalls-flow/custom-waterfalls-flow.vue')['default']
     CusWxs: typeof import('./components/cusWxs.vue')['default']
@@ -35,7 +37,6 @@ declare module '@vue/runtime-core' {
     RtScroll: typeof import('./components/rt-scroll/rt-scroll.vue')['default']
     RtScrollY: typeof import('./components/custom/rt-scroll-y.vue')['default']
     ShopCard: typeof import('./components/ShopCard.vue')['default']
-    SkuCart: typeof import('./components/SkuCart.vue')['default']
     SkuPage: typeof import('./components/SkuPage.vue')['default']
     Spacer: typeof import('./components/Spacer.vue')['default']
   }
