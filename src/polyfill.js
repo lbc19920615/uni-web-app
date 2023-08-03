@@ -304,5 +304,5 @@ var ENCODEINTO_BUILD = true;
     if (!window["TextDecoder"]) window["TextDecoder"] = TextDecoder;
   })(typeof globalThis == "" + void 0 ? typeof self == "" + void 0 ? this : self : globalThis);
 
-console.log('load wx polyfill');
-console.log(TextEncoder);
+console.log('load wx polyfill [TextEncoder]');
+// console.log(TextEncoder);
