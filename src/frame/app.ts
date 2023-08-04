@@ -4,6 +4,7 @@ import { initServiceRes, reqService } from "@/frame/serviceMan";
 import * as f from "@/frame/formMan";
 import { findAll } from "./list";
 import { deepClone } from "@/utils/clone";
+import orderBy from "lodash/orderBy";
 import Nid from "nid";
 
 interface Config {
@@ -11,6 +12,8 @@ interface Config {
      globalData: Record<any, any>
    }
 }
+
+export let $orderBy = orderBy;
 
 export let $deepClone = deepClone;
 

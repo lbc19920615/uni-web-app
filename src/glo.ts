@@ -1,5 +1,5 @@
 import { BaseVmControl } from "./frame/model";
-import { $filterArr, $deepClone} from "@/frame/app";
+import { $filterArr, $deepClone, $orderBy} from "@/frame/app";
 import { deepClone } from "./utils/clone";
 
 // export function App({globalData}) {
@@ -38,11 +38,22 @@ export function onSkuCalcSubmit(extra: any, item: any) {
   newItem.sku_tags.push(extra.name)
   newItem.sku_tags.push(extra.age)
 
+  console.log(newItem.sku_id_display, someGood);
+  
+
+  newItem.sku_id_display  =  newItem.sku_id
+
   if (somePrice.length > 0) {
     newItem.sku_price = newItem.sku_price + somePriceTotal   
     newItem.sku_price_display =  newItem.sku_price / 100
     newItem.sku_tags = newItem.sku_tags.concat(someGood)
   }
+  if (someGood.length > 0) {
+    newItem.sku_id_display = newItem.sku_id + ":" + someGood.join('_')
+  }
+
+  
+  console.log(newItem.sku_id_display, someGood);
   return newItem
 }
 
@@ -51,6 +62,16 @@ export class BaseShopVm extends BaseVmControl {
   items = []
   categorys = []
   curId = ''
+  搜索条件 = new Map()
+  设置条件(name = '', order ='') {
+    let v = this.搜索条件.get(name)
+    if (v) {
+      this.搜索条件.delete(name)
+      
+    } else {
+      this.搜索条件.set(name, order)
+    }
+  }
   setCatorys(newItems = []){
      this.categorys.splice(0, this.categorys.length)
      this.categorys = newItems
@@ -67,6 +88,18 @@ export class BaseShopVm extends BaseVmControl {
     // console.log(items, category_id)
     this.items = items
     this.curId = category_id
+  }
+  get filterItems() {
+    let arr = this.搜索条件
+    let items = $deepClone(this.items)
+    arr.forEach((value, key) => {
+      // console.log(key)
+      if (value[1] === 'orderBy') {
+       items = $orderBy(items, [value[0]], [ value[2]]) 
+      }
+    })
+    // console.log( items)
+    return items
   }
   get initId() {
     if (!this.categorys[0]) {

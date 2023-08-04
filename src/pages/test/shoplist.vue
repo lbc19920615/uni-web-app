@@ -1,7 +1,7 @@
 <template>
 
 <page-wrapper-detail>
-<view __eid__="id__0ql9az"  style="--shop-list-tab-h:120rpx" class="h-full"><view __eid__="id__ywijy0"  style="height:calc(100% - var(--shop-list-tab-h) + 10rpx)" class="dis-flex">
+<view __eid__="id__0ql9az"  style="--shop-list-tab-h:120rpx" class="h-full"><view __eid__="id__ywijy0"  style="height:calc(100% - var(--shop-list-tab-h) + 6rpx)" class="dis-flex">
 <rt-scroll-y  style="background-color:rgba(241, 241, 241, 1)" class="width-160 h-full">
 <da-tree  :field="{ label: 'category_name', key: 'category_id' }" :data="vm.categorys" :defaultCheckedKeys="vm.categorys[0]?.category_id" style="height:calc(100% - 120rpx)" class="" defaultExpandAll>
 
@@ -9,10 +9,14 @@
 
 </da-tree>
 </rt-scroll-y>
-<view __eid__="id__gd35uv"  class="flex-1"><view __eid__="id__5koih3"  class="height-120">control </view>
-<da-tree  :field="{ label: 'sku_name', key: 'sku_id' }" :data="vm.items" :defaultCheckedKeys="vm.items[0]" style="height:calc(100% - 120rpx)" class="" defaultExpandAll>
+<view __eid__="id__gd35uv"  class="flex-1"><view __eid__="id__5koih3"  class="height-90 p-20 box-border"><view __eid__="id__3h7pm4"  class="" @click="vm.设置条件('sku_price_order', ['sku_price', 'orderBy', 'asc'])">价格 {{vm.搜索条件.has('sku_price_order') ? '上': ''}}</view></view>
+<da-tree  :field="{ label: 'sku_name', key: 'sku_id' }" :data="vm.filterItems" :defaultCheckedKeys="vm.items[0]" style="height:calc(100% - 90rpx)" class="" defaultExpandAll>
 
-<template  v-slot:label="scope"><view __eid__="id__15ga67"  class="p-20 pb-0"><view __eid__="id__fjhlie"  class="mb-10">{{scope.item.originItem}}</view><view __eid__="id__z7ys99"  class="">{{scope.item.originItem.sku_name}}</view>
+<template  v-slot:label="scope"><view __eid__="id__15ga67"  class="p-20 pb-0">
+<view  class="dis-flex gap-20">
+<image  style="background-color:rgba(242, 242, 242, 1)" class="width-120 height-120"></image>
+<view __eid__="id__lbjrjy"  class=""><view __eid__="id__fjhlie"  class="mb-10">{{scope.item.originItem.sku_name}}</view><view __eid__="id__z7ys99"  class="">&#165; {{scope.item.originItem.sku_price_display}} 起</view></view></view>
+
 <view  class="dis-flex">
 <Spacer  class="flex-1"></Spacer>
 
@@ -87,7 +91,7 @@ class Some1 extends $glo.BaseShopVm {
   }
   openPopup(collectObj) {
     // console.log(collectObj)
-    if (collectObj?.price < 0.0001) {
+    if (collectObj?.originItems?.length < 1) {
       return
     }
     if (!this.isOpen) {

@@ -28,11 +28,11 @@ class BaseCart {
     this.items.splice(0)
   }
 
-  pushItem(skuId, {num = 1, checked = true, extra = {}} = {}) {
+  pushItem(skuIdDisplay, {num = 1, checked = true, extra = {}} = {}) {
     let keys =  this.items.map(v => v[0])
-    let index = keys.findIndex(key => key === skuId)
+    let index = keys.findIndex(key => key === skuIdDisplay)
     if (index < 0) {
-      this.items.push([skuId, { num:num, checked, extra }])
+      this.items.push([skuIdDisplay, { num:num, checked, extra }])
     } else {
       this.items[index][1].num =  this.items[index][1].num + 1
       // console.log('pushItem', this.items);
@@ -93,6 +93,7 @@ class BaseCart {
 export default class extends BaseCart {
 
   getCollect({priceKey = 'sku_price'} = {}) {
+    let originItems = deepClone(this.items)
     let items = this.getSelectedItems()
     let res = deepClone(items)
     let num = 0;
@@ -108,7 +109,7 @@ export default class extends BaseCart {
       // console.log(item[1]);
     })
     // console.log('getSelectedItems', items, res);
-    return {num, price, price_display, items: res}
+    return {num, price, price_display, originItems, items: res}
   }
 
   putSku(sku_id = '', item: Record<any, any>) {

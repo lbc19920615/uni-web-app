@@ -29,9 +29,8 @@ export class PageMethod {
      * @returns 
      */
     $sel(name) {
-        console.log(this);
-        
-        return this.$page.$refs[name]
+        // console.log(this);
+        return this.$page?.$refs[name]
     }
 
 /**

@@ -1,4 +1,5 @@
 <template>
+    <!-- {{ modelValue }} -->
   <template v-if="widgetType === 'number'">
     <uni-easyinput v-model="inputValue" @input="onChange" type="number" :placeholder="placeholder"  />
   </template>
@@ -38,7 +39,7 @@ export default {
             default: true
         },
         modelValue: {
-            type: [Number, String],
+            type: [Number, String, Array],
             default: ''
         },
         placeholder: {
@@ -90,6 +91,9 @@ export default {
             // this.setValue(val)
             this.onChange(val)
         }
+    },
+    mounted() {
+        this.inputValue = this.modelValue
     }
 }
 </script>
