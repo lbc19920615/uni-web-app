@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow } from '@dcloudio/uni-app';
 
+console.log(import.meta.env.VITE_SOME);
+
+
 onLaunch(async () => {
   console.log('App Launch');
 });

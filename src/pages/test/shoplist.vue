@@ -26,7 +26,7 @@
 </view></view>
 <uni-popup  ref="popup" @change="vm.onPopupChange"><view __eid__="id__pzzmfl"  style="" class="bgc-background mb-120">
 <CusSkuCart >
-<template  v-slot:desc="scope"><view __eid__="id__32yr6g"  class="">{{scope.extra.sku_name}}</view></template>
+<template  v-slot:desc="scope"><view __eid__="id__32yr6g"  class="">{{scope.extra.sku_name}}</view><view __eid__="id__f410us"  class="">{{scope.extra.sku_tags ? scope.extra.sku_tags.join(' ') : ''}}</view></template>
 </CusSkuCart>
 </view></uni-popup>
 
@@ -76,9 +76,8 @@ class Some1 extends $glo.BaseShopVm {
   isOpen = false
   calcSubmit(extra, item) {
    let newItem = $glo.onSkuCalcSubmit(extra, item);
-    console.log('calcSubmit', extra, item, newItem)
-
-      storeCart.putSku(newItem.sku_id, newItem)
+   // console.log('calcSubmit', extra, item, newItem)
+   storeCart.putSku(newItem.sku_id, newItem)
   }
   get collectObj() {
     return storeCart.getCollect()
@@ -87,7 +86,7 @@ class Some1 extends $glo.BaseShopVm {
     e.unLock()
   }
   openPopup(collectObj) {
-    console.log(collectObj)
+    // console.log(collectObj)
     if (collectObj?.price < 0.0001) {
       return
     }
