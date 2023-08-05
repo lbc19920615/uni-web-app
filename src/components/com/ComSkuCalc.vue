@@ -1,13 +1,17 @@
 <template>
 <view __eid__="id__ztw8n6"  class="">
-<button  @click="vm.openPopup()">+</button>
+<button  @click="vm.openPopup()">
+<uni-icons  type="cart"></uni-icons>
+</button>
 </view>
 <uni-popup  ref="popup" background-color="#fff" style="z-index:20000;color:initial"><view __eid__="id__fcg7j4"  class="pb-150">
-<image  src="/static/test.jpg" class="w-full"></image>
-<view __eid__="id__hfaqrp"  class="mb-10">商品介绍</view>
+<image  src="/static/test.jpg" class="w-full mb-10"></image>
+<view __eid__="id__hfaqrp"  class="mb-10">
+<slot  name="desc"></slot>
+</view>
   <uni-forms  ref="form" form="def" :rules="def.rules" :modelValue="def.formData" class="">
     
-<uni-forms-item :label="def.optMap.name.label" name="name">
+<uni-forms-item  class="" :label="def.optMap.name.label" name="name">
   <dym-input widgetType="radio" 
   :widgetConfig="{
   localdata: vm.hobby
@@ -16,7 +20,7 @@
   v-model="def.formData.name" form="form" ></dym-input>
 </uni-forms-item>
   
-<uni-forms-item :label="def.optMap.age.label" name="age">
+<uni-forms-item  class="" :label="def.optMap.age.label" name="age">
   <dym-input widgetType="radio" 
   :widgetConfig="{
   localdata: vm.tiandu
@@ -25,7 +29,7 @@
   v-model="def.formData.age" form="form" ></dym-input>
 </uni-forms-item>
   
-<uni-forms-item :label="def.optMap.some.label" name="some">
+<uni-forms-item  class="checklist-v" :label="def.optMap.some.label" name="some">
   <dym-input widgetType="multiCheckbox" 
   :widgetConfig="{
   localdata: vm.xiaoliao
@@ -192,6 +196,7 @@ let vm = $control['vm'];
 export default {
   name: 'com-sku-calc',
   props: {
+    item: null
   },
   emits: [
     'sku-calc-submit'

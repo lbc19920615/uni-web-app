@@ -38,7 +38,7 @@ export function onSkuCalcSubmit(extra: any, item: any) {
   newItem.sku_tags.push(extra.name)
   newItem.sku_tags.push(extra.age)
 
-  console.log(newItem.sku_id_display, someGood);
+  // console.log(newItem.sku_id_display, someGood);
   
 
   newItem.sku_id_display  =  newItem.sku_id
@@ -62,6 +62,9 @@ export class BaseShopVm extends BaseVmControl {
   items = []
   categorys = []
   curId = ''
+  缓存(v = []) {
+    this.cachedItems = v
+  }
   搜索条件 = new Map()
   设置条件(name = '', order ='') {
     let v = this.搜索条件.get(name)

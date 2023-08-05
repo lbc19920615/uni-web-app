@@ -5,7 +5,7 @@
 <template  v-slot:label="scope"><view __eid__="id__sxew7h"  style="" class="height-230 pl-20 pr-20"><view __eid__="id__sy1v9n"  style="background-color:rgba(255, 255, 255, 1)" class="h-full bdrs-10 p-20 box-border"><view __eid__="id__f6fe8o"  class="">{{scope.item.originItem}}</view><view __eid__="id__quotwd"  class="height-80">image list</view><view __eid__="id__vnpoxq"  class="">detail</view><view __eid__="id__jvg2oc"  class="">action</view></view></view></template>
 
 </da-tree>
-<button __eid__="id__zopstj"  style="" class="" @click="vm.add">添加</button>
+
 </template>
 
 <script setup lang="ts">

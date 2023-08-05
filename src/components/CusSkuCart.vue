@@ -17,7 +17,7 @@
             <radio @click="onChangeCheck(item)" :checked="item[1].checked" />
           </view>
           <view>
-            <slot name="desc" :shop_id="item[0]" :extra="item[1].extra"></slot>
+            <slot name="desc" :shop_id="item[0]" :num="item[1].num" :extra="item[1].extra"></slot>
           </view>
         </view>
         <view class="flex-1">&nbsp;</view>

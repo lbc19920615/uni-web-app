@@ -242,8 +242,12 @@ radio  .wx-radio-input.wx-radio-input-checked {
     transform: rotate(45deg);
   }
 }
+</style>
 
-
+<style lang="scss" scoped>
+:deep(.checklist-v  .uni-data-checklist  .checklist-group) {
+  flex-direction: column;
+}
 </style>
 
 

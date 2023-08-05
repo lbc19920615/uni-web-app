@@ -9,18 +9,18 @@
 
 </da-tree>
 </rt-scroll-y>
-<view __eid__="id__gd35uv"  class="flex-1"><view __eid__="id__5koih3"  class="height-90 p-20 box-border"><view __eid__="id__3h7pm4"  class="" @click="vm.设置条件('sku_price_order', ['sku_price', 'orderBy', 'asc'])">价格 {{vm.搜索条件.has('sku_price_order') ? '上': ''}}</view></view>
+<view __eid__="id__gd35uv"  class="flex-1"><view __eid__="id__5koih3"  class="height-90 p-20 box-border"><view __eid__="id__3h7pm4"  class="" @click="vm.设置条件('sku_price_order', ['sku_price', 'orderBy', 'asc'])">价格 {{vm.搜索条件.has('sku_price_order') ? '上': ''}}
+
+{{vm.curSelect}}</view></view>
 <da-tree  :field="{ label: 'sku_name', key: 'sku_id' }" :data="vm.filterItems" :defaultCheckedKeys="vm.items[0]" style="height:calc(100% - 90rpx)" class="" defaultExpandAll>
 
-<template  v-slot:label="scope"><view __eid__="id__15ga67"  class="p-20 pb-0">
+<template  v-slot:label="scope"><view __eid__="id__15ga67"  class="p-30 pb-0">
 <view  class="dis-flex gap-20">
 <image  style="background-color:rgba(242, 242, 242, 1)" class="width-120 height-120"></image>
-<view __eid__="id__lbjrjy"  class=""><view __eid__="id__fjhlie"  class="mb-10">{{scope.item.originItem.sku_name}}</view><view __eid__="id__z7ys99"  class="">&#165; {{scope.item.originItem.sku_price_display}} 起</view></view></view>
-
-<view  class="dis-flex">
-<Spacer  class="flex-1"></Spacer>
-
-<ComSkuCalc  @sku-calc-submit="vm.calcSubmit($event, scope.item.originItem)"></ComSkuCalc>
+<view __eid__="id__lbjrjy"  class="flex-1"><view __eid__="id__fjhlie"  class="mb-10">{{scope.item.originItem.sku_name}}</view><view __eid__="id__z7ys99"  class="">&#165; {{scope.item.originItem.sku_price_display}} 起</view></view>
+<ComSkuCalc  @sku-calc-submit="vm.calcSubmit($event, scope.item.originItem)" :item="scope.item.originItem">
+<template  v-slot:desc="scope1"><view __eid__="id__vbxsib"  class="">{{scope.item.originItem.sku_name}}</view></template>
+</ComSkuCalc>
 </view>
 </view></template>
 
@@ -30,7 +30,7 @@
 </view></view>
 <uni-popup  ref="popup" @change="vm.onPopupChange"><view __eid__="id__pzzmfl"  style="" class="bgc-background mb-120">
 <CusSkuCart >
-<template  v-slot:desc="scope"><view __eid__="id__32yr6g"  class="">{{scope.extra.sku_name}}</view><view __eid__="id__f410us"  class="">{{scope.extra.sku_tags ? scope.extra.sku_tags.join(' ') : ''}}</view></template>
+<template  v-slot:desc="scope"><view __eid__="id__32yr6g"  class="">{{scope.extra.sku_name}}</view><view __eid__="id__f410us"  class="">{{scope.extra.sku_tags ? scope.extra.sku_tags.join(' ') : ''}}</view><view __eid__="id__gktos6"  class="">&#165; {{scope.num * scope.extra.sku_price / 100}} </view></template>
 </CusSkuCart>
 </view></uni-popup>
 
@@ -78,10 +78,11 @@ let {ins: storeCart} = $getStore("Cart");
 @injectControl('vm')
 class Some1 extends $glo.BaseShopVm {
   isOpen = false
+  curSelect = null
   calcSubmit(extra, item) {
    let newItem = $glo.onSkuCalcSubmit(extra, item);
-   // console.log('calcSubmit', extra, item, newItem)
-   storeCart.putSku(newItem.sku_id, newItem)
+   // console.log('calcSubmit', newItem)
+   storeCart.putSku(newItem.sku_id_display, newItem)
   }
   get collectObj() {
     return storeCart.getCollect()
@@ -108,7 +109,7 @@ let vm = $control['vm'];
 
 onLoad(async () => {
   let {items, newData} = await apiTest.fetchShopItems()
-  vm.cachedItems = items
+  vm.缓存(items)
   vm.setCatorys(newData.categories)
   vm.setCur(newData.categories[0])
 })
