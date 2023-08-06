@@ -96,6 +96,14 @@
             "navigationBarTitleText": "商品货架",
             "navigationStyle": "custom"
           }
+        },
+        {
+          "name": "shopmap",
+          "path": "shopmap",
+          "style": {
+            "navigationBarTitleText": "商店地图",
+            "navigationStyle": "custom"
+          }
         }
       ]
     },
