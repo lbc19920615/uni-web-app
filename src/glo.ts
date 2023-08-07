@@ -111,3 +111,21 @@ export class BaseShopVm extends BaseVmControl {
     return this.categorys[0].category_id
   }
 }
+
+
+export function createBaseCom($page) {
+  let isLocked = false
+
+  class Def extends BaseVmControl {
+    onChange() {
+      $page.$emit('update:modelValue', this.value);
+      setTimeout(() => {
+        isLocked = false
+      }, 50)
+    }
+  }
+
+  return {
+    cls: Def
+  }
+}

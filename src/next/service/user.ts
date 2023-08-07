@@ -4,7 +4,7 @@ class some {
     method = 'get'
     url = '/home/welcome'
 }
-
+                    
 @HttpService()
 class testDeep {
     method = 'get'
@@ -18,5 +18,10 @@ class testDeep {
       num: z.number()
     }) 
 }
+
+
+
+
+
 
 export { some,testDeep }

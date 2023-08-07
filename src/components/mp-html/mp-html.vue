@@ -49,8 +49,8 @@
 import node from './node/node'
 // #endif
 import Parser from './parser'
-import editable from './editable/index.js'
-const plugins=[editable,]
+// import editable from './editable/index.js'
+const plugins=[]
 // #ifdef APP-PLUS-NVUE
 const dom = weex.requireModule('dom')
 // #endif
@@ -124,11 +124,11 @@ export default {
   },
   // #endif
   watch: {
-    editable(val) {
-      this.setContent(val ? this.content : this.getContent())
-      if (!val)
-        this._maskTap()
-    },
+    // editable(val) {
+    //   this.setContent(val ? this.content : this.getContent())
+    //   if (!val)
+    //     this._maskTap()
+    // },
     content (content) {
       this.setContent(content)
     }

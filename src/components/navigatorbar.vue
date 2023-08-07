@@ -9,7 +9,8 @@
         </view>
         <template v-else-if="pageLen > 1">
           <view
-            @click="back"> <uni-icons color="var(--navigation-bar-text)" type="left" size="20"></uni-icons> </view>
+            @click="back"> <uni-icons color="var(--navigation-bar-text)" 
+            type="left" size="20"></uni-icons> </view>
         </template>
         <template v-else></template>
       </template>
@@ -47,9 +48,14 @@
 }
 </style>
 
-<script setup>
+<script lang="ts" setup>
 import { onShow } from '@dcloudio/uni-app';
 import { getPageInfo } from "@/utils/pageInfo";
+import Config from "../pages.json"
+
+// console.log(Config);
+
+
 function back() {
   uni.navigateBack()
 }
@@ -68,11 +74,13 @@ onShow(() => {
   // const systemInfo = uni.getSystemInfoSync();
   setTimeout(() => {
     let pages = getCurrentPages();
-    pageLen = pages.length
+    pageLen.value = pages.length
     // console.log(systemInfo);
     let {navigationBarTitleText, meta} = getPageInfo()
+    // console.log(navigationBarTitleText);
+    
     // console.log('onShow', navigationBarTitleText, __wxConfig?.tabBar?.list, meta.isTabBar);
-    titleText.value = navigationBarTitleText
+    titleText.value = navigationBarTitleText?.length < 1 ? Config?.globalStyle?.navigationBarTitleText : navigationBarTitleText
     isTabBar.value = meta.isTabBar
   }, 30)
 })

@@ -82,7 +82,7 @@ let def = $frame.f.createFormContext('def', function({ context, field, required,
         ;@injectControl('vm')
 class some {
   tabIndex = 0
-  tabs = ['到店自提', '送货上门']
+  tabs = ['附近', '收藏']
   onSwiperChane(e) {
     this.tabIndex = e.detail.current
   }

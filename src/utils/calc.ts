@@ -1,4 +1,4 @@
-// import Big from 'big.js';
+import Big from 'big.js';
 
 let n1 = ((-~{}) + '');
 let n2 = ((-~{})+(-~{}) + '');
@@ -163,14 +163,14 @@ const tokenToRpn = tokenList => {
  * 运算符到实际操作的映射
  */
 const calculators = {
-    // '+': (num1, num2) => (new Big(num1).plus(num2)),
-    // '-': (num1, num2) => (new Big(num1).minus(num2)),
-    // '*': (num1, num2) => (new Big(num1).times(num2)),
-    // '/': (num1, num2) => (new Big(num1).div(num2))
-    [s1]: (num1, num2) => (num1 + num2),
-    [s2]: (num1, num2) => (num1 - num2),
-    [s3]: (num1, num2) => (num1 * num2),
-    [s4]: (num1, num2) => (num1 / num2)
+    '+': (num1, num2) => (new Big(num1).plus(num2)),
+    '-': (num1, num2) => (new Big(num1).minus(num2)),
+    '*': (num1, num2) => (new Big(num1).times(num2)),
+    '/': (num1, num2) => (new Big(num1).div(num2))
+    // [s1]: (num1, num2) => (num1 + num2),
+    // [s2]: (num1, num2) => (num1 - num2),
+    // [s3]: (num1, num2) => (num1 * num2),
+    // [s4]: (num1, num2) => (num1 / num2)
 }
 
 /**

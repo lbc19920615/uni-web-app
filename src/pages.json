@@ -12,7 +12,7 @@
       "name": "profile",
       "path": "pages/profile/profile",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": " ",
         "navigationStyle": "custom"
       }
     },
@@ -125,13 +125,21 @@
             "navigationBarTitleText": "商品结算",
             "navigationStyle": "custom"
           }
+        },
+        {
+          "name": "selAddr",
+          "path": "selAddr",
+          "style": {
+            "navigationBarTitleText": "选择地址",
+            "navigationStyle": "custom"
+          }
         }
       ]
     }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "@navTxtStyle",
-    "navigationBarTitleText": "uni-app",
+    "navigationBarTitleText": "uni-web-app",
     "navigationBarBackgroundColor": "@navBgColor",
     "backgroundColor": "@bgColor"
   },

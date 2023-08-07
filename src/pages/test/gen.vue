@@ -3,7 +3,9 @@
 <page-wrapper-detail>
 <scroll-view __eid__="id111"  scroll-y="true" class="h-full">
 <video  src="https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/2minute-demo.mp4" :autoplay="false" class="w-full display-block"></video>
-<view __eid__="id__ojst8a"  class="" style="color:rgba(242, 244, 245, 1);background-color:rgba(37, 142, 228, 1)">测试1</view><view __eid__="id1212"  class="overflow-hidden height-150"><view __eid__="id11111"  class="">简单demo</view><view __eid__="id11112"  class="">{{state.a}} + {{state.b}} = {{state.c}}</view><button __eid__="id1213"  class="" @click="state.s">计算</button></view>
+<view __eid__="id__ojst8a"  class="" style="color:rgba(242, 244, 245, 1);background-color:rgba(37, 142, 228, 1)">测试1 {{vm.testData}}</view>
+<ComSelAddr  v-model="vm.testData"></ComSelAddr>
+<view __eid__="id1212"  class="overflow-hidden height-150"><view __eid__="id11111"  class="">简单demo</view><view __eid__="id11112"  class="">{{state.a}} + {{state.b}} = {{state.c}}</view><button __eid__="id1213"  class="" @click="state.s">计算</button></view>
 <ResendButton  @click="sendReq"></ResendButton>
 
 <view  class="dis-flex"><view __eid__="id__fcpkga"  class="">view1</view><view __eid__="id__79dosj"  class="">view</view></view>
@@ -28,16 +30,18 @@
 
 <script setup lang="ts">
 
-import { $frame, $getStore,  $reqService, isNoneValue} from "@/frame/app";
+import { $frame, $getStore,  $reqService, isNoneValue, $filterArr, $deepClone} from "@/frame/app";
 import { getCurPageOptions } from "@/utils/uni"
 import { forward } from '@/utils/router';
 import { injectStore, useCache, cacheStore, cacheStoreRun } from "@/frame/storeMan";
 
 
 import { z, ZodError } from "zod"
-import { initModelContext, injectControl, creteProxyControl } from "@/frame/model";
+import { initModelContext, injectControl, creteProxyControl, BaseVmControl } from "@/frame/model";
+import { PageMethod } from "@/frame/page";
 let appContext = initModelContext('test-gen');
 let $control = creteProxyControl(appContext)
+import * as $glo from '@/glo'
 
 function isDefined(v) {
   return typeof v !== 'undefined'
@@ -47,29 +51,10 @@ function isDefined(v) {
 const $app = getApp();
 const $CurrentInstance = getCurrentInstance();
 let $page = $CurrentInstance.proxy;
-function $sel(name) {
-  return $page.$refs[name]
-}
+let c = new PageMethod($CurrentInstance)
+let {$sel, $submitForm, $callCom } = c.getMethods()
 
-
-function $callCom(refName, method, args = []) {
-  let methodArr = method.split('.')
-  return $sel(refName)?.run(methodArr[0], methodArr.slice(1).join('.'), args);
-}
-
-
-function submitForm(ref = '') {
-  return new Promise(resolve => {
-    $page.$refs[ref].validate().then(res => {
-      // uni.showToast({
-      //   title: '校验通过'
-      // })
-      resolve()
-    }).catch(err => {
-      console.log('err', err);
-    })
-  })
-}
+let submitForm = $submitForm
 
 
 
@@ -80,6 +65,8 @@ let {ins: state} = $getStore('TestGen_state');
   
         ;@injectControl('vm')
 class Some1 {
+  testData = [1,2]
+  
   indexHtml = `<div>
   <div style="width: 350rpx; height:  520rpx;">image</div>
   <div style="text-align: center"><a data-code="['sss', [1,2,'3']]">指令</a></div>

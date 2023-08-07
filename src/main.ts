@@ -9,6 +9,9 @@ import store from '@/store';
 import "./polyfill.js"
 // #endif
 
+import * as core from "uni-web-core"
+console.log(core);
+
 
 
 // 路由格式化
