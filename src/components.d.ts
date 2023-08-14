@@ -39,5 +39,8 @@ declare module '@vue/runtime-core' {
     ShopCard: typeof import('./components/ShopCard.vue')['default']
     SkuPage: typeof import('./components/SkuPage.vue')['default']
     Spacer: typeof import('./components/Spacer.vue')['default']
+    ZyButton: typeof import('./components/Zy/ZyButton.vue')['default']
+    ZyColumn: typeof import('./components/Zy/ZyColumn.vue')['default']
+    ZyText: typeof import('./components/Zy/ZyText.vue')['default']
   }
 }

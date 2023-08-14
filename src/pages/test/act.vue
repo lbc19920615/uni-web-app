@@ -140,7 +140,7 @@ let state = reactive({
 let cssStyle = ref('')
 
 
-let cssCalcContainer = initCssContainer({
+let programAttrs: any = {
   cssMap: {
     main: {
       assignMents: [
@@ -206,7 +206,10 @@ let cssCalcContainer = initCssContainer({
       outVars: ['p1']
     }
   }
-})
+}
+
+
+let cssCalcContainer = initCssContainer(programAttrs)
 
 
 

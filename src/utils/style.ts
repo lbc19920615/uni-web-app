@@ -50,7 +50,19 @@ function parseArgs(argStr, funContext = {}) {
       } else {
         newVal = newStr
       }
-      // console.log(newVal);
+      // console.log(typeof newVal);
+
+      if (newVal === "undefined") {
+        return undefined
+      }
+
+      if (newVal === "null") {
+        return null
+      }
+
+      if (Number(newVal) == newVal) {
+        return Number(newVal)
+      }
 
       return newVal
     }
@@ -102,36 +114,41 @@ function makestyleCore(newCssCode = '', funContext = {}, context: any = {}) {
 
   let regexp = /@\(([^\)]*)\)/g
 
-  // console.log(funContext);
-  let match = newCssCode.match(regexp);
+  if (typeof newCssCode === 'string') {
+    let match = newCssCode.match(regexp);
 
 
-  if (Array.isArray(match)) {
-    match.some( async (funcArgBody, funcIndex) => {
-      let funcNameRe = funcArgBody.match(/@\(([^,)]*)/)
-      let funcName = funcNameRe[1]
-      let args = funcArgBody.slice(funcNameRe[0].length).slice(1).slice(0, -1);
-      // console.log(funcArgBody);
-      // console.log(funcName);
-      // console.log(args);
-      if (functions[funcName]) {
-        // let parsedArgs = parseArgs(args, funContext)
+    if (Array.isArray(match)) {
+      match.some( async (funcArgBody, funcIndex) => {
+        let funcNameRe = funcArgBody.match(/@\(([^,)]*)/)
+        let funcName = funcNameRe[1]
+        let args = funcArgBody.slice(funcNameRe[0].length).slice(1).slice(0, -1);
+        // console.log(funcArgBody);
+        // console.log(funcName);
         // console.log(args);
-        if (context.run) {
-          await context.run(functions[funcName], funcArgBody, args)
+        if (functions[funcName]) {
+          // let parsedArgs = parseArgs(args, funContext)
+          // console.log(args);
+          if (context.run) {
+            await context.run(functions[funcName], funcArgBody, args)
+          }
         }
-      }
-
-      if (funcIndex > match.length - 2) {
-        if (context.done) {
-          await context.done()
+  
+        if (funcIndex > match.length - 2) {
+          if (context.done) {
+            await context.done()
+          }
+          return true
         }
-        return true
-      }
-      return false
-    });
+        return false
+      });
+      
+    } 
+  } else {
+    // console.log(newCssCode);
     
-  } 
+  }
+  // console.log(funContext);
 }
 
 function makestyle(cssCode = '', funContext = {}) {
@@ -205,14 +222,20 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           let newCssStr: any = makestyle(item, funContext);
 
           // console.log(newCssStr);
-          
-          if (cssHack) {
-            val = await cssHack(newCssStr, funContext)
-          } else {
-            // console.log(newCssStr);
-            
-            val = templateCalc(newCssStr, {})
+
+          if (typeof newCssStr === 'string') {
+            if (cssHack) {
+              val = await cssHack(newCssStr, funContext)
+            } else {
+              // console.log(newCssStr);
+              
+              val = templateCalc(newCssStr, {})
+            }
           }
+          else {
+            val = newCssStr
+          }
+        
 
           yield [key, val];
         }
@@ -299,7 +322,7 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           let funNameIndex = -1;
           conditions.some((condition, index) => {
             let newStr = parseArgs(condition, funContext);
-            console.log(newStr);
+            // console.log(newStr);
             
             if (templateCalc(newStr, {})) {
               funNameIndex = index;
@@ -330,20 +353,40 @@ export function initCssContainer({ cssMap = {}, cssHack = null } = {}) {
           }
         }
         else if (type === 'for') {
-          let [type, max, loopArg, funName] = assignMents[i]
+          let [type, varName, loopArg, funName] = assignMents[i]
           let [valueName = 'LOOP_ITEM', indexName = 'LOOP_INDEX'] = loopArg
           let fun = cssMap[funName]
           let objfunContext: any = deepClone(funContext)
           let outVars = fun.outVars ?? [];
 
-          let len = max
-          if (max.length) {
-            len = max.length
+          let len = 0
+
+
+          if (varName.startsWith('$')) {
+            let tmp = parseArgs(varName, funContext)
+            console.log(tmp);
+            
+            if (typeof tmp !== 'undefined') {
+              len = tmp.length
+            }
+            console.log('sss', len);
           }
+          else if (typeof varName === 'number') {
+            console.log('sss');
+            len = varName
+          }
+          else if (Array.isArray(varName)) {
+            console.log('sss');
+            
+            len = varName.length
+          }
+
+          console.log('varName', varName, len);
+          
 
           for (let i = 0; i < len; i++) {
             objfunContext[indexName] = i;
-            objfunContext[valueName] = max[i]; 
+            objfunContext[valueName] = varName[i]; 
             let val = await runCalc(funName, objfunContext);
             outVars.forEach(key => {
               objfunContext[key] = objfunContext[key]

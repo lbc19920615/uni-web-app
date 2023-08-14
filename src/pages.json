@@ -104,6 +104,14 @@
             "navigationBarTitleText": "商店地图",
             "navigationStyle": "custom"
           }
+        },
+        {
+          "name": "newlan",
+          "path": "newlan",
+          "style": {
+            "navigationBarTitleText": "新语法",
+            "navigationStyle": "custom"
+          }
         }
       ]
     },
