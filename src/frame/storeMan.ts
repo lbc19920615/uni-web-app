@@ -1,5 +1,3 @@
-import { cloneClass } from "clone-class";
-
 const storePrefix = "zy_";
 
 let storeMap = new Map();
